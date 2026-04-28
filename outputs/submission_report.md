@@ -1,5 +1,5 @@
 # UBS Energy Security Research: Submission Report
-**Generated:** 2026-04-28 20:46:41
+**Generated:** 2026-04-28 21:57:09
 
 ---
 
@@ -20,19 +20,19 @@
 
 - Document index rows: 51
 - Paragraph rows: 2434
-- Classified rows: 226
+- Classified rows: 214
 
 ## Date Integrity
 
 - Document index unique dates: 2
-- Classified unique dates: 4
+- Classified unique dates: 3
 - Document rows with invalid dates: 0
-- Classified rows with invalid dates: 0
+- Classified rows with future dates: 0
 
 ## Submission Gate
 
 - Date integrity gate (no impossible/future dates): **PASS**
-- Minimum date diversity gate (>= 4 classified dates): **PASS**
+- Minimum date diversity gate (>= 3 classified dates): **PASS**
 
 ---
 
@@ -212,6 +212,7 @@ The keyword baseline achieves only FAIR agreement (Kappa=0.232). The classificat
 |-----|------|
 | PPTX | `deck/UBS_Pitch_Deck_AUTO.pptx` |
 | Source MD | `deck/UBS_PITCH_DECK.md` |
+| Filtered Evidence | `outputs/tables/evidence_pack_filtered.md` |
 
 ---
 

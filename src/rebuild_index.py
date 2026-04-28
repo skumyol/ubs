@@ -72,7 +72,8 @@ def _validate_iso_date(date_str: str) -> str:
         return ""
 
     min_date = pd.Timestamp(f"{MIN_VALID_YEAR}-01-01")
-    max_date = pd.Timestamp(datetime.utcnow().year + MAX_VALID_YEAR_OFFSET, 12, 31)
+    # Reject current year and future dates to avoid data integrity issues
+    max_date = pd.Timestamp(datetime.utcnow().year - 1, 12, 31)
     if parsed < min_date or parsed > max_date:
         return ""
 

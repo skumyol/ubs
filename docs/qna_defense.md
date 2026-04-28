@@ -10,9 +10,9 @@
 - **Long Sieyuan expected return**: 40.1%
 - **Short HAL expected move**: -29.4%
 - **Pair spread return**: 69.6%
-- **Total AI signals analyzed**: 226
-- **Grid signal share**: 16%
-- **Oil signal share**: 41%
+- **Total AI signals analyzed**: 214
+- **Grid signal share**: 10.7%
+- **Oil signal share**: 43.5%
 - **Thesis support score**: 0.177
 - **Interpretation**: Moderate support for variant thesis
 
@@ -68,7 +68,7 @@
 
 ## Q6. How reliable is your text analysis?
 
-**Answer:** The text analysis is a thematic compilation tool, not a predictive system. It surfaces quotes and organizes 55 documents into categories for human review. Validation testing shows the classifier relies heavily on keyword patterns — accuracy against keyword baselines must be tested to claim incremental value. See validation_report.md for blind-test methodology and predictive power analysis. Sample size (330 paragraphs) limits statistical confidence.
+**Answer:** The text analysis is a thematic compilation tool, not a predictive system. It surfaces quotes and organizes 55 documents into categories for human review. Validation testing shows the classifier relies heavily on keyword patterns — accuracy against keyword baselines must be tested to claim incremental value. See validation_report.md for blind-test methodology and predictive power analysis. Sample size (214 paragraphs) limits statistical confidence.
 
 ---
 

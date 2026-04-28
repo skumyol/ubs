@@ -86,7 +86,7 @@ ubs/
 - Classified each paragraph by sector (Grid vs Oilfield)
 
 ### 3. **AI Classification**
-- Used DeepSeek/Qwen LLMs to classify 330 paragraphs into 6 categories:
+- Used DeepSeek/Qwen LLMs to classify 214 paragraphs into 6 categories:
   - Grid Resilience | Electricity Demand | Policy-Backed Capex
   - Oil Supply Disruption | Oilfield Cost Pressure | Margin/Earnings Risk
 - Scored sentiment (positive/bullish vs negative/bearish)
@@ -101,7 +101,7 @@ ubs/
 - **Signal Tracker:** Grid "Electricity demand" = High, Oilfield "Margin pressure" = High
 - **Thesis Score:** 0.164 (moderate support for variant view)
 - **Peer Comps:** Added ROIC calculation (new!) alongside P/E and EV/EBITDA
-- **Scenarios:** 27.1% expected return (long) + -29.8% (short) = 56.9% pair spread
+- **Scenarios:** 40.1% expected return (long) + -29.4% (short) = 69.6% pair spread
 
 ### 6. **Deck Generation**
 - Auto-generated PowerPoint with charts, tables, and killer quotes
@@ -113,12 +113,12 @@ ubs/
 
 | Metric | Value | What It Means |
 |--------|-------|---------------|
-| **Grid Signal Share** | 34.2% | 1/3 of all signals about grid infrastructure |
-| **Oil Signal Share** | 27.9% | Less than grid (good for our thesis) |
-| **Thesis Support Score** | 0.164 | Moderate support—market is shifting but not there yet |
-| **Pair Spread Return** | 56.9% | Combined long + short expected return |
+| **Grid Signal Share** | 10.7% | Grid-related signals (demand, policy, resilience) |
+| **Oil Signal Share** | 43.5% | Oilfield-related signals (margin, cost, supply) |
+| **Thesis Support Score** | 0.177 | Moderate support—market is shifting but not there yet |
+| **Pair Spread Return** | 69.6% | Combined long + short expected return |
 | **Documents Analyzed** | 55 | News articles, transcripts, reports |
-| **Paragraphs Classified** | 330 | Each scored for category + sentiment |
+| **Paragraphs Classified** | 214 | Each scored for category + sentiment |
 
 ---
 

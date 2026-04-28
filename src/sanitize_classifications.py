@@ -6,6 +6,7 @@
 - Drops rows with invalid dates
 """
 
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -33,6 +34,11 @@ def sanitize_classifications() -> dict:
             "status": "skipped",
             "reason": "missing paragraph_id",
         }
+
+    # Filter out future/current year dates (data integrity)
+    current_year = datetime.now().year
+    max_allowed_date = f"{current_year - 1}-12-31"  # Only last year and earlier
+    classified = classified[classified["date"] <= max_allowed_date]
 
     valid_ids = set(paragraphs["paragraph_id"].astype(str).tolist())
     id_mask = classified["paragraph_id"].astype(str).isin(valid_ids)

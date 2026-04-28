@@ -12,7 +12,7 @@
 | **LONG** | Grid Infrastructure | AI data center demand, policy tailwinds, resilient pricing | **HIGH** |
 | **SHORT** | Oilfield Services | Cost pressures, margin compression, structural headwinds | **MODERATE** |
 
-**Methodology:** DeepSeek LLM analysis of 226 classified paragraphs from 51 source documents
+**Methodology:** DeepSeek LLM analysis of 214 classified paragraphs from 51 source documents
 
 ---
 
@@ -21,7 +21,7 @@
 **What We Built:**
 - 51 documents collected from RSS feeds + GDELT API + HKEX filings
 - 2,434 paragraphs processed through cleaning pipeline
-- 226 representative samples classified by DeepSeek LLM
+- 214 representative samples classified by DeepSeek LLM
 - **92% average classification confidence**
 
 **Technical Validation:**
@@ -34,21 +34,23 @@
 
 ## Slide 3: Real LLM Results
 
-**14 Relevant Signals Identified**
+**116 Relevant Signals Identified**
 
 ### Grid Infrastructure (Long Position)
 | Category | Signals | Sentiment | Evidence Quality |
 |----------|---------|-----------|------------------|
-| Electricity Demand | 7 | Positive | High |
-| Grid Resilience | 3 | Positive | High |
-| Policy-Backed Capex | 3 | Positive | High |
-| **Total Grid** | **13** | **92% Positive** | **Strong** |
+| Electricity Demand | 14 | Positive | High |
+| Grid Resilience | 1 | Positive | High |
+| Policy-Backed Capex | 8 | Positive | High |
+| **Total Grid** | **23** | **91% Positive** | **Strong** |
 
 ### Oilfield Services (Short Position)
 | Category | Signals | Sentiment | Evidence Quality |
 |----------|---------|-----------|------------------|
-| Margin/Earnings Risk | 1 | Negative | Moderate |
-| **Total Oilfield** | **1** | **Signal detected** | **Early** |
+| Margin/Earnings Risk | 56 | Negative | High |
+| Oilfield Cost Pressure | 28 | Negative | High |
+| Oil Supply Disruption | 9 | Negative | Moderate |
+| **Total Oilfield** | **93** | **100% Negative** | **Strong** |
 
 ---
 
@@ -86,7 +88,7 @@
 **Data Pipeline:**
 ```
 RSS/GDELT → Text Cleaning → DeepSeek LLM → Classification → Analysis
-     43 docs        175 paras         30 samples        14 signals
+     51 docs       2434 paras        214 samples       116 signals
 ```
 
 **Classification Categories:**
@@ -304,13 +306,13 @@ tests/
 |--------|-------|
 | Documents | 51 |
 | Paragraphs | 2,434 |
-| Classified | 226 |
+| Classified | 214 |
 | Avg Classification Confidence | 92% |
 
 ### Date Integrity
 
 - Invalid/future dates: **0**
-- Unique classified dates: **4**
+- Unique classified dates: **3**
 - Date integrity gate: **PASS**
 
 ### Source Mix
