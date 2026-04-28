@@ -1,0 +1,17 @@
+Work is underway to clear a warehouse north of Beirut to establish a National Data Center on the site, according to Lebanese news agency Akhbar al Yawm.
+Telecommunications Minister Charles Hajj visited the facility in Dekwaneh with Karim Salim Salam, chief executive of telecoms firm Touch, to review the progress of the ongoing work and equipment installations as part of a rehabilitation and expansion project.
+This project involves relocating and merging existing Karantina and Sawwar data centers into a single location to improve operational efficiency and asset management, the news agency reported.
+The project is part of the Ministry of Telecommunications’ policy to utilize state-owned facilities to reduce reliance on leasing and invest in the ministry's properties.
+Hajj urged Touch to continue improving the use of available space within the facility and expedite the digitization of old documents and archives as part of the country’s digital transformation.
+Unused equipment and materials are being cleared from the site.
+Last week, the American University of Beirut (AUB) said it presented the results of a national data center benchmarking exercise to the Ministry of State for Information Technology and Artificial Intelligence (MITAI).
+The initiative was part of the implementation of the recently signed memorandum of understanding between AUB and MITAI to improve public sector services and accelerate Lebanon’s digital transformation.
+The benchmarking exercise was designed to address critical issues for the national digital planning, including what type of data center model is most suitable for Lebanon and the projected costs of implementing it.
+The findings will inform national decisions on data center strategy, capacity planning, investment priorities, and procurement models aligned with international standards.
+Dr. Fadi El-Jardali, managing director and co-lead of AUB’s Government Engagement Platform, said: “Despite the challenges, the team remained committed to delivering this output. This reflects a shared conviction that while crises may persist, they should not delay our preparedness for what comes next.
+“The work presented today contributes to laying the foundations needed to position Lebanon on the digital and AI landscape.”
+Lebanon does not have a notable data center market at present. According to DataCenterMap, just two facilities are in the country, both operated by LFAIT. Levanon is embroiled in the ongoing Iran war, though it is currently under a 10-day ceasefire with Israel. Despite this, reports of explosions and attacks in the country remain.
+National Data Centers serve as centralized locations for public sector and government workloads. At the start of this year, ground was broken on a massive data center project for the Saudi Arabian government in Riyadh. Set to span 30 million sq ft (2.78m sqm), the data center will be located in Riyadh.
+In recent months, countries across West Africa have also notably begun investing in such initiatives, including Benin, Bamako, Mali, and two "mini data centers" in Burkina Faso. Chad has also revealed plans to invest ($204.7m) in developing a national data center and in expanding its fiber optic networks.
+Learn more about the data center market in the Middle East and Saudi Arabia, and meet with other executives and experts in the region at the DCN Riyadh event next year.
+Comments

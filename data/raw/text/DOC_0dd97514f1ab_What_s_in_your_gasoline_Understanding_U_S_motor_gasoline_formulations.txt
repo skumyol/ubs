@@ -1,0 +1,17 @@
+Repost corrects a labeling error on the map of the United States.
+Motor gasoline in the United States is a blend of hydrocarbons and chemicals, with specific formulas varying by region and season. To meet federal air quality standards, the U.S. Environmental Protection Agency (EPA) and state regulators require different formulations, depending on air quality and location, which affect performance, cost, and emissions. In addition, warmer summer months require a different gasoline formulation than cooler winter months. Key differences between formulations include octane rating, volatility—commonly measured as Reid vapor pressure (RVP)—and emissions. This year, the EPA will relax federal enforcement of summer RVP standards to help reduce gasoline prices.
+What are the main types of gasoline formulations in the United States?
+There are two main types of gasoline:
+Both types of gasoline are available in different octane ratings (regular, midgrade, premium) and are usually blended with ethanol. In addition to conventional and reformulated gasoline, refiners adjust gasoline blends for summer and winter.
+Why do gasoline formulations change seasonally?
+The EPA uses RVP to regulate gasoline volatility: the lower the RVP, the less volatile the gasoline and the less evaporative the emissions. To reduce smog-forming emissions, the EPA mandates that summer grade gasoline has a lower RVP (less volatility) to control evaporation, which would normally increase in warm weather. In cold weather, higher volatility helps engines start more easily.
+How do RVP limits change across regions?
+During the summer season, EPA limits gasoline in the continental United States to an RVP of no more than 9.0 pounds per square inch (psi). However, regulators apply stricter limits in areas with air quality issues, including:
+How does the RVP limit change through the year?
+The summer season for retailers and wholesale purchasers runs from June 1 to September 15. For refiners and bulk terminals, it starts earlier, running from May 1 to September 15, to allow time for supplies of summer-grade gasoline to get from producers to retailers. Some areas require longer periods for summer-grade gasoline use to further control emissions. Although not mandated, switching back to winter-grade gasoline in the fall is common because of its lower production cost.
+Why is gasoline with lower RVP more expensive?
+Gasoline with lower RVP is more expensive to produce because it requires pricier components for blending. For example, butane, a low-cost octane booster, has high RVP that limits its use in summer or RFG blends. Instead, lower RVP gasoline uses more expensive components such as alkylate to maintain octane while reducing RVP, contributing to higher retail prices.
+Do all states follow the same rules?
+Not exactly. The EPA sets federal standards but allows states or regions to set stricter gasoline specifications. Arizona, for example, requires the use of Cleaner Burning Gasoline (CBG) in parts of the state. California has stricter requirements than the federal government.
+The California Air Resources Board (CARB) requires gasoline RVP has no more than 7.0 psi during the summer season. In addition, CARB requires longer periods for summer-grade gasoline. These requirements contribute to consistently higher gasoline prices in California.
+Principal contributor: Alex de Keyserling

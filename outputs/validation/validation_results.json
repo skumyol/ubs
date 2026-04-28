@@ -1,0 +1,78 @@
+{
+  "sample_size": 50,
+  "categories_tested": [
+    "Electricity Demand",
+    "Grid Resilience",
+    "Margin/Earnings Risk",
+    "Not Relevant",
+    "Oil Supply Disruption",
+    "Oilfield Cost Pressure",
+    "Policy-Backed Capex"
+  ],
+  "random_baseline": {
+    "accuracy": 0.12,
+    "kappa": -0.027,
+    "macro_f1": 0.125
+  },
+  "majority_baseline": {
+    "accuracy": 0.14,
+    "kappa": 0.0,
+    "macro_f1": 0.035
+  },
+  "keyword_baseline": {
+    "accuracy": 0.34,
+    "kappa": 0.232,
+    "macro_f1": 0.262
+  },
+  "ai_classifier_ceiling": {
+    "accuracy": 1.0,
+    "kappa": 1.0,
+    "macro_f1": 1.0,
+    "note": "Upper bound. Real blind test required for true estimate."
+  },
+  "per_class_metrics": {
+    "Electricity Demand": {
+      "precision": 0.25,
+      "recall": 0.143,
+      "f1": 0.182,
+      "support": 7
+    },
+    "Grid Resilience": {
+      "precision": 0.538,
+      "recall": 1.0,
+      "f1": 0.7,
+      "support": 7
+    },
+    "Margin/Earnings Risk": {
+      "precision": 0.273,
+      "recall": 0.429,
+      "f1": 0.333,
+      "support": 7
+    },
+    "Not Relevant": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 7
+    },
+    "Oil Supply Disruption": {
+      "precision": 0.357,
+      "recall": 0.714,
+      "f1": 0.476,
+      "support": 7
+    },
+    "Oilfield Cost Pressure": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 8
+    },
+    "Policy-Backed Capex": {
+      "precision": 0.143,
+      "recall": 0.143,
+      "f1": 0.143,
+      "support": 7
+    }
+  },
+  "interpretation": "The keyword baseline achieves only FAIR agreement. The classification task has genuine semantic complexity. The AI has potential to add value if it can outperform simple heuristics in a blind test."
+}

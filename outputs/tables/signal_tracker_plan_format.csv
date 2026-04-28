@@ -1,0 +1,6 @@
+signal_cluster,Grid Equipment,Oilfield Services,_grid_count,_oil_count
+Grid upgrade,Medium,Low,23,0
+Electricity demand,High,Low,62,13
+Policy-backed capex,Low,Low,1,9
+Logistics disruption,Low,Low,0,7
+Margin pressure,Low,High,0,85

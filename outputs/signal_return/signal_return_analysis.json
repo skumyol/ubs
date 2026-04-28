@@ -1,0 +1,182 @@
+{
+  "sample_info": {
+    "total_paragraphs": 226,
+    "unique_dates": 4,
+    "date_range": "2025-06-01 00:00:00 to 2026-06-01 00:00:00"
+  },
+  "historical_alignment": {
+    "period": "2023-01-01 to 2025-12-31",
+    "hal_cumulative_return": -0.1901,
+    "sieyuan_cumulative_return": 3.0288,
+    "price_divergence": 3.2189,
+    "grid_signal_sentiment": 0.4,
+    "oilfield_signal_sentiment": -0.28,
+    "thesis_signal_score": 0.68,
+    "alignment": "CONSISTENT",
+    "interpretation": "Thesis signals and price divergence are directionally aligned. Grid sentiment: 0.40, Oilfield sentiment: -0.28, Price divergence: 321.9%"
+  },
+  "event_study": {
+    "hal": {
+      "n_events": 3,
+      "events": [
+        {
+          "event_date": "2025-06-01",
+          "closest_trading_day": "2025-06-02",
+          "pre_7d_return": -0.0161,
+          "pre_7d_n_days": 4,
+          "post_7d_return": 0.0583,
+          "post_7d_n_days": 5,
+          "post_30d_return": 0.0941,
+          "post_30d_n_days": 21,
+          "post_90d_return": 0.1455,
+          "post_90d_n_days": 62
+        },
+        {
+          "event_date": "2025-07-01",
+          "closest_trading_day": "2025-07-01",
+          "pre_7d_return": -0.0188,
+          "pre_7d_n_days": 5,
+          "post_7d_return": 0.0448,
+          "post_7d_n_days": 4,
+          "post_30d_return": 0.0561,
+          "post_30d_n_days": 21,
+          "post_90d_return": 0.1876,
+          "post_90d_n_days": 62
+        },
+        {
+          "event_date": "2025-10-01",
+          "closest_trading_day": "2025-10-01",
+          "pre_7d_return": 0.0136,
+          "pre_7d_n_days": 5,
+          "post_7d_return": -0.0394,
+          "post_7d_n_days": 5,
+          "post_30d_return": 0.0779,
+          "post_30d_n_days": 22,
+          "post_90d_return": 0.1515,
+          "post_90d_n_days": 62
+        }
+      ],
+      "summary": {
+        "pre_7d": {
+          "mean_return": -0.0071,
+          "std_return": 0.018,
+          "n": 3,
+          "t_statistic": -0.68,
+          "p_value": 0.565,
+          "significant_05": false
+        },
+        "post_7d": {
+          "mean_return": 0.0212,
+          "std_return": 0.0529,
+          "n": 3,
+          "t_statistic": 0.69,
+          "p_value": 0.559,
+          "significant_05": false
+        },
+        "post_30d": {
+          "mean_return": 0.076,
+          "std_return": 0.0191,
+          "n": 3,
+          "t_statistic": 6.91,
+          "p_value": 0.02,
+          "significant_05": true
+        },
+        "post_90d": {
+          "mean_return": 0.1615,
+          "std_return": 0.0228,
+          "n": 3,
+          "t_statistic": 12.29,
+          "p_value": 0.007,
+          "significant_05": true
+        }
+      }
+    },
+    "sieyuan": {
+      "n_events": 3,
+      "events": [
+        {
+          "event_date": "2025-06-01",
+          "closest_trading_day": "2025-05-30",
+          "pre_7d_return": -0.061,
+          "pre_7d_n_days": 5,
+          "post_7d_return": 0.0174,
+          "post_7d_n_days": 4,
+          "post_30d_return": 0.0069,
+          "post_30d_n_days": 19,
+          "post_90d_return": 0.1909,
+          "post_90d_n_days": 63
+        },
+        {
+          "event_date": "2025-07-01",
+          "closest_trading_day": "2025-07-01",
+          "pre_7d_return": 0.011,
+          "pre_7d_n_days": 5,
+          "post_7d_return": -0.0078,
+          "post_7d_n_days": 5,
+          "post_30d_return": 0.0741,
+          "post_30d_n_days": 22,
+          "post_90d_return": 0.4268,
+          "post_90d_n_days": 64
+        },
+        {
+          "event_date": "2025-10-01",
+          "closest_trading_day": "2025-09-30",
+          "pre_7d_return": 0.0373,
+          "pre_7d_n_days": 5,
+          "post_7d_return": null,
+          "post_7d_n_days": 0,
+          "post_30d_return": 0.1879,
+          "post_30d_n_days": 16,
+          "post_90d_return": 0.4274,
+          "post_90d_n_days": 58
+        }
+      ],
+      "summary": {
+        "pre_7d": {
+          "mean_return": -0.0042,
+          "std_return": 0.0509,
+          "n": 3,
+          "t_statistic": -0.14,
+          "p_value": 0.899,
+          "significant_05": false
+        },
+        "post_7d": {
+          "mean_return": 0.0048,
+          "std_return": 0.0178,
+          "n": 2,
+          "t_statistic": 0.38,
+          "p_value": 0.768,
+          "significant_05": false
+        },
+        "post_30d": {
+          "mean_return": 0.0896,
+          "std_return": 0.0915,
+          "n": 3,
+          "t_statistic": 1.7,
+          "p_value": 0.232,
+          "significant_05": false
+        },
+        "post_90d": {
+          "mean_return": 0.3484,
+          "std_return": 0.1364,
+          "n": 3,
+          "t_statistic": 4.42,
+          "p_value": 0.047,
+          "significant_05": true
+        }
+      }
+    }
+  },
+  "monthly_lead_lag": {
+    "correlations": {
+      "grid_sentiment_vs_hal": {
+        "error": "Insufficient aligned data points"
+      },
+      "grid_sentiment_vs_sieyuan": {
+        "error": "Insufficient aligned data points"
+      }
+    },
+    "regressions": {},
+    "overlap_months": 3
+  }
+}

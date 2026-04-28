@@ -1,0 +1,7 @@
+The AI data center is being redefined in real time, as power, cooling, and infrastructure struggle to keep pace with extreme compute demand.
+This eBook, based on insights from the Schneider Electric Innovation Summit North America 2025, provides a comprehensive look at the technologies, strategies, and partnerships shaping the next generation of AI-ready infrastructure. Download it now to explore:
+- Power at scale: Why megawatt racks and 800VDC architectures are reshaping design
+- Cooling evolution: How liquid cooling is becoming essential for high-density AI workloads
+- Faster deployment: The role of prefabrication and modular infrastructure in accelerating buildouts
+- New efficiency models: Moving beyond PUE to measure real AI performance and sustainability
+Comments

@@ -1,0 +1,16 @@
+AI cloud startup QumulusAI has secured a $45 million convertible note facility.
+ATW Partners is behind the funding, with $15m already provided.
+According to Qumulus, the capital will be used to support the procurement of GPUs and data center infrastructure, enabling the company to pursue its 2026 deployment roadmap.
+The company aims to deploy more than 21,000 Nvidia Blackwell GPUs throughout this year.
+“In a market where enterprises are tired of reactive procurement and broker-driven delays, the financial flexibility that ATW Partners has provided is a genuine competitive advantage – one that is enabling us to transform how enterprises access the GPU-powered cloud infrastructure they need for production AI,” said Patrick Gahan, SVP of capital markets, QumulusAI. “We’re building at a pace and scale that the demand curve requires, and this capital is what makes that possible.”
+The new convertible note facility builds on a $500m blockchain-backed facility secured by QumulusAI in October 2025. That funding was arranged by Permian Labs and is set to be distributed via the USD.AI blockchain-based credit protocol.
+Founded in 2019, Qumulus is a GPU cloud company. Thus far, QumulusAI has secured capacity across colocation facilities in Atlanta, Kansas City, Philadelphia, Denver, and Brooklyn.
+In February 2026, the company received approval for a modular data center in Denton, Texas. The project is planned for around four acres of land near Western Boulevard and Jim Christal Road, and will operate near the RD Wells substation. It is hoped to have around 20MW of capacity. The land is being leased from the city for around $20,000 annually for the next 10 years, as agreed in August 2024.
+Further details about Qumulus' data center footprint are sparse, but according to its website, the company will use mostly prefabricated data centers and aims to achieve a PUE of 1.1. It eventually seeks to have access to 100MW of behind-the-meter natural gas to support its footprint.
+Currently, the company offers access to the Nvidia B200, H200, and H100 GPUs via its HPC cloud, among others.
+More in Investment / M&A / Financing
+-
+-
+-
+Episode DCD>Inside APAC
+Comments

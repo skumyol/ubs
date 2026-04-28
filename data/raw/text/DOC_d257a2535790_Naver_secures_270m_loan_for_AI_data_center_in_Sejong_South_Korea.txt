@@ -1,0 +1,24 @@
+South Korean AI cloud company Naver has secured a 400 billion won ($270m) loan from the country's Public Growth Fund to cover the development of its AI data center in Sejong.
+Elsewhere, another AI cloud - Verda - has secured $117m in a funding round.
+Naver's loan has been approved by the South Korean Financial Services Commission (FSC) and will fund the expansion of its data center in Sejong city, dubbed Gak Sejong, as reported by Chosun Biz.
+Plans to expand the campus emerged in November 2025, with the company revealing it would develop both the second and third phases simultaneously.
+The first phase of construction was launched in November 2023. The site spans 290,000 sqm (3.1 million sq ft) and is planned to reach 270MW of capacity, and aims to be able to host 600,000 servers, running Naver's cloud services.
+Gak Sejong spans five floors, three below ground and two above ground. The data center is designed to withstand an earthquake magnitude of 7.0.
+A total of six phases are eventually planned at the site, and Naver aims to get Phase II completed in 2028 and Phase III in 2029.
+The government's FSC decided to fund the expansion with the aim of enabling Naver to advance its own LLM and introduce the latest GPUs to the site.
+The FSC said: "Korean corporations have had a high level of dependence on global big tech corporations in developing AI models due to a lack of AI infrastructure facilities," and added: "To help the domestic AI industry reduce its dependence on global big tech and secure its own AI sovereignty, we decided to provide funding for domestic corporations' large-scale AI data center construction projects."
+At the start of this year, Naver Cloud revealed it had completed a cluster of 4,000 Nvidia B200 GPUs, but did not state which data center the cluster was housed in.
+Naver Cloud currently lists six cloud regions in South Korea, as well as one each in Japan, Germany, Singapore, and the US (West Coast); future regions are planned in the US (East Coast), Vietnam, Taiwan, and Thailand. It previously exited Hong Kong. The company also lists plans for a 10MW site in Charlotte, North Carolina, a capacity totaling 40MW across Sweden, and a 500MW data center campus in Morocco.
+In October 2025, it was revealed that Naver would deploy some 60,000 Nvidia GPUs in partnership with LG AI Research, SK Telecom, NC AI, and Upstage.
+AI cloud Verda raises $117m in funding round
+Elsewhere, Finland-based AI cloud company Verda, formerly DataCrunch, has completed a $117m funding round.
+The round comprises equity funding led by Lifeline Ventures with participation from byFounders, Tesi, Varma, and other investors, alongside debt financing from a group of Nordic financial institutions.
+According to the company, the capital will enable the company to accelerate its international expansion and AI cloud infrastructure. It is planning to launch in new markets, including the UK and the US, in 2026.
+"We're building the next generation of AI cloud infrastructure for pioneering teams across the globe. This funding allows us to double down on development and accelerate our expansion across Europe, the US, and Asia. We're seeing very strong momentum, and we're excited for what's ahead," said Ruben Bryon, founder and CEO of Verda.
+Verda was founded in 2020, and currently has data centers in Finland, all of which run on 100 percent renewable energy. It also operates one in Reykjanesbær in Iceland. The company secured $64.6 million in a Series A funding round in September 2025, at the time noting it was planning an AI data center in Latvia. Prior to that, in an October 2024 seed funding round, the company raised $13m.
+More in Investment / M&A / Financing
+-
+-
+-
+Episode DCD>Inside APAC
+Comments

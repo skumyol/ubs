@@ -1,0 +1,11 @@
+company,ticker,sector,p_e,ev_ebitda,roic,revenue_growth,profit_margin
+SIEYUAN ELECTRIC CO LTD,002028.SZ,Grid / Power Equipment,47.0x,40.0x,n/a,41.6%,14.2%
+GE Vernova Inc.,GEV,Grid / Power Equipment,32.8x,86.7x,n/a,16.3%,23.8%
+"Quanta Services, Inc.",PWR,Grid / Power Equipment,93.4x,40.6x,n/a,19.7%,3.6%
+"Eaton Corporation, PLC",ETN,Grid / Power Equipment,39.8x,27.2x,n/a,13.1%,14.9%
+ABB,ABB,Grid / Power Equipment,n/a,n/a,n/a,n/a,n/a
+SCHNEIDER ELECTRIC SE,SU.PA,Grid / Power Equipment,33.8x,21.5x,n/a,4.2%,10.4%
+Halliburton Company,HAL,Oilfield Services,22.2x,9.6x,n/a,-0.3%,6.9%
+SLB Limited,SLB,Oilfield Services,24.3x,12.3x,n/a,2.7%,9.3%
+Baker Hughes Company,BKR,Oilfield Services,21.8x,14.2x,n/a,2.5%,11.2%
+NOV Inc.,NOV,Oilfield Services,53.4x,9.2x,n/a,-2.4%,1.0%

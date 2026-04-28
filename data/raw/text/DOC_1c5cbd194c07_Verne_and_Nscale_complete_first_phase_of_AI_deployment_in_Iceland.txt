@@ -1,0 +1,10 @@
+AI cloud Nscale and data center operator Verne have completed the first phase of their Iceland GPU capacity deployment.
+Nscale signed an agreement to lease 15MW of capacity from Verne's Iceland campus in November 2025, and aimed to deploy 4,600 Nvidia Blackwell Ultra GPUs throughout 2026.
+As revealed in an April 23 post on LinkedIn by Verne, the first phase has been completed in three months, and saw Nscale deploying 7.5MW of GPU capacity at the campus.
+According to Verne, it is the company's first liquid-cooled deployment in Iceland. Thus far, 128 racks have been delivered, including 64 liquid-cooled racks of Nvidia GB300 GPUs, and more than 20,000 cables have been installed.
+Computacenter, Lenovo, Vertiv, Nvidia, Nscale, and Verne have all worked jointly on the deployment.
+When the lease agreement was first signed, Nscale and Verne noted that the GPUs deployed at the site would be 85 percent liquid-cooled and 15 percent air-cooled.
+Verne's Iceland campus is fully powered by renewable energy, and due to the climate, it can utilize natural free cooling. According to a data sheet, the campus spans 40 acres and has more than 140MW of IT capacity. The facility is also Nvidia DGX authorized.
+Verne operates data centers in Iceland, Finland, and the UK. The company was acquired by Ardian in 2024.
+Nscale has a significant presence across the Nordics. Beyond the deployment in Iceland, the company is also developing locations in Finland and Norway. Under its joint venture with Aker, the company has also purchased land in multiple locations in Norway, including in Fauske and Skien, and is planning a 250MW data center in Narvik and a 230MW data center in Kvandal, and has an existing and operational Norwegian site in Glomfjord.
+Comments

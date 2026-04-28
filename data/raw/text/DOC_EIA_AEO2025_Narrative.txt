@@ -1,0 +1,165 @@
+
+
+--- Page 1 ---
+
+Annual Energy Outlook
+2025
+April 2025
+
+--- Page 2 ---
+
+The U.S. Energy Information Administration (EIA), the statistical and analytical agency within the
+U.S. Department of Energy (DOE), prepared this report. By law, our data, analyses, and forecasts are
+independent of approval by any other officer or employee of the U.S. Government. The views in this
+report do not represent those of DOE or any other federal agencies.
+U.S. Energy Information Administration | Annual Energy Outlook 2025 i
+
+--- Page 3 ---
+
+April 2025
+Table of Contents
+Introduction .................................................................................................................................................. 2
+Modeled Cases .............................................................................................................................................. 3
+AEO2025 Reference Case .............................................................................................................................. 3
+Alternative Electricity case ............................................................................................................................ 3
+Alternative Transportation case ................................................................................................................... 3
+High and Low Oil Price cases ......................................................................................................................... 3
+High and Low Oil and Gas Supply cases ........................................................................................................ 4
+High and Low Zero Carbon Technology Cost cases ....................................................................................... 4
+High and Low Economic Growth cases ......................................................................................................... 4
+Major Changes for AEO2025 ......................................................................................................................... 4
+U.S. Energy Information Administration | Annual Energy Outlook 2025 1
+
+--- Page 4 ---
+
+April 2025
+Introduction
+The Annual Energy Outlook 2025 (AEO2025) explores potential long-term energy trends in the United
+States. AEO2025 is published in accordance with Section 205c of the Department of Energy Organization
+Act of 1977 (Public Law 95-91), which requires the Administrator of the U.S. Energy Information
+Administration (EIA) to prepare an annual report that contains trends and projections of energy
+consumption and supply. These projections are used by federal, state, and local governments; industry;
+trade associations; and other planners and decisionmakers in the public and private sectors.
+We prepared the AEO by using the National Energy Modeling System (NEMS) to project a set of
+scenarios that, taken together, represent a range of outcomes for the U.S. energy system. AEO2025
+represents the culmination of a year-long effort that enabled major upgrades to NEMS.
+Our policy assumptions are central to understanding our AEO2025 projections. In most of the cases we
+model, we only consider laws and regulations implemented as of December 2024. As is the case every
+time we prepare an AEO, a cutoff date is necessary to enable us to conclude our modeling and integrate
+the final results for publication. Therefore, legislation, regulations, executive actions, and court rulings
+after that date are not included. We are releasing the model results without a lengthy market analysis
+this year.
+The U.S. energy system underwent major changes in the first quarter of the 21st century as oil and
+natural gas production surged, renewables were deployed more widely, and energy consumption
+patterns changed. AEO2025 can help stakeholders examine the ways in which the system could further
+change through 2050.
+Energy markets are complex. Energy models are simplified representations of energy production and
+consumption, laws and regulations, and producer and consumer behavior. Projections are highly
+dependent on the data, methodologies, model structures, and assumptions used in their development.
+These results are not predictions of what will happen. Instead, AEO2025 results represent modeled
+projections of what could happen given certain assumptions and methodologies.
+Consistent with our historical practices and statutory mission, we do not independently propose or
+advocate future legislative and regulatory changes, although at times we do analyze scenarios based on
+existing policy proposals. Our assumptions documents provide additional details on the assumptions we
+included in AEO2025, and an overview of the laws and regulations included in AEO2025 is available on
+the AEO website.
+AEO2025’s projections reflect business-as-usual trends, given known technological and demographic
+trends and current laws and regulations, and so provides a policy-neutral Reference case and an
+accompanying set of core side cases that can be used to analyze policy initiatives. For some readers, this
+approach may be unsatisfying because policy rarely remains static for long periods. But the purpose of
+basing projections on laws and regulations as of December 2024 is to provide a comparison point for
+further analysis; without such a reference point, critical information about incremental changes to
+energy system outcomes based on new assumptions is lost.
+U.S. Energy Information Administration | Annual Energy Outlook 2025 2
+
+--- Page 5 ---
+
+April 2025
+Because policies can have meaningful impacts on the energy sector, we have also included two
+alternative policy cases this year to help stakeholders to examine the effects of regulations implemented
+since our last AEO. When compared with the Reference case, one case allows stakeholders to examine
+the effects of recent regulations on power plants and the other recent regulations targeting vehicle fuel
+economy and emissions.
+Modeled Cases
+Outcomes concerning future technology, demographics, and resources cannot be known with any
+degree of certainty. We address many key uncertainties in our projections through alternative cases. In
+AEO2025, we ran 11 cases to model a range of assumptions. In addition to the two alternative policy
+cases we examined this year, we also include eight core side cases, which we have presented in prior
+releases of the AEO. A detailed explanation of each case is available on the website, and a brief
+description is in the following sections.
+AEO2025 Reference case
+Our Reference case assesses how the U.S. energy markets could operate under laws and regulations
+current as of December 2024 and under historically observed technological growth assumptions.
+Alternative Electricity case
+Our Alternative Electricity case assumes the Clean Air Act (CAA) Section 111 rule implemented by the
+Environmental Protection Agency (EPA) in April 2024 to regulate carbon dioxide emissions from new
+gas-fired combustion turbines and existing coal, oil, and gas-fired steam generating units is not in place,
+and the affected generators are able to operate under rules existing prior to April 2024. In this case,
+existing coal-fired plants continue operating without requiring modifications to reduce emissions, and
+generation from new natural gas-fired combined cycle units isn’t constrained based on whether the
+plant has installed carbon capture equipment.
+Alternative Transportation case
+Our Alternative Transportation case assumes the National Highway Traffic Safety Administration’s
+Corporate Average Fuel Economy standards and EPA’s vehicle tailpipe emission standards for model
+years 2027–2032 are not in place. The case also assumes the California Air Resources Board’s zero-
+emission vehicle sale mandates for trucks issued since our last published AEO are not in place. Rules
+affecting fuel economy and tailpipe emissions that were issued for model years 2026 and earlier remain
+in place. In this case, introduction of new electric vehicle (EV) models and building of EV charging
+infrastructure are based on growth in EV sales and registrations rather than on announced public and
+private sector plans. In addition, manufacturer reshoring of EV and battery supply chains, including
+growth in eligibility for credits under the Inflation Reduction Act, is slower than in the Reference case.
+High and Low Oil Price cases
+In the High Oil Price case, the price of Brent crude oil increases to $157 per barrel (b) in 2050, compared
+with $91/b in the Reference case and $48/b in the Low Oil Price case.
+U.S. Energy Information Administration | Annual Energy Outlook 2025 3
+
+--- Page 6 ---
+
+April 2025
+High and Low Oil and Gas Supply cases
+The High Oil and Gas Supply case assumes ultimate recovery for new tight oil, tight gas, or shale gas
+wells are 50% higher than in the Reference case. The case also assumes 50% higher undiscovered
+resources in Alaska and offshore fields. Technological improvement is assumed to be 50% faster. The
+Low Oil and Gas Supply case assumes the converse.
+High and Low Zero-Carbon Technology Cost cases
+The Low Zero-Carbon Technology Cost case assumes faster cost declines for electricity-generating
+technologies that produce zero emissions as construction and manufacturing experience grows,
+resulting in 40% lower costs than in the Reference case in 2050. The High Zero-Carbon Technology Cost
+case, conversely, assumes no additional cost reductions from learning with additional deployment of
+these electricity generating technologies.
+High and Low Economic Growth cases
+The High Economic Growth case assumes the compound annual growth rate for U.S. GDP is 2.1%
+through 2050, and the Low Economic Growth case assumes a 1.2% rate. By contrast, the Reference case
+assumes the U.S. GDP annual growth rate is 1.8% over the projection period.
+Major Changes for AEO2025
+In 2024 we made significant updates to NEMS, and an overview of the changes can be found in our
+assumptions documents and in the module-specific fact sheets. Briefly, the model that underpins our
+outlook now includes three new modules:
+• The Hydrogen Market Module, which represents hydrogen production and pricing, including the
+impacts of policy, storage, and logistics
+• The Carbon Capture, Allocation, Transportation, and Sequestration Module, which allocates
+projected supply of captured CO across the energy system either for enhanced oil recovery or
+2
+storage
+• The Hydrocarbon Supply Module, which improves the representation of upstream oil and
+natural gas resources, replacing the legacy NEMS Oil and Gas Supply Module
+In addition to the new modules, we have extensively enhanced many existing modules to better reflect
+market dynamics and emerging technologies. We will provide additional details in the AEO2025 model
+documentation in the coming months.
+We have rewritten and modernized significant portions of the NEMS code base. The source code
+associated with NEMS is now available via GitHub under an open-source license.
+In addition to changes to NEMS, we also updated the way we calculate primary energy consumption of
+electricity generation from noncombustible renewable energy sources such as solar, wind, hydroelectric,
+and geothermal. We now calculate consumption of noncombustible renewable energy for electricity
+generation using the captured energy approach, which applies a constant conversion factor of 3,412
+British thermal units per kilowatthour (Btu/kWh), using the heat content of electricity. This approach is a
+U.S. Energy Information Administration | Annual Energy Outlook 2025 4
+
+--- Page 7 ---
+
+April 2025
+change from our previous methodology, called the fossil fuel equivalency approach, and is consistent
+with the methodology now used for all EIA products and reports.
+The captured energy approach is more consistent with international energy statistics standards than the
+fossil fuel equivalency approach.
+U.S. Energy Information Administration | Annual Energy Outlook 2025 5

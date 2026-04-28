@@ -1,0 +1,4 @@
+scenario,eps_growth,target_pe,target_eps,target_price,upside_pct,probability
+Bear,-20%,12.0x,1.45,17.38,-57%,35%
+Base,-8%,18.0x,1.67,29.97,-25%,45%
+Bull,+10%,22.0x,1.99,43.80,+9%,20%

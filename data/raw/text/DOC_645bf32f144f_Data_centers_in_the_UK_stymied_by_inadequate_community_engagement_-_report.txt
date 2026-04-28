@@ -1,0 +1,15 @@
+Data center planning in the UK is being delayed by "inadequate community engagement,” according to a report by British engineering consultancy firm Hoare Lea.
+The report was published yesterday, weeks after frontier lab OpenAI decided to drop out of its £31 billion ($41.6bn) Stargate UK data center investment on the basis that the “right conditions,” such as the cost of energy and regulation, had not been met.
+The firm found that the average time to secure planning consent for a data center was 490 days – around one and a half years – based on the firm’s analysis of 33 unnamed data center planning applications in the country.
+The longest planning time amongst the 33 projects surveyed was just over five years.
+But given that the raw data of these projects was not provided by the report, it is unclear the extent to which this project’s planning time is an outlier.
+Concern about the environment was cited as a cause of opposition in 32 of these applications, followed by poor community engagement and personal feelings around the application, both of which were cited in 26 applications.
+“We found that objections related to the longest planning delays were centered around lack of community engagement and no clear tangible community benefit, design issues, lack of local infrastructure, and concerns around energy and power supply,” said Hoare Lea.
+Of these 33 applicants, nine were rejected. In all cases, rejection was attributed to a failure to meet local policy requirements, and in seven of them, concerns were expressed about the location of the site being inappropriate.
+Data centers are becoming increasingly controversial in the UK as the government pushes harder for the country to take advantage of the AI boom.
+It has become common for data center projects to be ‘called in’ by the government in order to push through controversial projects that have been vetoed by local councils.
+In December 2024, the former Secretary for Housing, Communities and Local Government, Angela Rayner, overturned a local council’s rejection to greenlight a 140MW development at the Court Lane Industrial Estate, also in Buckinghamshire. In 2025, Rayner did the same with two projects in Abbots Langley, Hertfordshire, and in Slough.
+The current Secretary Steve Reed has done the same with a data center in Buckinghamshire – though that project has since been successfully challenged by legal advocacy group Foxglove – and a 4MW proposal on the site of the historic Truman Brewery in London’s Brick Lane.
+But the government has also made it easier for data center developers to sidestep local councils by allowing projects to apply for a development consent order, which seeks planning permission directly from the government.
+In March, Secretary for Housing, Communities and Local Government Steve Reed allowed a proposed 300MW data center in Buckinghamshire to be considered through this process.
+Comments

@@ -1,0 +1,122 @@
+--- Page 1 ---
+Sieyuan Electric Co., Ltd.  
+Audit Report  
+SCPAR (2025) No. 5650  
+
+Shanghai Certified Public Accountants (Special General Partnership)  
+Shanghai, China  
+
+--- Page 2 ---
+SCPA
+上会会计师事务所（特殊普通合伙）
+Shanghai Certified Public Accountants (Special General Partnership)
+
+Audit Report
+
+SCPAR (2025) No. 5650
+April 18th, 2025
+
+To all shareholders of Sieyuan Electric Co., Ltd.,
+
+I. Audit Opinions
+
+We audited the attached financial statements of Sieyuan Electric Co., Ltd. (hereinafter referred to as “Sieyuan Electric”), including the Consolidated and Parent Corporate Balance Sheet of Dec. 31st, 2024, Consolidated and Parent Corporate Profit Statement, Consolidated and Parent Corporate Cash Flow Statement, Consolidated and Parent Corporate Owners' Equities Variation Statement as well as relevant notes to financial statements of Year 2024.
+
+We deem that the financial statements attached have been prepared according to the provisions of Enterprise Accounting Standards in all material aspects, which give a fair reflection on the Consolidate and Parent finance status on Dec. 31st, 2024, and Consolidate and Parent Corporate operation achievements and cash flows of Year 2024.
+
+II. Basis of Forming Audit Opinions
+
+We carried out audit according to the provisions of Chinese CPA Standard on Auditing. The part of “Certified Public Accountants’ obligations on audit of financial statements” in the audit report further elaborated our obligations under these standards. Pursuant to the code of professional ethics of Chinese Certified Public Accountants, we, independent of Sieyuan Electric, performed other obligations in the aspect of professional ethics. We believe that the audit evidences acquired by us are sufficient and appropriate, which provide a basis for expressing the audit opinions.
+
+III. Key Audit Matters
+
+The key audit matters are the matters that we believe are the most important for the audit of the financial statements of the current period based on professional judgment. The response
+
+1
+
+--- Page 3 ---
+SCPA
+上合会计师事务所 (特殊普通合伙)
+Shanghai Certified Public Accountants (Special General Partnership)
+
+to these matters is based on the audit of the entire financial statements and the formation of audit opinions. We do not express separate opinions on these matters. The key audit matters we identified during the audit are as follows:
+
+1. Revenue recognition
+
+(1) Key audit matter
+
+As shown in the accounting policies described in Note IV of the Financial Statements, 27 “Revenue” and Note VI, 42 “Operating Income and Operating Costs”, Sieyuan's operating income in 2024 was RMB 15,458,068,522.40, an increase of 24.06% compared with 2023.
+
+As revenue is one of the key performance indicators of Sieyuan Electric, which poses an inherent risk that the management of Sieyuan Electric (hereinafter referred to as the "Management") may manipulate the timing of revenue recognition in order to achieve specific goals or expectations, in light of this, we have identified the Company's revenue recognition as a key audit matter.
+
+(2) Audit response
+
+The main audit procedures we perform on the revenue recognition of Sieyuan include:
+
+① Evaluate and test the design and operation effectiveness of Sieyuan’s internal control related to revenue recognition.
+
+② Review the sales contracts and interview the management of Sieyuan Electric, identify the terms and conditions related to the transfer of control rights of goods, and evaluate whether the revenue recognition at a point in time complies with the requirements of the Enterprise Accounting Standards;
+
+③ Perform analysis on operating revenue, analyze abnormal changes of contract gross profit, review the rationality of operating revenue, compare with similar indicators in the previous period, examine and verify abnormal fluctuations.
+
+④ Select the sample from the transactions with revenue recognition in 2024, check the sales contracts or sales orders, shipping order receipts, invoices, customs declaration for exported goods and evaluate the authenticity of income recognition.
+
+⑤ Perform cut-off testing on operating revenue and evaluate whether operating revenue is
+
+2
+
+--- Page 4 ---
+SCPA
+上合会计师事务所 (特殊普通合伙)
+Shanghai Certified Public Accountants (Special General Partnership)
+
+recognized in an appropriate period.
+
+⑥ Recognize the revenue of EPC projects, performance obligation fulfilled within a certain period of time according to the performance progress of the project. As for EPC projects of which revenue recognition is conducted according to the performance progress in 2024, check the completion certificate of the completed projects and the written completion progress certificate of uncompleted projects issued by customer, and evaluate whether revenue recognition of EPC projects conform to Sieyuan's accounting policies of revenue recognition.
+
+2. Impairment of goodwill
+
+(1) Key audit matter
+
+As shown in the accounting policies described in Note IV of the Financial Statements, 21 "Long-term Assets Impairment" and Note VI, 17 "Goodwill", as of Dec. 31st, 2024, the book balance of Sieyuan Electric's goodwill was RMB 786,793,945.37, and the provision for impairment of goodwill was RMB 245,792,064.50.
+
+The management conducts impairment testing on goodwill at the end of each year and adjusts the book value of goodwill based on the results. As the results of goodwill impairment testing largely relies on the estimates and assumptions made by management, especially revenue growth rate, gross profit margin, discount rate, etc., which are subject to significant uncertainties, the results are influenced by management's judgment of the future market and economic environment.
+
+Due to the large amount of goodwill and the significant management judgment involved in goodwill impairment testing, we regard impairment of goodwill as a key audit matter.
+
+(2) Audit response
+
+The main audit procedures we perform on the impairment of goodwill include:
+
+① Understand the key internal controls related to the impairment of goodwill, evaluate the design of these controls, and determine whether they have been implemented;
+
+② Evaluate the competence, professional quality, and objectivity of the appraisers hired by the management for impairment testing, discuss the identification of assets portfolio with the
+
+3
+
+--- Page 5 ---
+SCPA
+上合会计师事务所（特殊普通合伙）
+Shanghai Certified Public Accountants (Special General Partnership)
+
+appraisers, and review valuation methods and key parameters;
+
+③ Compare the forecast data of the relevant assets portfolio of previous years with the actual data of the current period to evaluate the reliability of the management's forecast on cash flows;
+
+④ Evaluate the key assumptions related to impairment testing made by the management, and test the accuracy of the management's calculations on the present value of expected future cash flows;
+
+⑤ Check whether the information related to impairment of goodwill is appropriately presented in the financial statements.
+
+IV. Other Information
+
+The management of Sieyuan Electric is responsible for other information, which includes the information covered in the Annual Report of Year 2024, but excluding the financial statements and our audit report.
+
+Our audit opinions expressed on the financial statements cover no other information, and we also never express the authentication conclusion of any form on other information.
+
+Combining with our audit on financial statements, our obligations are reading other information, and during such process, considering whether other information have major inconsistencies with the situation we learnt about in the audit process or similarly have material misstatements or not.
+
+Based on our work executed, if we confirm there are material misstatements in other information, we should report the fact. In this aspect, we have no matters needing to be reported.
+
+V. Obligations of Management and Administration on Financial Statements
+
+The management of Sieyuan Electric prepared the financial statements according to the provisions of Enterprise Accounting Standards, to make them realize the fair reflection, and
