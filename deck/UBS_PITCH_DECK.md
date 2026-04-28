@@ -12,17 +12,17 @@
 | **LONG** | Grid Infrastructure | AI data center demand, policy tailwinds, resilient pricing | **HIGH** |
 | **SHORT** | Oilfield Services | Cost pressures, margin compression, structural headwinds | **MODERATE** |
 
-**Methodology:** DeepSeek LLM analysis of 30 real-world energy sector paragraphs
+**Methodology:** DeepSeek LLM analysis of 226 classified paragraphs from 51 source documents
 
 ---
 
 ## Slide 2: The Data Advantage
 
 **What We Built:**
-- 43 documents collected from RSS feeds + GDELT API
-- 175 paragraphs processed through cleaning pipeline
-- 30 representative samples classified by DeepSeek LLM
-- **94% average classification confidence**
+- 51 documents collected from RSS feeds + GDELT API + HKEX filings
+- 2,434 paragraphs processed through cleaning pipeline
+- 226 representative samples classified by DeepSeek LLM
+- **92% average classification confidence**
 
 **Technical Validation:**
 - 137 unit tests covering 93.5% of codebase
@@ -229,7 +229,104 @@ tests/
 
 ---
 
-## Slide 11: Appendix — Sample Classifications
+## Slide 11: Trade Construction & Execution
+
+### Position Framework
+
+| Element | Value |
+|---------|-------|
+| **Structure** | Long Sieyuan (002028.SZ) / Short Halliburton (HAL) |
+| **Expected Spread Return** | 69.6% |
+| **Recommended Notional** | $2.3mm (2.3% of portfolio) |
+| **Pair Volatility** | 42.9% annualized |
+
+### Entry & Rebalance Rules
+
+- **Entry trigger:** Open when HAL near resistance and Sieyuan not overbought (RSI <70)
+- **Rebalance:** Monthly or when leg weight drifts >10% from target
+- **Holding window:** 6-12 months unless thesis invalidation occurs
+
+### Execution Constraints
+
+- Use limit orders over multiple slices; cap participation at ≤10% ADV
+- Confirm borrow availability and fee before short entry
+- A-share execution: account for market access constraints
+
+### Risk Limits
+
+| Limit | Trigger |
+|-------|---------|
+| Max portfolio risk | 2% |
+| Stop-loss | Spread drawdown >12% from entry |
+| De-risk | Borrow cost spikes above carry budget |
+
+### Carry Costs (180-day)
+
+- **Low borrow scenario:** $14.8K
+- **High borrow scenario:** $32.5K
+
+---
+
+## Slide 12: Risk Management
+
+### Primary Risks
+
+| Risk | Impact on Trade |
+|------|-----------------|
+| **Oil shock** | HAL rallies despite weak operational quality |
+| **Grid policy delay** | Pushes out order conversion for long leg |
+| **China multiple compression** | Hurts long valuation even with stable earnings |
+
+### Mitigation
+
+- Pair structure isolates relative value (long growth vs short cyclical)
+- Stop-loss at 12% spread drawdown limits tail risk
+- Monthly rebalance prevents leg drift
+
+---
+
+## Slide 13: Catalyst Calendar (180 Days)
+
+| Window | Catalyst | Expected Spread Impact | Thesis Confirmation |
+|--------|----------|------------------------|---------------------|
+| Q2 earnings | HAL margin guidance / rig commentary | Positive if weak | Lower service margin outlook |
+| Q2-Q3 | Sieyuan overseas order disclosures | Positive if strong | Backlog/order momentum acceleration |
+| Policy cycle | Grid capex announcements | Positive if supportive | Multi-year grid budget visibility |
+| Q3 updates | Oil majors capex tone | Positive if cautious | Slower OFS demand outlook |
+
+---
+
+## Slide 14: Data Quality & Auditability
+
+### Coverage
+
+| Metric | Value |
+|--------|-------|
+| Documents | 51 |
+| Paragraphs | 2,434 |
+| Classified | 226 |
+| Avg Classification Confidence | 92% |
+
+### Date Integrity
+
+- Invalid/future dates: **0**
+- Unique classified dates: **4**
+- Date integrity gate: **PASS**
+
+### Source Mix
+
+- RSS feeds + GDELT API + HKEX filings
+- Full traceability: every signal linked to source document
+
+### Audit Artifacts
+
+- `outputs/quality/date_audit.csv`
+- `outputs/quality/data_quality_report.md`
+- `outputs/tables/evidence_pack.md`
+
+---
+
+## Slide 15: Appendix — Sample Classifications
 
 **Grid Infrastructure — Electricity Demand (Confidence: 0.95)**
 > "Data centers drive record surge in GE Vernova power equipment orders as turbine slots tighten. Data center power crunch lifts engines aeroderivatives into larger role."
