@@ -1,13 +1,15 @@
 sector,category,count
-Grid Infrastructure,Electricity Demand,169
-Grid Infrastructure,Not Relevant,86
-Grid Infrastructure,Grid Resilience,39
-Grid Infrastructure,Policy-Backed Capex,35
-Grid Infrastructure,Margin/Earnings Risk,12
-Grid Infrastructure,Oilfield Cost Pressure,1
-Oilfield Services,Not Relevant,43
-Oilfield Services,Oil Supply Disruption,10
-Oilfield Services,Policy-Backed Capex,6
-Oilfield Services,Electricity Demand,5
-Oilfield Services,Margin/Earnings Risk,4
-Other,Not Relevant,16
+Grid Infrastructure,Not Relevant,22
+Grid Infrastructure,Policy-Backed Capex,11
+Grid Infrastructure,Electricity Demand,10
+Grid Infrastructure,Margin/Earnings Risk,4
+Grid Infrastructure,Grid Resilience,2
+Inverter & Storage Equipment,Electricity Demand,181
+Inverter & Storage Equipment,Not Relevant,121
+Inverter & Storage Equipment,Grid Resilience,41
+Inverter & Storage Equipment,Policy-Backed Capex,27
+Inverter & Storage Equipment,Oil Supply Disruption,12
+Inverter & Storage Equipment,Margin/Earnings Risk,11
+Oilfield Services,Not Relevant,4
+Oilfield Services,Policy-Backed Capex,2
+Other,Not Relevant,7

@@ -21,13 +21,13 @@ LONG_TICKER = "1072.HK"  # HK ticker is more reliable
 LONG_NAME = "Dongfang Electric"
 LONG_TICKER_CN = "600875.SH"  # China equivalent
 
-# Short leg: Yantai Jereh (Shenzhen listed)
-SHORT_TICKER = "002353.SZ"
-SHORT_NAME = "Yantai Jereh"
+# Short leg: Sungrow (Shenzhen A-share, non-pool same-sector comparator)
+SHORT_TICKER = "300274.SZ"
+SHORT_NAME = "Sungrow"
 
 # Short candidates (for peer comparison)
 SHORT_TICKERS = {
-    "002353.SZ": "Yantai Jereh",
+    "300274.SZ": "Sungrow",
 }
 
 # Long peer group (Grid/Power Equipment)
@@ -60,24 +60,25 @@ DONGFANG_SCENARIOS = {
     },
 }
 
-# Scenario assumptions for Yantai Jereh (SHORT position)
-# 2025 actuals: Revenue RMB 16.22B (+21.5% YoY), Net Profit RMB 2.68B (+2.0% YoY)
-# Exposure to fossil oilfield services, cyclical, policy headwinds
+# Scenario assumptions for Sungrow (SHORT position)
+# 2025 actuals: Revenue RMB 89.18B (+14.6% YoY), Net Profit RMB 13.5B (+22.0% YoY)
+# Q1 2026: Revenue -18.3% YoY, Net Profit -40.1% YoY
+# Short thesis: premium multiple vulnerable to demand normalization and margin pressure
 # For SHORT: negative expected return = stock goes down = we profit
-JEREH_SCENARIOS = {
+SUNGROW_SCENARIOS = {
     "bear": {
-        "eps_growth": -0.05,     # Revenue grows but margin pressure persists
-        "target_pe": 34.0,       # De-rate from high current multiple
+        "eps_growth": 0.00,      # Revenue grows but margins stay thin
+        "target_pe": 36.0,       # De-rate from growth-stock expectations
         "probability": 0.35,
     },
     "base": {
-        "eps_growth": 0.05,      # Q1 growth fades into full-year normalization
-        "target_pe": 40.0,       # Still high, but below current TTM P/E
+        "eps_growth": 0.08,      # Modest margin recovery
+        "target_pe": 44.0,       # Lower than current multiple, still not distressed
         "probability": 0.45,
     },
     "bull": {
-        "eps_growth": 0.20,      # Oilfield and data-center power orders surprise
-        "target_pe": 46.0,       # Current multiple roughly sustained
+        "eps_growth": 0.25,      # New-energy orders surprise
+        "target_pe": 58.0,       # Current multiple roughly sustained
         "probability": 0.20,
     },
 }
@@ -313,7 +314,7 @@ def peer_comps_table(long_peer_df: pd.DataFrame, short_peer_df: pd.DataFrame) ->
         rows.append({
             "company": row.get("name", ""),
             "ticker": row.get("ticker", ""),
-            "sector": "Oilfield Services",
+            "sector": "Power Equipment / Industrial Conglomerate",
             "p_e": f"{row['pe']:.1f}x" if pd.notna(row.get("pe")) else "n/a",
             "ev_ebitda": f"{row['ev_ebitda']:.1f}x" if pd.notna(row.get("ev_ebitda")) else "n/a",
             "roic": roic_str,
@@ -342,7 +343,7 @@ def pair_trade_summary(
         "short_expected_move_pct": round(short_expected_return, 1),
         "short_leg_pnl_pct": round(short_leg_pnl, 1),
         "pair_spread_return_pct": round(pair_return, 1),
-        "trade_direction": "Long Grid / Short Oilfield",
+        "trade_direction": "Long Grid Anchor / Short Non-Pool Power Equipment",
     }
 
 
@@ -368,7 +369,7 @@ def save_valuation_outputs(output_dir: Path) -> Dict:
     print(f"[SAVED] {peer_path}")
 
     facts_long = COMPANY_FACTS["dongfang"]
-    facts_short = COMPANY_FACTS["jereh"]
+    facts_short = COMPANY_FACTS["sungrow"]
 
     # Get Dongfang current price/EPS for scenario analysis.
     # Use collected 2025 EPS and P/E when live market data is unavailable.
@@ -379,13 +380,13 @@ def save_valuation_outputs(output_dir: Path) -> Dict:
         dongfang_price = round(facts_long["eps_2025"] * facts_long["pe_ttm"], 2)
     dongfang_eps = facts_long["eps_2025"]
 
-    # Get Yantai Jereh current price/EPS
-    jereh_row = short_df[short_df["ticker"] == SHORT_TICKER]
-    if not jereh_row.empty and pd.notna(jereh_row.iloc[0]["price"]):
-        jereh_price = float(jereh_row.iloc[0]["price"])
+    # Get Sungrow current price/EPS
+    sungrow_row = short_df[short_df["ticker"] == SHORT_TICKER]
+    if not sungrow_row.empty and pd.notna(sungrow_row.iloc[0]["price"]):
+        sungrow_price = float(sungrow_row.iloc[0]["price"])
     else:
-        jereh_price = facts_short["latest_price"]
-    jereh_eps = facts_short["eps_2025"]
+        sungrow_price = facts_short["latest_price"]
+    sungrow_eps = facts_short["eps_2025"]
 
     # Scenario analysis
     long_scenarios, long_er = scenario_valuation(dongfang_eps, dongfang_price, DONGFANG_SCENARIOS)
@@ -393,7 +394,7 @@ def save_valuation_outputs(output_dir: Path) -> Dict:
     long_scenarios.drop(columns=["_upside_raw", "_prob_raw"]).to_csv(long_path, index=False)
     print(f"[SAVED] {long_path}")
 
-    short_scenarios, short_er = scenario_valuation(jereh_eps, jereh_price, JEREH_SCENARIOS)
+    short_scenarios, short_er = scenario_valuation(sungrow_eps, sungrow_price, SUNGROW_SCENARIOS)
     short_path = output_dir / "short_scenarios.csv"
     short_scenarios.drop(columns=["_upside_raw", "_prob_raw"]).to_csv(short_path, index=False)
     print(f"[SAVED] {short_path}")
@@ -408,8 +409,8 @@ def save_valuation_outputs(output_dir: Path) -> Dict:
     # DCF cross-check
     dcf_rows = []
     dongfang_dcf = DCF_ASSUMPTIONS["dongfang"]
-    jereh_dcf = DCF_ASSUMPTIONS["jereh"]
-    for company, cfg in [("Dongfang Electric", dongfang_dcf), ("Yantai Jereh", jereh_dcf)]:
+    sungrow_dcf = DCF_ASSUMPTIONS["sungrow"]
+    for company, cfg in [("Dongfang Electric", dongfang_dcf), ("Sungrow", sungrow_dcf)]:
         dcf = dcf_valuation(
             fcf0=cfg["fcf0_rmb_bn"],
             growth_rate=cfg["growth_rate"],
@@ -438,8 +439,8 @@ def save_valuation_outputs(output_dir: Path) -> Dict:
         "long_price": dongfang_price,
         "long_eps": dongfang_eps,
         "long_expected_return": round(long_er, 1),
-        "short_price": jereh_price,
-        "short_eps": jereh_eps,
+        "short_price": sungrow_price,
+        "short_eps": sungrow_eps,
         "short_expected_return": round(short_er, 1),
         "pair_spread_return": pair["pair_spread_return_pct"],
         "dcf_path": str(dcf_path),

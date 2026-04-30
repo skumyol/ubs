@@ -21,16 +21,16 @@ from datetime import datetime, timedelta
 OUTPUT_DIR = Path("outputs/charts")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Ticker mapping - NEW PAIR: Dongfang Electric / Yantai Jereh
+# Ticker mapping - NEW PAIR: Dongfang Electric / Sungrow
 DONGFANG_TICKER = "1072.HK"  # HK ticker is more reliable in yfinance
 DONGFANG_TICKER_CN = "600875.SH"  # China A-share equivalent
-JEREH_TICKER = "002353.SZ"
+SUNGROW_TICKER = "300274.SZ"
 
 # Trading assumptions
 MAX_PORTFOLIO_RISK_PCT = 0.02  # 2% max loss on single trade
-JEREH_BORROW_COST_LOW = 0.025  # 2.5% annual borrow cost (China A-shares harder to borrow)
-JEREH_BORROW_COST_HIGH = 0.07  # 7% annual borrow cost (worst case)
-JEREH_DIVIDEND_YIELD = 0.008   # 0.8% annual dividend (short pays this)
+SUNGROW_BORROW_COST_LOW = 0.025  # 2.5% annual borrow cost (A-share short borrow assumption)
+SUNGROW_BORROW_COST_HIGH = 0.07  # 7% annual borrow cost (worst case)
+SUNGROW_DIVIDEND_YIELD = 0.035  # 3.5% annual dividend (short pays this, based on Sungrow facts)
 DONGFANG_DIVIDEND_YIELD = 0.015  # 1.5% annual dividend (long receives)
 
 
@@ -66,7 +66,7 @@ def calculate_volatility(df: pd.DataFrame, window: int = 63) -> float:
 
 def calculate_position_sizing(
     dongfang_vol: float,
-    jereh_vol: float,
+    sungrow_vol: float,
     pair_vol: float,
     portfolio_value: float = 100_000_000,  # $100M portfolio default
     max_risk_pct: float = MAX_PORTFOLIO_RISK_PCT,
@@ -76,7 +76,7 @@ def calculate_position_sizing(
     
     Args:
         dongfang_vol: Annualized volatility of Dongfang
-        jereh_vol: Annualized volatility of Jereh
+        sungrow_vol: Annualized volatility of Sungrow
         pair_vol: Annualized volatility of pair trade spread
         portfolio_value: Total portfolio AUM
         max_risk_pct: Max loss as % of portfolio
@@ -103,13 +103,13 @@ def calculate_position_sizing(
         "portfolio_value_mm": round(portfolio_value / 1_000_000, 1),
         "max_loss_dollar": round(max_loss_dollar / 1_000_000, 1),
         "dongfang_vol_annual": round(dongfang_vol * 100, 1),
-        "jereh_vol_annual": round(jereh_vol * 100, 1),
+        "sungrow_vol_annual": round(sungrow_vol * 100, 1),
         "pair_vol_annual": round(pair_vol * 100, 1),
         "target_exposure_mm": round(target_exposure / 1_000_000, 1),
         "vol_based_size_mm": round(vol_based_size / 1_000_000, 1),
         "recommended_notional_mm": round(min(vol_based_size, target_exposure) / 1_000_000, 1),
         "long_dongfang_notional_mm": round(min(vol_based_size, target_exposure) / 2 / 1_000_000, 1),
-        "short_jereh_notional_mm": round(min(vol_based_size, target_exposure) / 2 / 1_000_000, 1),
+        "short_sungrow_notional_mm": round(min(vol_based_size, target_exposure) / 2 / 1_000_000, 1),
         "recommended_position_pct": round(min(vol_based_size, target_exposure) / portfolio_value * 100, 1),
     }
     
@@ -117,54 +117,51 @@ def calculate_position_sizing(
 
 
 def calculate_carry_cost(
-    jereh_notional: float,
-    borrow_cost: float = JEREH_BORROW_COST_LOW,
+    sungrow_notional: float,
+    borrow_cost: float = SUNGROW_BORROW_COST_LOW,
     holding_period_days: int = 180,
 ) -> Dict:
-    """Calculate carry cost for the pair trade.
+    """Calculate carry cost for the short leg.
     
     Args:
-        jereh_notional: Short Jereh notional
+        sungrow_notional: Short Sungrow notional
         borrow_cost: Annual borrow cost
         holding_period_days: Expected holding period
-        
-    Returns:
-        Carry cost breakdown
     """
     # Short leg pays dividend
-    jereh_dividend_cost = jereh_notional * JEREH_DIVIDEND_YIELD * (holding_period_days / 365)
+    sungrow_dividend_cost = sungrow_notional * SUNGROW_DIVIDEND_YIELD * (holding_period_days / 365)
     
     # Short leg pays borrow cost
-    jereh_borrow_cost = jereh_notional * borrow_cost * (holding_period_days / 365)
+    sungrow_borrow_cost = sungrow_notional * borrow_cost * (holding_period_days / 365)
     
     # Long leg receives dividend
-    dongfang_notional = jereh_notional  # Equal-weighted
+    dongfang_notional = sungrow_notional  # Equal-weighted
     dongfang_dividend_income = dongfang_notional * DONGFANG_DIVIDEND_YIELD * (holding_period_days / 365)
     
     # Net carry
-    net_carry_cost = jereh_dividend_cost + jereh_borrow_cost - dongfang_dividend_income
+    net_carry_cost = sungrow_dividend_cost + sungrow_borrow_cost - dongfang_dividend_income
     
     return {
-        "jereh_notional": round(jereh_notional / 1_000_000, 1),
+        "sungrow_notional": round(sungrow_notional / 1_000_000, 1),
         "holding_period_days": holding_period_days,
-        "jereh_dividend_cost": round(jereh_dividend_cost / 1_000, 1),  # in thousands
-        "jereh_borrow_cost": round(jereh_borrow_cost / 1_000, 1),
+        "sungrow_dividend_cost": round(sungrow_dividend_cost / 1_000, 1),  # in thousands
+        "sungrow_borrow_cost": round(sungrow_borrow_cost / 1_000, 1),
         "dongfang_dividend_income": round(dongfang_dividend_income / 1_000, 1),
         "net_carry_cost": round(net_carry_cost / 1_000, 1),
-        "net_carry_pct_of_notional": round(net_carry_cost / (jereh_notional * 2) * 100, 2),
+        "net_carry_pct_of_notional": round(net_carry_cost / (sungrow_notional * 2) * 100, 2),
     }
 
 
 def calculate_liquidity_capacity(
     dongfang_data: pd.DataFrame,
-    jereh_data: pd.DataFrame,
+    sungrow_data: pd.DataFrame,
     target_notional: float,
 ) -> Dict:
     """Calculate how much capacity the trade has based on volume.
     
     Args:
         dongfang_data: Dongfang price/volume data
-        jereh_data: Jereh price/volume data
+        sungrow_data: Sungrow price/volume data
         target_notional: Target position size
         
     Returns:
@@ -191,23 +188,23 @@ def calculate_liquidity_capacity(
         results["dongfang_liquid"] = False
         results["dongfang_note"] = "Volume data unavailable"
     
-    # Jereh liquidity (should be excellent)
-    if jereh_data is not None and not jereh_data.empty and 'Volume' in jereh_data.columns:
-        avg_volume_jereh = jereh_data['Volume'].mean()
-        avg_price_jereh = jereh_data['Close'].mean()
-        daily_dollar_volume_jereh = avg_volume_jereh * avg_price_jereh
+    # Sungrow liquidity (should be excellent)
+    if sungrow_data is not None and not sungrow_data.empty and 'Volume' in sungrow_data.columns:
+        avg_volume_sungrow = sungrow_data['Volume'].mean()
+        avg_price_sungrow = sungrow_data['Close'].mean()
+        daily_dollar_volume_sungrow = avg_volume_sungrow * avg_price_sungrow
         
-        jereh_target = target_notional / 2
-        jereh_days_to_execute = jereh_target / (daily_dollar_volume_jereh * 0.10)
+        sungrow_target = target_notional / 2
+        sungrow_days_to_execute = sungrow_target / (daily_dollar_volume_sungrow * 0.10)
         
-        results["jereh_avg_daily_volume_m"] = round(avg_volume_jereh / 1_000_000, 2)
-        results["jereh_daily_dollar_volume_mm"] = round(daily_dollar_volume_jereh / 1_000_000, 1)
-        results["jereh_target_notional_mm"] = round(jereh_target / 1_000_000, 1)
-        results["jereh_days_to_execute"] = round(jereh_days_to_execute, 1)
-        results["jereh_liquid"] = jereh_days_to_execute < 2
+        results["sungrow_avg_daily_volume_m"] = round(avg_volume_sungrow / 1_000_000, 2)
+        results["sungrow_daily_dollar_volume_mm"] = round(daily_dollar_volume_sungrow / 1_000_000, 1)
+        results["sungrow_target_notional_mm"] = round(sungrow_target / 1_000_000, 1)
+        results["sungrow_days_to_execute"] = round(sungrow_days_to_execute, 1)
+        results["sungrow_liquid"] = sungrow_days_to_execute < 2
     else:
-        results["jereh_liquid"] = False
-        results["jereh_note"] = "Volume data unavailable"
+        results["sungrow_liquid"] = False
+        results["sungrow_note"] = "Volume data unavailable"
     
     return results
 
@@ -292,59 +289,59 @@ def main():
     # Fetch data
     print("\n[1] Fetching price data...")
     dongfang_data = fetch_price_data(DONGFANG_TICKER, period="2y")
-    jereh_data = fetch_price_data(JEREH_TICKER, period="2y")
-    
-    if dongfang_data is None or jereh_data is None:
+    sungrow_data = fetch_price_data(SUNGROW_TICKER, period="2y")
+
+    if dongfang_data is None or sungrow_data is None:
         print("[ERROR] Failed to fetch required data")
         return
     
     # Calculate volatilities
     print("\n[2] Calculating volatilities...")
     dongfang_vol = calculate_volatility(dongfang_data)
-    jereh_vol = calculate_volatility(jereh_data)
+    sungrow_vol = calculate_volatility(sungrow_data)
     
     # Pair volatility (simplified: assume 0.5 correlation)
     assumed_corr = 0.5
-    pair_vol = np.sqrt(dongfang_vol**2 + jereh_vol**2 - 2 * assumed_corr * dongfang_vol * jereh_vol)
+    pair_vol = np.sqrt(dongfang_vol**2 + sungrow_vol**2 - 2 * assumed_corr * dongfang_vol * sungrow_vol)
     
     print(f"  Dongfang vol: {dongfang_vol*100:.1f}%")
-    print(f"  Jereh vol: {jereh_vol*100:.1f}%")
+    print(f"  Sungrow vol: {sungrow_vol*100:.1f}%")
     print(f"  Pair vol (est): {pair_vol*100:.1f}%")
     
     # Position sizing
     print("\n[3] Calculating position sizing...")
-    sizing = calculate_position_sizing(dongfang_vol, jereh_vol, pair_vol)
+    sizing = calculate_position_sizing(dongfang_vol, sungrow_vol, pair_vol)
     for key, value in sizing.items():
         print(f"  {key}: {value}")
     
     # Carry cost
     print("\n[4] Calculating carry cost...")
-    jereh_notional = sizing["short_jereh_notional_mm"] * 1_000_000
-    carry_low = calculate_carry_cost(jereh_notional, JEREH_BORROW_COST_LOW)
-    carry_high = calculate_carry_cost(jereh_notional, JEREH_BORROW_COST_HIGH)
+    sungrow_notional = sizing["short_sungrow_notional_mm"] * 1_000_000
+    carry_low = calculate_carry_cost(sungrow_notional, SUNGROW_BORROW_COST_LOW)
+    carry_high = calculate_carry_cost(sungrow_notional, SUNGROW_BORROW_COST_HIGH)
     print(f"  Low borrow cost scenario: {carry_low['net_carry_cost']}K")
     print(f"  High borrow cost scenario: {carry_high['net_carry_cost']}K")
     
     # Liquidity
     print("\n[5] Analyzing liquidity...")
     target_notional = sizing["recommended_notional_mm"] * 1_000_000
-    liquidity = calculate_liquidity_capacity(dongfang_data, jereh_data, target_notional)
+    liquidity = calculate_liquidity_capacity(dongfang_data, sungrow_data, target_notional)
     for key, value in liquidity.items():
         print(f"  {key}: {value}")
     
     # Technicals
     print("\n[6] Technical analysis...")
     dongfang_tech = calculate_technical_levels(dongfang_data)
-    jereh_tech = calculate_technical_levels(jereh_data)
+    sungrow_tech = calculate_technical_levels(sungrow_data)
     
     print(f"  Dongfang: RSI={dongfang_tech.get('rsi')}, % of 52w high={dongfang_tech.get('pct_of_52w_high')}%")
-    print(f"  Jereh: RSI={jereh_tech.get('rsi')}, % of 52w high={jereh_tech.get('pct_of_52w_high')}%")
+    print(f"  Sungrow: RSI={sungrow_tech.get('rsi')}, % of 52w high={sungrow_tech.get('pct_of_52w_high')}%")
     
     # Compile results
     results = {
         "volatilities": {
             "dongfang_vol": round(dongfang_vol * 100, 1),
-            "jereh_vol": round(jereh_vol * 100, 1),
+            "sungrow_vol": round(sungrow_vol * 100, 1),
             "pair_vol": round(pair_vol * 100, 1),
         },
         "position_sizing": sizing,
@@ -354,8 +351,8 @@ def main():
         "technicals": {
             "dongfang_rsi": dongfang_tech.get("rsi"),
             "dongfang_pct_52w_high": dongfang_tech.get("pct_of_52w_high"),
-            "jereh_rsi": jereh_tech.get("rsi"),
-            "jereh_pct_52w_high": jereh_tech.get("pct_of_52w_high"),
+            "sungrow_rsi": sungrow_tech.get("rsi"),
+            "sungrow_pct_52w_high": sungrow_tech.get("pct_of_52w_high"),
         },
     }
     

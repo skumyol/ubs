@@ -1,5 +1,5 @@
 # Q&A Defense Sheet
-## UBS Pitch: Long Dongfang Electric, Short Yantai Jereh
+## UBS Pitch: Long Dongfang Electric, Short Sungrow
 
 *Auto-generated with live evidence citations.*
 
@@ -8,19 +8,18 @@
 ## Key Numbers to Memorize
 
 - **Long Dongfang Electric expected return**: 44.9%
-- **Short Yantai Jereh expected move**: -20.5%
-- **Pair spread return**: 65.4%
-- **Total AI signals analyzed**: 426
+- **Short Sungrow expected move**: -67.5%
+- **Pair spread return**: 112.4%
+- **Total AI signals analyzed**: 455
 - **Grid signal share**: 60%
-- **Oil signal share**: 6%
-- **Thesis support score**: 0.202
+- **Thesis support score**: 0.244
 - **Interpretation**: Moderate support for variant thesis
 
 ---
 
-## The 2-year backtest shows pair P&L of -25.3%. Why is the backtest unfavorable?
+## The 2-year backtest is positive, so why not just present this as a historically validated pair trade?
 
-**Answer:** The unfavorable backtest is not a flaw — it is the core of our variant view. In 2021-2024, both legs benefited from a unified energy capex boom where oil and green capex moved together. This produced positive correlation (+0.83) and both stocks rallied +300%. The 15th Five-Year Plan decouples grid infrastructure (RMB 4T State Grid investment) from fossil fuel capex. We are betting on the BREAKDOWN of this historical correlation via policy-driven divergence, not its continuation. This is a forward-looking regime shift trade, not a historically validated statistical arbitrage.
+**Answer:** Because the historical result mostly shows that both names participated in a strong clean-tech and energy-equipment regime. The useful lesson is not that the spread is proven; it is that correlation has been high and the short leg was a crowded winner. Our submission should frame the trade as a forward-looking regime-shift view: grid-backbone durability versus downstream clean-tech normalization.
 
 **Supporting Evidence:**
 
@@ -28,15 +27,15 @@ _No specific quote selected for this question._
 
 ---
 
-## Q1. Why not long oil if energy logistics are vulnerable?
+## Q1. Why short Sungrow if it is still a high-quality clean-tech company?
 
-**Answer:** Because higher oil prices do not automatically create durable earnings upside for oilfield-service companies. Disruption raises logistics costs, delays projects, and reduces operating visibility. The more durable response to energy insecurity is investment in electricity continuity and grid resilience.
+**Answer:** Because this is a risk-reward call, not a quality-denial call. Sungrow can remain a strong company and still be vulnerable if inverter and storage growth normalizes, margins compress, and investors stop underwriting structural-compounder economics.
 
 **Supporting Evidence:**
 
-> "Jereh risks include customer concentration, cyclical oil and gas price dependency, geopolitical export risk, technology obsolescence, and profit margin pressure."
+> "Dongfang offers policy-backed grid-integration exposure, while Sungrow is priced for sustained high growth despite signs of inverter and storage-cycle normalization."
 
-— Source: *DOC Pair Analysis Dongfang Jereh 2025* | Category: `Oilfield Cost Pressure` | Confidence: 0.96
+— Source: *DOC Pair Analysis Dongfang Sungrow 2025* | Category: `Margin/Earnings Risk` | Confidence: 0.98
 
 ---
 
@@ -48,25 +47,25 @@ _No specific quote selected for this question._
 
 > "Dongfang reported 2025 revenue of RMB 78.62bn, up 12.8%, and net profit of RMB 3.831bn, up 31.11%, showing profit growth ahead of revenue growth."
 
-— Source: *DOC Pair Analysis Dongfang Jereh 2025* | Category: `Grid Resilience` | Confidence: 0.98
+— Source: *DOC Pair Analysis Dongfang Sungrow 2025* | Category: `Grid Resilience` | Confidence: 0.98
 
 ---
 
-## Q3. Why short Yantai Jereh instead of an oil producer?
+## Q3. Why short Sungrow rather than another pool stock?
 
-**Answer:** Oil producers can benefit directly from oil price spikes. Oilfield-service companies are more exposed to customer capex timing, utilization rates, logistics, and project execution. That makes them a better short candidate for the view that the market is over-simplifying the benefit of oil disruption.
+**Answer:** The competition brief requires one stock-pool anchor and a same-sector comparator outside the official list. Sungrow fixes that compliance risk while keeping the trade in energy-transition equipment. The short thesis is not that Sungrow is structurally broken; it is that its premium multiple is vulnerable to inverter/storage demand normalization and margin pressure, while Dongfang's grid infrastructure durability offers more defensive earnings quality.
 
 **Supporting Evidence:**
 
-> "Jereh risks include customer concentration, cyclical oil and gas price dependency, geopolitical export risk, technology obsolescence, and profit margin pressure."
+> "Dongfang offers policy-backed grid-integration exposure, while Sungrow is priced for sustained high growth despite signs of inverter and storage-cycle normalization."
 
-— Source: *DOC Pair Analysis Dongfang Jereh 2025* | Category: `Oilfield Cost Pressure` | Confidence: 0.96
+— Source: *DOC Pair Analysis Dongfang Sungrow 2025* | Category: `Margin/Earnings Risk` | Confidence: 0.98
 
 ---
 
 ## Q4. What would make your thesis wrong?
 
-**Answer:** Three scenarios: (1) oilfield-service pricing power rises faster than logistics costs, (2) upstream capex accelerates significantly with durable margin expansion, (3) grid capex is delayed by regulatory bottlenecks. We monitor this through Dongfang Electric order backlog, Yantai Jereh margin trends, and policy announcements.
+**Answer:** Three scenarios: (1) Sungrow maintains high growth and margin despite inverter/storage oversupply, (2) investors reward high-growth clean-tech more than defensive grid infrastructure, (3) grid capex is delayed by regulatory bottlenecks. We monitor this through Dongfang Electric order backlog, Sungrow margin trends, and policy announcements.
 
 **Supporting Evidence:**
 
@@ -76,7 +75,7 @@ _No specific quote selected for this question._
 
 ## Q5. Is this a macro pitch or a stock pitch?
 
-**Answer:** It starts with a macro dislocation but the trade is stock-specific. Dongfang has direct exposure to grid equipment and overseas growth. Yantai Jereh has specific margin and operating risks. The pair trade isolates the earnings-quality gap within the broader energy-transition theme.
+**Answer:** It starts with a macro dislocation but the trade is stock-specific. Dongfang has direct exposure to grid equipment and overseas growth. Sungrow has high-growth inverter/storage exposure but faces demand normalization and margin pressure. The pair trade isolates the earnings-quality gap within the broader energy-transition theme.
 
 **Supporting Evidence:**
 
@@ -120,22 +119,16 @@ _No specific quote selected for this question._
 
 > "Dongfang reported 2025 revenue of RMB 78.62bn, up 12.8%, and net profit of RMB 3.831bn, up 31.11%, showing profit growth ahead of revenue growth."
 
-— DOC Pair Analysis Dongfang Jereh 2025 | conf 0.98
+— DOC Pair Analysis Dongfang Sungrow 2025 | conf 0.98
 
 ### Margin/Earnings Risk
 
-> "Momentum divergence: Dongfang net profit grew 31% on 13% revenue growth, while Jereh net profit grew only 2% on 21% revenue growth."
+> "Dongfang offers policy-backed grid-integration exposure, while Sungrow is priced for sustained high growth despite signs of inverter and storage-cycle normalization."
 
-— DOC Pair Analysis Dongfang Jereh 2025 | conf 0.98
-
-### Oilfield Cost Pressure
-
-> "Jereh risks include customer concentration, cyclical oil and gas price dependency, geopolitical export risk, technology obsolescence, and profit margin pressure."
-
-— DOC Pair Analysis Dongfang Jereh 2025 | conf 0.96
+— DOC Pair Analysis Dongfang Sungrow 2025 | conf 0.98
 
 ### Policy-Backed Capex
 
-> "Policy divergence: Dongfang benefits from China's grid infrastructure investment boom; Jereh remains exposed to volatile oil and gas cycles and transition pressure."
+> "Dongfang is the official Energy Transition stock-pool anchor; Sungrow is the same-sector non-pool short, which fixes the stock-pool compliance risk while preserving the energy-transition thesis."
 
-— DOC Pair Analysis Dongfang Jereh 2025 | conf 0.97
+— DOC Pair Analysis Dongfang Sungrow 2025 | conf 0.97

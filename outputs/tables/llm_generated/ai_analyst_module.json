@@ -1,22 +1,22 @@
 {
-  "non_consensus_insight": "The market is underestimating the long-term strategic advantage of Dongfang Electric's strong order backlog and technological breakthroughs in the context of China's aggressive clean energy transition, while overestimating the cyclical risks and margin pressures faced by Yantai Jereh in the oilfield services sector.",
+  "non_consensus_insight": "The market may be underestimating the long-term benefits of Dongfang Electric's strong order backlog and State Grid's significant capex plan, while overreacting to Sungrow's short-term margin pressures in the inverter and storage segments.",
   "theme_clusters": {
     "grid": [
-      "Dongfang Electric's 2025 net profit growth of 31.1% YoY",
-      "Dongfang Electric's order backlog of RMB 140.31B",
-      "Dongfang Electric's new orders growth of 15.9% YoY",
+      "Dongfang Electric's 2025 net profit growth",
+      "Dongfang Electric's order backlog",
+      "Dongfang Electric's new orders",
       "Dongfang Electric's 35kV synchronous condenser breakthrough",
-      "State Grid's ¥4T capex plan over 15th FYP (2026-2030)"
+      "State Grid's ¥4T capex plan"
     ],
-    "oilfield": [
-      "Yantai Jereh's 2025 revenue growth of 21.5% but profit growth of only 2%",
-      "Yantai Jereh's Q1 2026 showing improvement but cyclical risks remain",
-      "Yantai Jereh's exposure to oilfield services vs clean energy transition"
+    "inverter_storage": [
+      "Sungrow's 2025 revenue and net profit growth",
+      "Sungrow's Q1 2026 revenue and net profit decline",
+      "Sungrow's inverter and storage exposure facing demand normalization and margin pressure"
     ]
   },
   "sentiment_analysis": {
     "grid_sentiment": "bullish",
-    "oilfield_sentiment": "bearish"
+    "inverter_storage_sentiment": "bearish"
   },
   "scenarios": {
     "base": {
@@ -33,8 +33,9 @@
     }
   },
   "limitations": [
-    "Data gaps in detailed financial projections for both companies beyond 2026",
-    "Recency bias in recent news and data, which may not fully capture long-term trends",
-    "Policy optimism regarding China's clean energy transition, which may not materialize as expected"
+    "Limited recent data on specific project timelines and execution risks for Dongfang Electric",
+    "Potential recency bias in market reaction to Sungrow's Q1 2026 results",
+    "Uncertainty in government policy and regulatory changes affecting both companies",
+    "Lack of detailed breakdown of Sungrow's inverter and storage segment performance"
   ]
 }

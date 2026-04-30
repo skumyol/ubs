@@ -1,0 +1,55 @@
+Document: Pair Trade Analysis - Dongfang Electric vs Sungrow 2025
+Source: Analyst-compiled public disclosure summary using company annual reports, Q1 2026 updates, and policy research.
+Date: 2026-04-30
+
+Pair Structure:
+- Long: Dongfang Electric (600875.SH / 01072.HK) - official UBS pool stock
+- Short: Sungrow Power Supply (300274.SZ) - same-sector non-pool comparator
+- Pair rationale: comply with the stock-pool rule while keeping exposure inside Energy Transition equipment.
+
+Dongfang Electric 2025 profile:
+- Revenue: RMB 78.62bn (+12.8% YoY)
+- Net profit attributable to shareholders: RMB 3.831bn (+31.11% YoY)
+- New orders 2025: RMB 117.25bn (+15.93% YoY)
+- Year-end order backlog: RMB 140.31bn
+- Strategic focus: grid integration, synchronous condensers, clean power equipment, source-grid-load-storage systems
+
+Sungrow 2025 profile:
+- Revenue: RMB 89.18bn (+14.6% YoY)
+- Net profit attributable to shareholders: RMB 13.50bn (+22.0% YoY)
+- Q1 2026 revenue growth: -18.3% YoY
+- Q1 2026 net profit growth: -40.1% YoY
+- Strategic focus: PV inverters, energy storage systems, downstream clean-tech power electronics
+
+Core Thesis:
+- China's energy transition is shifting from pure capacity buildout toward system reliability and grid infrastructure.
+- Dongfang benefits directly from policy-backed grid investment, State Grid spending, and order backlog visibility.
+- Sungrow is a strong company, but expectations remain high even as the inverter and storage cycle becomes more competitive.
+
+Why Dongfang on the long side:
+- Dongfang is leveraged to the RMB 4 trillion State Grid 15th Five-Year Plan investment cycle.
+- The company has visible backlog conversion and policy-backed demand.
+- Profit growth in 2025 outpaced revenue growth, indicating operating leverage.
+- Dongfang's synchronous condenser breakthrough strengthens the grid-stability angle of the thesis.
+
+Why Sungrow on the short side:
+- The short thesis is not that Sungrow is structurally broken; it is that the market still prices it for durable high growth.
+- Q1 2026 showed a clear slowdown in both revenue and profit.
+- Inverter pricing pressure and storage competition create a setup for multiple compression.
+- A premium clean-tech multiple is more fragile than Dongfang's backlog-backed infrastructure earnings profile.
+
+Variant View:
+- Consensus still groups energy-transition equipment winners together.
+- The differentiated view is that upstream grid-backbone infrastructure should outperform downstream power-electronics names when the bottleneck shifts to system reliability.
+- This is not a historical spread-validation trade; it is a forward-looking regime-shift trade.
+
+Catalysts:
+- Further State Grid capex and implementation details under the 15th FYP
+- Additional Dongfang order wins and backlog updates
+- More evidence of Sungrow margin pressure or demand normalization
+- Investor rotation from premium clean-tech growth into policy-backed infrastructure
+
+Risks:
+- Sungrow re-accelerates on overseas demand or policy stimulus for storage
+- Grid capex execution slows or Dongfang backlog conversion disappoints
+- Broad clean-tech beta lifts both legs temporarily

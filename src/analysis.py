@@ -3,6 +3,12 @@
 import pandas as pd
 from typing import Dict
 
+from src.pair_config import LONG_LEG, SHORT_LEG
+
+
+SHORT_SECTOR_LABEL = SHORT_LEG.sector
+SHORT_DISPLAY_LABEL = "Inverter & Storage Equipment"
+
 
 def sentiment_score(sentiment: str) -> int:
     """Convert sentiment string to numeric score.
@@ -66,7 +72,7 @@ def sentiment_by_category(df: pd.DataFrame) -> pd.DataFrame:
 def build_signal_tracker(df: pd.DataFrame) -> pd.DataFrame:
     """Build the AI signal tracker table for deck Slide 10.
 
-    Compares Grid Infrastructure vs Oilfield Services across categories.
+    Compares Grid Infrastructure vs the active short-leg sector across categories.
 
     Args:
         df: DataFrame with 'sector', 'category', 'sentiment' columns.
@@ -96,7 +102,7 @@ def build_signal_tracker(df: pd.DataFrame) -> pd.DataFrame:
     # Merge into readable format
     result = pd.DataFrame({"category": counts["category"]})
 
-    for sector in ["Grid Infrastructure", "Oilfield Services"]:
+    for sector in ["Grid Infrastructure", SHORT_SECTOR_LABEL]:
         if sector in counts.columns:
             result[f"{sector}_count"] = counts[sector]
             result[f"{sector}_sentiment"] = sentiment[sector].round(2)
@@ -111,7 +117,7 @@ def plan_format_signal_tracker(df: pd.DataFrame) -> pd.DataFrame:
     """Build signal tracker in the EXACT format from base_plan.md section 3.5.
 
     Produces the headline table judges will see:
-    | Signal Cluster       | Grid Equipment | Oilfield Services |
+    | Signal Cluster       | Grid Equipment | Inverter & Storage |
     | Grid upgrade         |           High |               Low |
     | Electricity demand   |           High |               Low |
     ...
@@ -145,7 +151,7 @@ def plan_format_signal_tracker(df: pd.DataFrame) -> pd.DataFrame:
 
     if df.empty:
         # Return empty table with expected columns
-        return pd.DataFrame(columns=["signal_cluster", "Grid Equipment", "Oilfield Services"])
+        return pd.DataFrame(columns=["signal_cluster", "Grid Equipment", SHORT_DISPLAY_LABEL])
 
     # Count mentions per cluster per sector
     counts = (
@@ -158,7 +164,9 @@ def plan_format_signal_tracker(df: pd.DataFrame) -> pd.DataFrame:
     counts = counts.rename(columns={"Grid Infrastructure": "Grid Equipment"})
 
     # Ensure both columns exist
-    for col in ["Grid Equipment", "Oilfield Services"]:
+    counts = counts.rename(columns={SHORT_SECTOR_LABEL: SHORT_DISPLAY_LABEL})
+
+    for col in ["Grid Equipment", SHORT_DISPLAY_LABEL]:
         if col not in counts.columns:
             counts[col] = 0
 
@@ -175,15 +183,15 @@ def plan_format_signal_tracker(df: pd.DataFrame) -> pd.DataFrame:
             return "Low"
 
     grid_max = counts["Grid Equipment"].max()
-    oil_max = counts["Oilfield Services"].max()
+    oil_max = counts[SHORT_DISPLAY_LABEL].max()
     overall_max = max(grid_max, oil_max, 1)
 
     labeled = pd.DataFrame({
         "signal_cluster": counts.index,
         "Grid Equipment": [to_label(c, overall_max) for c in counts["Grid Equipment"]],
-        "Oilfield Services": [to_label(c, overall_max) for c in counts["Oilfield Services"]],
+        SHORT_DISPLAY_LABEL: [to_label(c, overall_max) for c in counts[SHORT_DISPLAY_LABEL]],
         "_grid_count": counts["Grid Equipment"].values,
-        "_oil_count": counts["Oilfield Services"].values,
+        "_oil_count": counts[SHORT_DISPLAY_LABEL].values,
     })
 
     # Sort in plan order
@@ -257,7 +265,7 @@ def narrative_shift_analysis(df: pd.DataFrame) -> Dict:
 
 def _interpret_thesis_score(score: float) -> str:
     if score >= 0.3:
-        return "Strong support for Long Grid / Short Oilfield"
+        return f"Strong support for Long Grid / Short {SHORT_LEG.name}"
     elif score >= 0.1:
         return "Moderate support for variant thesis"
     elif score >= -0.1:

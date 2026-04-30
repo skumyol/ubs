@@ -1,15 +1,20 @@
 doc_id,title,source_method,date,char_count,date_source,parsed_date,invalid_date
+DOC_03b983642385,Sponsored PROPWR secures strategic framework agreement with Caterpillar Inc,rebuild,,2961,undated,,False
 DOC_0650798395cb,International LNG prices rise amid Strait of Hormuz closure,rebuild,,3545,undated,,False
-DOC_0a7f516ee2da,Dongfang Electric Group,rebuild,,1193,undated,,False
+DOC_0a7f516ee2da,Dongfang Electric Group,rebuild,,1208,undated,,False
+DOC_0d98c14f8d98,DOE has released 17 5 million barrels from the Strategic Petroleum Reserve since March,rebuild,,1502,undated,,False
 DOC_0dd97514f1ab,What s in your gasoline Understanding U S motor gasoline formulations,rebuild,,3386,undated,,False
 DOC_10290e29f115,BlockchAIn outlines 9 9bn plan for 715MW data center portfolio,rebuild,,2482,undated,,False
 DOC_1105f4b37bf2,Hut 8 selling 3 25bn in bonds to finance Google and Anthropic-backed River Bend AI data ce,rebuild,,2189,undated,,False
 DOC_11887da54630,U S natural gas exports to grow nearly 30 by 2027 as LNG facilities ramp up,rebuild,,4012,undated,,False
+DOC_14703ea19377,Inwit in talks to buy data center assets from Wind Tre for 100m - report,rebuild,,1446,undated,,False
 DOC_15e21293c944,IEA Electricity 2026 - Grids,rebuild,,8682,undated,,False
 DOC_1c1634836b28,Finland s Digita appoints Riku Helander as CEO,rebuild,,3236,undated,,False
 DOC_23427279b58d,Kentucky is getting its first pumped storage hydropower project for 1 3B,rebuild,2022-06-01,2275,content_inferred,2022-06-01,False
-DOC_24b95c98b1d6,Yantai Jereh Investor Relations,rebuild,,1156,undated,,False
+DOC_24e7fb30d248,Google and I M gain regulatory approval for demand response system at Fort Wayne data cent,rebuild,,2241,undated,,False
+DOC_333ce6aabd1e,Afghanistan kicks off 5G pilot in Kabul,rebuild,,1041,undated,,False
 DOC_351dae770c84,Increasing fuel efficiency leads to decreasing gasoline consumption,rebuild,,3507,undated,,False
+DOC_3620dcd63746,PDG acquires land in Jakarta Indonesia for 240MW data center campus,rebuild,,2250,undated,,False
 DOC_39582dedf0dd,China the United States and Japan hold most strategic oil inventories in 2025,rebuild,,6866,undated,,False
 DOC_39e7d95bb03d,Bill proposed in North Carolina seeks to mandate large load data centers to cover cost of,rebuild,,2849,undated,,False
 DOC_3ea070f57010,Bell Canada to turn Winnipeg food processing plant into AI data center,rebuild,,1664,undated,,False
@@ -19,15 +24,21 @@ DOC_6413103804b0,Data center power crunch lifts engines aeroderivatives into lar
 DOC_645bf32f144f,Data centers in the UK stymied by inadequate community engagement - report,rebuild,2024-12-01,2911,content_inferred,2024-12-01,False
 DOC_6ab8131a0645,Case Study Large-scale fire testing BESS in accordance with new NFPA 855 standard,rebuild,2025-11-01,9175,content_inferred,2025-11-01,False
 DOC_73ffd55f9b09,Hydropower expected to bounce back from the West s snow drought,rebuild,2025-12-01,2133,content_inferred,2025-12-01,False
+DOC_7b141fa197ff,Police arrest two men for copper wire theft at cell tower in Farmville North Carolina,rebuild,,1412,undated,,False
 DOC_8f0edabf388b,ANDRITZ lands contract to modernize NYPA s Niagara hydropower plant,rebuild,,1733,undated,,False
+DOC_8fa2428a18f4,Google to sell TPUs to a select group of customers for their data centers,rebuild,,5298,undated,,False
 DOC_984622706145,Drones and data centers the AI boom is outpacing security protocol,rebuild,,8177,undated,,False
+DOC_9e209c0ca0d0,AVK launches modular power system for data center market,rebuild,,2164,undated,,False
+DOC_9f16dca24b89,TSMC becomes latest company to offload Arm shares,rebuild,,1310,undated,,False
 DOC_9ffbdd3d965b,Alaska proved reserves increased in 2024 while nationwide proved reserves fell,rebuild,2024-06-01,3972,filename_inferred,2024-06-01,False
 DOC_doc_dongfang_2025_annual,DOC Dongfang 2025 Annual Summary,rebuild,2025-06-01,938,filename_inferred,2025-06-01,False
 DOC_doc_eia_aeo2025_narrativ,DOC EIA AEO2025 Narrative,rebuild,2025-04-01,11955,content_inferred,2025-04-01,False
 DOC_doc_iea_electricity_2026,DOC IEA Electricity 2026,rebuild,,86919,undated,,False
-DOC_doc_jereh_2025_annual_su,DOC Jereh 2025 Annual Summary,rebuild,2025-06-01,1415,filename_inferred,2025-06-01,False
-DOC_doc_pair_analysis_dongfa,DOC Pair Analysis Dongfang Jereh 2025,rebuild,2025-04-30,5190,content_inferred,2025-04-30,False
+DOC_doc_pair_analysis_dongfa,DOC Pair Analysis Dongfang Sungrow 2025,rebuild,2026-04-30,3151,content_inferred,2026-04-30,False
+DOC_doc_sungrow_2025_annual_,DOC Sungrow 2025 Annual Summary,rebuild,2025-06-01,1673,filename_inferred,2025-06-01,False
 DOC_a533ea5a763a,U S coal-fired generating capacity retired in 2025 was the least in 15 years,rebuild,2025-06-01,2730,filename_inferred,2025-06-01,False
+DOC_a711e4da2268,Beale targets two campuses outside Kansas City Kansas,rebuild,,2186,undated,,False
+DOC_a8fc0925a8e1,Liquid logic - the road to liquid data center cooling,rebuild,,844,undated,,False
 DOC_a9a717c4ca97,Toronto police make three arrests as part of SMS blaster cyber fraud investigation,rebuild,,3715,undated,,False
 DOC_ad90e2f4cefe,Brent crude oil spot prices surge past futures price in April,rebuild,,3215,undated,,False
 DOC_b00846e7d9f6,The 10th U S liquefied natural gas export terminal Golden Pass ships first cargo,rebuild,,1796,undated,,False
@@ -43,6 +54,7 @@ DOC_d84afa41d703,Cost to construct new gas plants surges by 66 as data center de
 DOC_db347f25038e,4bn data center rejected by Nobles County Minnesota,rebuild,2025-05-01,1320,content_inferred,2025-05-01,False
 DOC_ea8cc8706a24,Ramping Up for POWERGEN 2027 and the 44th Annual Electric Utility Cogeneration Chemistry W,rebuild,,11791,undated,,False
 DOC_f312f6c76e06,Small modular reactors and microreactors under development in the United States,rebuild,,7596,undated,,False
+DOC_f73d2601dbb2,Hudson IX adds 1MW data hall to 60 Hudson carrier hotel in NYC set to add another this yea,rebuild,,1930,undated,,False
 DOC_f7f57daf37ba,W rtsil inks two natural gas supply deals with data center operators in Ohio and Texas,rebuild,,2418,undated,,False
 DOC_fa634359eb3d,Brent crude oil spot prices surge past futures price in April,rebuild,2026-03-01,7490,content_inferred,2026-03-01,False
 DOC_fe415d6c84f1,Cummins shows off new drivetrain engine tech at FDIC,rebuild,,1622,undated,,False

@@ -25,7 +25,7 @@ def strip_biasing_metadata(text: str, source_name: str, title: str) -> str:
     """Remove source hints that let the classifier cheat.
 
     A biased classifier learns:
-      - "Jereh investor relations" -> Oilfield Services
+      - "Sungrow investor relations" -> Inverter & Storage Equipment
       - "Dongfang Electric" -> Grid Infrastructure
       - Company names in text -> sector
 
@@ -34,8 +34,8 @@ def strip_biasing_metadata(text: str, source_name: str, title: str) -> str:
     """
     # List of biasing terms to redact
     redactions = [
-        "Dongfang", "DONGFANG", "Jereh", "JEREH",
-        "oilfield", "oil field", "oilfield-service", "oilfield services",
+        "Dongfang", "DONGFANG", "Sungrow", "SUNGROW",
+        "inverter", "energy storage", "battery storage", "solar inverter",
         "upstream", "downstream", "drilling", "rig count", "hydraulic fracturing",
         "shale", "permeability", "brent crude", "WTI",
         "State Grid", "StateGrid", "China Grid",

@@ -42,7 +42,7 @@ def create_signal_heatmap(
     figsize: tuple = (10, 6),
     dpi: int = 300,
 ) -> None:
-    """Create heatmap comparing Grid vs Oilfield signals.
+    """Create heatmap comparing the long sector vs the active short sector.
 
     Args:
         tracker_df: Output from analysis.build_signal_tracker().
@@ -143,13 +143,13 @@ def create_long_short_matrix_table(
             "Grid orders, overseas growth",
         ],
         f"Short {SHORT_LEG.name}": [
-            "Exposed to disrupted fuel infrastructure",
-            "Cyclical upstream capex",
-            "Medium / indirect",
-            "Operating risk",
-            "Logistics / utilization / delays",
-            "Cyclical de-rating risk",
-            "Cost warning, capex delay, rig weakness",
+            "Downstream power electronics cycle",
+            "Demand normalization risk",
+            "Indirect / less policy-backed",
+            "Competition and pricing risk",
+            "Inverter/storage margin compression",
+            "Premium multiple de-rating risk",
+            "Weak orders, margin reset, Q1 slowdown",
         ],
     }
 
@@ -302,9 +302,9 @@ def create_signal_trends_timeseries(
     ax.grid(True, alpha=0.3, linestyle='--')
     ax.set_ylim(0, 105)
 
-    # Add annotation for grid vs oilfield
+    # Add annotation for grid vs short-leg signals
     ax.axhline(y=50, color='gray', linestyle='--', alpha=0.5, linewidth=1)
-    ax.text(0.02, 0.98, "Grid signals (Green/Blue/Purple)\nOilfield signals (Red/Orange/Brown)",
+    ax.text(0.02, 0.98, "Grid signals (Green/Blue/Purple)\nShort-leg risk signals (Red/Orange/Brown)",
             transform=ax.transAxes, fontsize=9, verticalalignment='top',
             bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 

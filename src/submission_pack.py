@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build submission-hardening artifacts for the active pair."""
 
+import shutil
 from pathlib import Path
 from typing import Dict
 
@@ -28,6 +29,8 @@ def _val_or_default(df: pd.DataFrame, key: str, default: str) -> str:
 def build_submission_pack() -> Dict:
     submission_dir = OUTPUTS_DIR / "submission"
     submission_dir.mkdir(parents=True, exist_ok=True)
+    sources_dir = submission_dir / "sources"
+    sources_dir.mkdir(parents=True, exist_ok=True)
 
     valuation_dir = PROCESSED_DIR / "valuation"
     pair = _safe_read(valuation_dir / "pair_trade_summary.csv")
@@ -39,9 +42,9 @@ def build_submission_pack() -> Dict:
     short_move = _val_or_default(pair, "short_expected_move_pct", str(VALUATION_FALLBACK["short_expected_return"]))
     pair_ret = _val_or_default(pair, "pair_spread_return_pct", str(VALUATION_FALLBACK["pair_spread_return"]))
 
-    rec_notional_mm = _val_or_default(trader, "recommended_notional_mm", "N/A")
-    rec_position_pct = _val_or_default(trader, "recommended_position_pct", "N/A")
-    pair_vol = _val_or_default(trader, "pair_vol_annual", "N/A")
+    rec_notional_mm = _val_or_default(trader, "position_sizing_recommended_notional_mm", "N/A")
+    rec_position_pct = _val_or_default(trader, "position_sizing_recommended_position_pct", "N/A")
+    pair_vol = _val_or_default(trader, "volatilities_pair_vol", "N/A")
     net_carry_low = _val_or_default(trader, "carry_cost_low_borrow_net_carry_cost", "N/A")
     net_carry_high = _val_or_default(trader, "carry_cost_high_borrow_net_carry_cost", "N/A")
 
@@ -75,7 +78,7 @@ def build_submission_pack() -> Dict:
         "## Primary Risks",
         "",
         "- Grid policy delay: pushes out order conversion for the long leg.",
-        f"- {SHORT_LEG.name} recovery: if fossil-adjacent activity rebounds, the short leg can squeeze.",
+        f"- {SHORT_LEG.name} recovery: if margin recovery and order quality surprise positively, the short leg can squeeze.",
         "- China multiple compression: hurts long valuation even with stable earnings.",
         "",
         "## Risk Limits",
@@ -99,7 +102,7 @@ def build_submission_pack() -> Dict:
         f"| Q2 earnings | {LONG_LEG.name} operating update | Positive if beat | Revenue growth confirmation |",
         f"| Q2-Q3 | {LONG_LEG.name} overseas order disclosures | Positive if strong | Backlog/order momentum acceleration |",
         "| Policy cycle | Grid capex announcements | Positive if supportive | Multi-year grid budget visibility |",
-        f"| Q2-Q3 | {SHORT_LEG.name} order updates / activity | Positive if weak | Fossil demand slowdown |",
+        f"| Q2-Q3 | {SHORT_LEG.name} order updates / margin trends | Positive if weak | Inverter/storage demand normalization |",
     ]
     (submission_dir / "catalyst_calendar.md").write_text("\n".join(catalyst_calendar), encoding="utf-8")
 
@@ -171,8 +174,34 @@ def build_submission_pack() -> Dict:
         "- `outputs/submission/catalyst_calendar.md`",
         "- `outputs/submission/valuation_assumptions.md`",
         "- `outputs/quality/data_quality_report.md`",
+        "- `outputs/submission/sources/`",
     ]
     (submission_dir / "submission_readiness_checklist.md").write_text("\n".join(checklist), encoding="utf-8")
+
+    source_files = [
+        Path("data/raw/text/DOC_Dongfang_2025_Annual_Summary.txt"),
+        Path("data/raw/text/DOC_Sungrow_2025_Annual_Summary.txt"),
+        Path("data/raw/text/DOC_Pair_Analysis_Dongfang_Sungrow_2025.txt"),
+        Path("data/processed/document_index.csv"),
+        Path("data/processed/classified_paragraphs.csv"),
+    ]
+    copied = []
+    for rel_path in source_files:
+        src = Path.cwd() / rel_path
+        if src.exists():
+            dest = sources_dir / src.name
+            shutil.copy2(src, dest)
+            copied.append(dest.name)
+
+    manifest_lines = [
+        "# Submission Source Manifest",
+        "",
+        "These files are the consolidated source artifacts for the final Dongfang/Sungrow submission package.",
+        "",
+    ]
+    for name in copied:
+        manifest_lines.append(f"- {name}")
+    (sources_dir / "SOURCE_MANIFEST.md").write_text("\n".join(manifest_lines) + "\n", encoding="utf-8")
 
     return {
         "trade_construction": str(submission_dir / "trade_construction.md"),
@@ -180,6 +209,7 @@ def build_submission_pack() -> Dict:
         "catalyst_calendar": str(submission_dir / "catalyst_calendar.md"),
         "valuation_assumptions": str(submission_dir / "valuation_assumptions.md"),
         "readiness_checklist": str(submission_dir / "submission_readiness_checklist.md"),
+        "sources_dir": str(sources_dir),
     }
 
 

@@ -6,24 +6,24 @@
         "category": "Margin/Earnings Risk",
         "sentiment": "negative",
         "confidence": 0.98,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
-        "quote": "Momentum divergence: Dongfang net profit grew 31% on 13% revenue growth, while Jereh net profit grew only 2% on 21% revenue growth.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "Dongfang offers policy-backed grid-integration exposure, while Sungrow is priced for sustained high growth despite signs of inverter and storage-cycle normalization.",
         "quality_score": 220.0
       },
       {
         "category": "Policy-Backed Capex",
         "sentiment": "positive",
         "confidence": 0.97,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
-        "quote": "Policy divergence: Dongfang benefits from China's grid infrastructure investment boom; Jereh remains exposed to volatile oil and gas cycles and transition pressure.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "Dongfang is the official Energy Transition stock-pool anchor; Sungrow is the same-sector non-pool short, which fixes the stock-pool compliance risk while preserving the energy-transition thesis.",
         "quality_score": 210.0
       },
       {
         "category": "Margin/Earnings Risk",
         "sentiment": "negative",
         "confidence": 0.96,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
-        "quote": "Valuation divergence: Dongfang trades at 36x P/E and 3.1x P/B, while Jereh trades at 46x P/E and 5.6x P/B despite margin pressure.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "The strongest pair signal is cycle-positioning divergence: grid-backbone infrastructure durability versus high-expectation downstream clean-tech normalization.",
         "quality_score": 205.0
       }
     ]
@@ -43,8 +43,8 @@
         "category": "Grid Resilience",
         "sentiment": "positive",
         "confidence": 0.95,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
-        "quote": "Sector rotation favors grid infrastructure over oilfield services as the energy transition shifts the bottleneck from fuel supply to electricity-system integration.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "Sector rotation favors clean grid-integration exposure over broad low-margin industrial equipment exposure as the energy transition bottleneck shifts to electricity-system integration.",
         "quality_score": 195.0
       }
     ]
@@ -56,7 +56,7 @@
         "category": "Grid Resilience",
         "sentiment": "positive",
         "confidence": 0.98,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
         "quote": "Dongfang reported 2025 revenue of RMB 78.62bn, up 12.8%, and net profit of RMB 3.831bn, up 31.11%, showing profit growth ahead of revenue growth.",
         "quality_score": 220.0
       },
@@ -64,58 +64,58 @@
         "category": "Policy-Backed Capex",
         "sentiment": "positive",
         "confidence": 0.96,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
         "quote": "Key Dongfang strengths include margin expansion, positioning in China's grid infrastructure buildout, State Grid investment exposure, and nuclear and wind equipment leadership.",
         "quality_score": 205.0
       }
     ]
   },
   "slide_7_short_case": {
-    "title": "Yantai Jereh: Exposed to Fragile Energy Logistics",
+    "title": "Sungrow: High-Expectation Inverter Leader Facing Demand Normalization",
     "quotes": [
       {
         "category": "Margin/Earnings Risk",
         "sentiment": "negative",
         "confidence": 0.98,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
-        "quote": "Jereh's net profit growth of 2% lagged its 21% revenue growth, indicating margin compression rather than clean operating leverage.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "Sungrow delivered strong 2025 results, but Q1 2026 reversed hard with revenue down 18.3% and net profit down 40.1% year over year, exposing demand and margin normalization risk.",
         "quality_score": 220.0
       },
       {
-        "category": "Oilfield Cost Pressure",
+        "category": "Margin/Earnings Risk",
         "sentiment": "negative",
         "confidence": 0.96,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
-        "quote": "Jereh risks include customer concentration, cyclical oil and gas price dependency, geopolitical export risk, technology obsolescence, and profit margin pressure.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "Sungrow is not the wrong company to short because it is weak; it is the right company to short because expectations remain high while the downstream inverter and storage cycle is getting more competitive.",
         "quality_score": 205.0
       },
       {
-        "category": "Oilfield Cost Pressure",
+        "category": "Margin/Earnings Risk",
         "sentiment": "negative",
         "confidence": 0.94,
-        "source": "DOC Jereh 2025 Annual Summary",
-        "quote": "Jereh remains centered on oilfield services and equipment, shale gas completion tools, and oilfield pressure pumping equipment.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "Inverter price pressure, storage competition, and growth normalization create a setup where even a good operating company can see valuation compression.",
         "quality_score": 190.0
       }
     ]
   },
   "slide_8_short_upside": {
-    "title": "Higher Oil Prices Do Not Guarantee Service Earnings",
+    "title": "Great Company, Bad Risk-Reward",
     "quotes": [
       {
         "category": "Margin/Earnings Risk",
         "sentiment": "negative",
         "confidence": 0.97,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
-        "quote": "Jereh trades at 46.48x P/E and 5.55x P/B, a richer valuation than Dongfang despite weaker 2025 profit growth.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "The short thesis is a mispriced-expectations call: Sungrow's premium narrative is vulnerable if investors stop underwriting structural compounder economics after the Q1 2026 slowdown.",
         "quality_score": 215.0
       },
       {
         "category": "Margin/Earnings Risk",
         "sentiment": "negative",
         "confidence": 0.95,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
-        "quote": "Jereh's strong cash flow may not be sustainable if margin pressure persists and revenue growth continues to outpace profit growth.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "Sungrow is not a bad company; it is a weaker risk-reward leg because a premium clean-tech multiple is more fragile than Dongfang's backlog-backed infrastructure earnings profile.",
         "quality_score": 200.0
       }
     ]
@@ -127,16 +127,16 @@
         "category": "Policy-Backed Capex",
         "sentiment": "positive",
         "confidence": 0.96,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
-        "quote": "AI-assisted classification separated policy-backed grid capex signals from oilfield margin-risk signals, then human review selected the investment-relevant evidence.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "AI-assisted classification separated policy-backed grid capex signals from inverter and storage margin-normalization signals, then human review selected the investment-relevant evidence.",
         "quality_score": 200.0
       },
       {
         "category": "Margin/Earnings Risk",
         "sentiment": "negative",
         "confidence": 0.95,
-        "source": "DOC Pair Analysis Dongfang Jereh 2025",
-        "quote": "The strongest pair signal is not generic energy demand; it is earnings-quality divergence between Dongfang margin expansion and Jereh margin compression.",
+        "source": "DOC Pair Analysis Dongfang Sungrow 2025",
+        "quote": "The strongest pair signal is not generic clean-energy demand; it is the divergence between Dongfang's policy-backed grid earnings visibility and Sungrow's premium-expectations reset risk.",
         "quality_score": 195.0
       }
     ]

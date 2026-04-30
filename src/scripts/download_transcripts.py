@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Automated document downloader for Dongfang Electric & Yantai Jereh investor relations pages.
-Saves documents to data/raw/pdf/ with standardized naming.
-"""
+"""Automated document downloader for Dongfang Electric and Sungrow IR pages."""
 import os
 import re
 import time
@@ -45,16 +42,16 @@ def get_dongfang_docs():
     return [("https://www.dongfang.com/", "dongfang_ir_home.html")]
 
 
-def get_jereh_docs():
-    """Scrape Jereh investor relations page for document links."""
-    return [("https://www.jereh.com/cn/investor/Investor-relations", "jereh_ir_home.html")]
+def get_sungrow_docs():
+    """Scrape Sungrow investor relations page for document links."""
+    return [("https://en.sungrowpower.com/investor", "sungrow_ir_home.html")]
 
 def main():
     logger.info("🚀 Starting transcript download...")
     
     all_jobs = []
     all_jobs.extend(get_dongfang_docs())
-    all_jobs.extend(get_jereh_docs())
+    all_jobs.extend(get_sungrow_docs())
     
     success = 0
     for url, filename in all_jobs:

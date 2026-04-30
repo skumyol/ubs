@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Generate demo classification results for slide deck.
-
-Creates synthetic classifications aligned with the thesis:
-- Grid Infrastructure: More positive signals (Grid Resilience, Electricity Demand, Policy-Backed Capex)
-- Oilfield Services: More negative signals (Oil Supply Disruption, Oilfield Cost Pressure, Margin/Earnings Risk)
-"""
+"""Generate demo classification results for slide deck."""
 
 import pandas as pd
 import numpy as np
@@ -36,13 +31,15 @@ CATEGORIES = [
 ]
 
 # Sector mapping for categories
+SHORT_SECTOR = "Inverter & Storage Equipment"
+
 CATEGORY_SECTOR = {
-    "Oil Supply Disruption": "Oilfield Services",
-    "Oilfield Cost Pressure": "Oilfield Services",
+    "Oil Supply Disruption": SHORT_SECTOR,
+    "Oilfield Cost Pressure": SHORT_SECTOR,
     "Grid Resilience": "Grid Infrastructure",
     "Electricity Demand": "Grid Infrastructure",
     "Policy-Backed Capex": "Grid Infrastructure",
-    "Margin/Earnings Risk": "Oilfield Services",
+    "Margin/Earnings Risk": SHORT_SECTOR,
 }
 
 
@@ -68,12 +65,12 @@ def classify_paragraphs_demo():
         combined = f"{title} {text}"
 
         # Determine classification based on content keywords and sector
-        if "jereh" in combined and any(
+        if "sungrow" in combined and any(
             k in combined
             for k in [
-                "oilfield", "oil & gas", "oil and gas", "margin compression",
-                "margin pressure", "net profit growth (2", "p/e 46", "jereh risks",
-                "revenue/profit growth divergence", "cyclical oil",
+                "inverter", "storage", "margin compression",
+                "margin pressure", "q1 2026", "premium multiple", "sungrow",
+                "revenue/profit growth divergence", "demand normalization",
             ]
         ):
             if any(k in combined for k in ["margin", "profit", "p/e", "valuation", "growth divergence"]):
@@ -106,18 +103,18 @@ def classify_paragraphs_demo():
                 ])
                 confidence = np.random.uniform(0.60, 0.80)
 
-        elif sector == "Oilfield Services":
-            # Favor negative oilfield categories
-            if any(k in combined for k in ["margin pressure", "profit growing 2", "net profit growth", "revenue/profit growth divergence"]):
+        elif sector == SHORT_SECTOR:
+            # Favor negative short-leg categories
+            if any(k in combined for k in ["margin pressure", "net profit growth", "revenue/profit growth divergence", "q1 2026", "demand normalization"]):
                 category = "Margin/Earnings Risk"
                 confidence = np.random.uniform(0.82, 0.95)
-            elif any(k in combined for k in ["oilfield", "oil and gas", "shale", "fracturing", "cementing"]):
+            elif any(k in combined for k in ["inverter", "storage", "solar inverter", "price war", "oversupply"]):
                 category = "Oilfield Cost Pressure"
                 confidence = np.random.uniform(0.78, 0.92)
             elif "cost" in text or "pressure" in text or "expense" in text:
                 category = "Oilfield Cost Pressure"
                 confidence = np.random.uniform(0.70, 0.90)
-            elif "supply" in text or "disruption" in text:
+            elif "supply" in text or "disruption" in text or "delay" in text:
                 category = "Oil Supply Disruption"
                 confidence = np.random.uniform(0.65, 0.85)
             elif "margin" in text or "earnings" in text or "profit" in text:
@@ -216,9 +213,9 @@ def generate_summary_stats(df, counts):
         "total_documents": df["doc_id"].nunique(),
         "total_paragraphs": len(df),
         "grid_paragraphs": len(df[df["sector"] == "Grid Infrastructure"]),
-        "oilfield_paragraphs": len(df[df["sector"] == "Oilfield Services"]),
+        "oilfield_paragraphs": len(df[df["sector"] == SHORT_SECTOR]),
         "grid_positive": len(df[(df["sector"] == "Grid Infrastructure") & (df["sentiment"] == "positive")]),
-        "oilfield_negative": len(df[(df["sector"] == "Oilfield Services") & (df["sentiment"] == "negative")]),
+        "oilfield_negative": len(df[(df["sector"] == SHORT_SECTOR) & (df["sentiment"] == "negative")]),
     }
 
     for key, value in stats.items():
@@ -257,9 +254,9 @@ def main():
     print("=" * 60)
     print(f"\nKey Findings:")
     print(f"  • {stats['grid_paragraphs']} Grid Infrastructure signals")
-    print(f"  • {stats['oilfield_paragraphs']} Oilfield Services signals")
+    print(f"  • {stats['oilfield_paragraphs']} short-leg sector signals")
     print(f"  • {(stats['grid_positive']/stats['grid_paragraphs']*100):.0f}% of Grid signals are POSITIVE")
-    print(f"  • {(stats['oilfield_negative']/stats['oilfield_paragraphs']*100):.0f}% of Oilfield signals are NEGATIVE")
+    print(f"  • {(stats['oilfield_negative']/stats['oilfield_paragraphs']*100):.0f}% of short-leg signals are NEGATIVE")
     print(f"\nCharts ready in: {CHARTS_DIR}")
 
 

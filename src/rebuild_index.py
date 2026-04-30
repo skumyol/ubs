@@ -129,17 +129,17 @@ def infer_metadata(title: str, text: str) -> dict:
 
     if "dongfang" in title_lower or "dongfang electric" in text_lower or "dec-ltd" in text_lower:
         sector = "Grid Infrastructure"
-    elif "jereh" in title_lower or "jereh oilfield" in text_lower:
-        sector = "Oilfield Services"
+    elif "sungrow" in title_lower or "sungrowpower" in text_lower or "pv inverter" in text_lower:
+        sector = "Inverter & Storage Equipment"
     # Oilfield Services takes priority (explicit transcript markers override generic keywords)
     else:
-        oilfield_markers = [
+        short_leg_markers = [
             'halliburton', 'schlumberger', 'slb', 'hal ', 'baker hughes',
-            'oilfield', 'drilling', 'fpso', 'offshore rig', 'fracking', 'completion',
-            'hal_q', 'slb_q', 'drillship',
+            'sungrow', 'inverter', 'battery storage', 'energy storage system', 'solar inverter',
+            'storage margin', 'price war', 'ess', 'pcs',
         ]
-        if any(k in title_lower or k in text_lower for k in oilfield_markers):
-            sector = "Oilfield Services"
+        if any(k in title_lower or k in text_lower for k in short_leg_markers):
+            sector = "Inverter & Storage Equipment"
     # Grid Infrastructure comes second (grid equipment, power)
         elif any(k in title_lower or k in text_lower for k in [
             'ge vernova', 'siemens energy', 'hitachi energy', 'abb',
@@ -157,8 +157,8 @@ def infer_metadata(title: str, text: str) -> dict:
     # Infer theme based on keywords
     if "dongfang" in title_lower:
         theme = "Dongfang Financials"
-    elif "jereh" in title_lower:
-        theme = "Jereh Financials"
+    elif "sungrow" in title_lower:
+        theme = "Sungrow Financials"
     elif "pair analysis" in title_lower:
         theme = "Pair Analysis"
     elif any(k in title_lower for k in ['data center', 'datacenter', 'ai', 'cloud']):
@@ -287,8 +287,8 @@ def rebuild_index():
         company = "Various"
         if "dongfang" in title.lower() or "dongfang electric" in content[:1000].lower():
             company = "Dongfang Electric"
-        elif "jereh" in title.lower() or "jereh oilfield" in content[:1000].lower():
-            company = "Yantai Jereh"
+        elif "sungrow" in title.lower() or "sungrowpower" in content[:1000].lower():
+            company = "Sungrow"
 
         rows.append({
             "doc_id": doc_id,

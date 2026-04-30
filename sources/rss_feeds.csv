@@ -1,6 +1,6 @@
 source_name,feed_url,sector,theme
 IEA News,https://www.iea.org/rss/news.xml,Energy,Energy Policy
 EIA Today in Energy,https://www.eia.gov/rss/todayinenergy.xml,Energy,Energy Market
-Offshore Energy,https://www.offshore-energy.biz/feed/,Oilfield Services,Oil Logistics
+EnergyTrend,https://www.energytrend.com/rss/news.xml,Inverter & Storage Equipment,Margin/Earnings Risk
 Power Engineering,https://www.power-eng.com/feed/,Grid Infrastructure,Grid Resilience
 Data Center Dynamics,https://www.datacenterdynamics.com/en/rss/,Data Centers,Electricity Demand

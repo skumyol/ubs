@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build an empirical forward scorecard for the Dongfang/Jereh pair.
+"""Build an empirical forward scorecard for the active pair.
 
 The scorecard deliberately separates three claims:
 1. Historical spread validation
@@ -18,6 +18,7 @@ from typing import Any
 import pandas as pd
 
 from src.company_facts import COMPANY_FACTS
+from src.pair_config import LONG_LEG, SHORT_LEG
 
 
 ROOT = Path("/Users/skumyol/Documents/GitHub/ubs")
@@ -51,22 +52,19 @@ def build_predictive_scorecard(
 ) -> pd.DataFrame:
     """Create a forward-looking empirical scorecard."""
     dongfang = COMPANY_FACTS["dongfang"]
-    jereh = COMPANY_FACTS["jereh"]
+    short = COMPANY_FACTS["sungrow"]
     pair = _read_one(valuation_dir / "pair_trade_summary.csv")
     trader = _read_one(valuation_dir / "trader_analysis.csv")
-    backtest = _read_one(valuation_dir / "oil_jereh_backtest.csv")
+    backtest = _read_one(valuation_dir / "oil_sungrow_backtest.csv")
 
-    profit_growth_gap = (
-        dongfang["net_profit_growth_2025"] - jereh["net_profit_growth_2025"]
-    ) * 100
-    pe_gap = jereh["pe_ttm"] - dongfang["pe_ttm"]
-    pb_gap = jereh["pb"] - dongfang["pb"]
-    jereh_52w = trader.get("technicals_jereh_pct_52w_high")
+    pe_gap = short["pe_ttm"] - dongfang["pe_ttm"]
+    pb_gap = short["pb"] - dongfang["pb"]
+    short_52w = trader.get("technicals_sungrow_pct_52w_high")
     dongfang_52w = trader.get("technicals_dongfang_pct_52w_high")
-    jereh_rsi = trader.get("technicals_jereh_rsi")
+    short_rsi = trader.get("technicals_sungrow_rsi")
     dongfang_rsi = trader.get("technicals_dongfang_rsi")
     pair_backtest = backtest.get("pair_final_pnl_pct")
-    jereh_2y = backtest.get("short_2y_return")
+    short_2y = backtest.get("short_2y_return")
     dongfang_2y = backtest.get("long_2y_return")
     spread = pair.get("pair_spread_return_pct")
 
@@ -75,35 +73,35 @@ def build_predictive_scorecard(
             "pillar": "Historical spread test",
             "evidence": (
                 f"2Y simulated pair P&L was {_fmt(pair_backtest, '%')}; "
-                f"Dongfang 2Y return {_fmt(dongfang_2y, '%')} vs Jereh {_fmt(jereh_2y, '%')}."
+                f"{LONG_LEG.name} 2Y return {_fmt(dongfang_2y, '%')} vs {SHORT_LEG.name} {_fmt(short_2y, '%')}."
             ),
             "signal": "Risk / contradiction",
             "submission_language": (
                 "Do not present the trade as historically validated. Use the backtest as evidence "
-                "that Jereh was a crowded winner and the trade needs a forward catalyst."
+                "that the short leg was a crowded same-sector winner and the trade needs a forward catalyst."
             ),
         },
         {
-            "pillar": "Fundamental momentum",
+            "pillar": "Earnings durability",
             "evidence": (
-                f"Dongfang net profit growth exceeded Jereh by {profit_growth_gap:.1f}pp "
-                f"({dongfang['net_profit_growth_2025']*100:.1f}% vs "
-                f"{jereh['net_profit_growth_2025']*100:.1f}%)."
+                f"{LONG_LEG.name} delivered 2025 net profit growth of {dongfang['net_profit_growth_2025']*100:.1f}% on "
+                f"{dongfang['revenue_growth_2025']*100:.1f}% revenue growth, backed by order visibility, while "
+                f"{SHORT_LEG.name} moved from +22.0% full-year profit growth to -40.1% YoY in Q1 2026."
             ),
-            "signal": "Supports long Dongfang / short Jereh",
+            "signal": f"Supports long {LONG_LEG.name} / short {SHORT_LEG.name}",
             "submission_language": (
-                "The predictive view is earnings-quality convergence: Dongfang has the stronger "
-                "profit acceleration while Jereh's revenue growth is not converting into profit."
+                "The predictive view is durability versus normalization: Dongfang offers cleaner "
+                "grid-integration exposure while Sungrow faces normalization risk after being priced as a structural compounder."
             ),
         },
         {
             "pillar": "Valuation stretch",
             "evidence": (
-                f"Jereh trades at a {pe_gap:.1f}x P/E premium and {pb_gap:.1f}x P/B premium "
-                f"to Dongfang ({jereh['pe_ttm']:.1f}x/{jereh['pb']:.1f}x vs "
+                f"{SHORT_LEG.name} trades at a {pe_gap:.1f}x P/E premium and {pb_gap:.1f}x P/B gap "
+                f"to {LONG_LEG.name} ({short['pe_ttm']:.1f}x/{short['pb']:.1f}x vs "
                 f"{dongfang['pe_ttm']:.1f}x/{dongfang['pb']:.1f}x)."
             ),
-            "signal": "Supports short Jereh if growth disappoints",
+            "signal": f"Supports short {SHORT_LEG.name} if margin recovery disappoints",
             "submission_language": (
                 "The short is not a low-quality-company claim; it is a mispriced-expectations "
                 "claim after a large rerating."
@@ -112,13 +110,13 @@ def build_predictive_scorecard(
         {
             "pillar": "Technical setup",
             "evidence": (
-                f"Jereh is at {_fmt(jereh_52w, '%')} of its 52-week high with RSI "
-                f"{_fmt(jereh_rsi)}, while Dongfang is at {_fmt(dongfang_52w, '%')} "
+                f"{SHORT_LEG.name} is at {_fmt(short_52w, '%')} of its 52-week high with RSI "
+                f"{_fmt(short_rsi)}, while {LONG_LEG.name} is at {_fmt(dongfang_52w, '%')} "
                 f"with RSI {_fmt(dongfang_rsi)}."
             ),
             "signal": "Supports timing discipline",
             "submission_language": (
-                "Entry should be staged: wait for Jereh weakness or Dongfang confirmation, "
+                f"Entry should be staged: wait for {SHORT_LEG.name} weakness or {LONG_LEG.name} confirmation, "
                 "rather than claiming the backtest already proves the spread."
             ),
         },
@@ -128,7 +126,7 @@ def build_predictive_scorecard(
             "signal": "Forward prediction",
             "submission_language": (
                 "Use the scenario model as the predictive engine and disclose that it depends on "
-                "grid capex conversion, Dongfang margin delivery, and Jereh multiple compression."
+                f"grid capex conversion, {LONG_LEG.name} margin delivery, and {SHORT_LEG.name} multiple compression."
             ),
         },
     ]

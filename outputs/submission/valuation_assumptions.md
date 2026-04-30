@@ -3,8 +3,8 @@
 ## Pair Output
 
 - Long expected return: 44.9%
-- Short expected move: -20.5%
-- Pair spread expected return: 65.4%
+- Short expected move: -67.5%
+- Pair spread expected return: 112.4%
 
 ## Scenario Inputs
 
@@ -15,12 +15,12 @@
 | Base | +25% | 38.0x | 54.62 | 55% |
 | Bull | +40% | 45.0x | 72.45 | 25% |
 
-### Short (Yantai Jereh)
+### Short (Sungrow)
 | Scenario | EPS Growth | Target P/E | Target Price | Probability |
 |---|---:|---:|---:|---:|
-| Bear | -5% | 34.0x | 85.27 | 35% |
-| Base | +5% | 40.0x | 110.88 | 45% |
-| Bull | +20% | 46.0x | 145.73 | 20% |
+| Bear | +0% | 36.0x | 33.12 | 35% |
+| Base | +8% | 44.0x | 43.72 | 45% |
+| Bull | +25% | 58.0x | 66.7 | 20% |
 
 ## Peer Basis
 

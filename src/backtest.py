@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Oil price vs Dongfang/Jereh correlation backtest.
+"""Market proxy vs active pair correlation backtest.
 
 This module tests whether history validates or contradicts the pair setup.
 Adverse results are still useful: they become risk evidence and help frame the
@@ -22,7 +22,7 @@ OUTPUT_DIR = Path("outputs/charts")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Ticker mapping
-OIL_TICKER = "CL=F"  # Crude Oil Futures
+OIL_TICKER = "^HSI"  # Hong Kong market proxy for the HK-listed pair
 SHORT_TICKER = SHORT_LEG.ticker
 LONG_TICKER = LONG_LEG.ticker
 
@@ -65,7 +65,7 @@ def calculate_pair_trade_pnl(
     long_weight: float = 0.5,
     short_weight: float = 0.5
 ) -> pd.Series:
-    """Calculate pair trade P&L: long Dongfang, short Jereh.
+    """Calculate pair trade P&L: long Dongfang, short active comparator.
     
     Args:
         long_data: Long leg price data
@@ -110,7 +110,7 @@ def create_pair_trade_chart(
     
     Args:
         long_data: Long leg (Dongfang)
-        short_data: Short leg (Jereh)
+        short_data: Short leg
         output_path: Where to save chart
         long_weight: Capital weight
         short_weight: Capital weight
@@ -206,14 +206,14 @@ def create_correlation_chart(
     
     # Top chart: Price comparison
     ax1 = axes[0]
-    ax1.plot(oil_norm.index, oil_norm.values, label='Oil (CL=F)', color='black', linewidth=2)
+    ax1.plot(oil_norm.index, oil_norm.values, label='Market proxy (^HSI)', color='black', linewidth=2)
     ax1.plot(short_norm.index, short_norm.values, label=f'{SHORT_LEG.name} ({SHORT_LEG.ticker})', color='red', linewidth=2)
     
     if long_data is not None and not long_data.empty:
         long_norm = calculate_normalized_returns(long_data)
         ax1.plot(long_norm.index, long_norm.values, label=f'{LONG_LEG.name} ({LONG_LEG.ticker})', color='green', linewidth=2)
     
-    ax1.set_title(f'Price Performance: Oil vs {SHORT_LEG.name} vs {LONG_LEG.name} (Base 100)', fontsize=14, fontweight='bold')
+    ax1.set_title(f'Price Performance: Market vs {SHORT_LEG.name} vs {LONG_LEG.name} (Base 100)', fontsize=14, fontweight='bold')
     ax1.set_ylabel('Normalized Price (Base 100)')
     ax1.legend(loc='upper left')
     ax1.grid(True, alpha=0.3)
@@ -231,14 +231,14 @@ def create_correlation_chart(
         
         if len(aligned) > 60:
             rolling_corr = aligned['oil'].rolling(window=60).corr(aligned['short'])
-            ax2.plot(rolling_corr.index, rolling_corr.values, label=f'Oil-{SHORT_LEG.name} Correlation', color='red', linewidth=2)
+            ax2.plot(rolling_corr.index, rolling_corr.values, label=f'Market-{SHORT_LEG.name} Correlation', color='red', linewidth=2)
             ax2.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
             ax2.fill_between(rolling_corr.index, rolling_corr.values, 0, 
                             where=(rolling_corr.values > 0), alpha=0.3, color='green')
             ax2.fill_between(rolling_corr.index, rolling_corr.values, 0, 
                             where=(rolling_corr.values < 0), alpha=0.3, color='red')
     
-    ax2.set_title(f'6-Month Rolling Correlation: Oil vs {SHORT_LEG.name}', fontsize=12)
+    ax2.set_title(f'6-Month Rolling Correlation: Market vs {SHORT_LEG.name}', fontsize=12)
     ax2.set_ylabel('Correlation')
     ax2.set_xlabel('Date')
     ax2.legend()
@@ -296,13 +296,13 @@ def create_divergence_summary(
     # Historical setup insight. This is not proof of future alpha.
     if results.get('oil_2y_return') and results.get('short_2y_return'):
         if results['oil_2y_return'] > 0 and results['short_2y_return'] < 0:
-            results['thesis_validation'] = f"Historical support: Oil up, {SHORT_LEG.name} down"
+            results['thesis_validation'] = f"Historical support: Market up, {SHORT_LEG.name} down"
         elif results['oil_2y_return'] > 0 and results['short_2y_return'] > 0:
             results['thesis_validation'] = (
-                f"Historical contradiction: Oil up, {SHORT_LEG.name} up; use as crowded-winner risk/setup evidence"
+                f"Historical contradiction: Market up, {SHORT_LEG.name} up; use as crowded-winner risk/setup evidence"
             )
         else:
-            results['thesis_validation'] = "Historical context incomplete: oil cycle not captured in period"
+            results['thesis_validation'] = "Historical context incomplete: market cycle not captured in period"
     
     return results
 
@@ -317,7 +317,7 @@ def save_backtest_results(results: Dict, output_path: Path):
 def main():
     """Run the full backtest analysis."""
     print("="*60)
-    print(f"OIL PRICE vs {SHORT_LEG.name}/{LONG_LEG.name} BACKTEST")
+    print(f"MARKET PROXY vs {SHORT_LEG.name}/{LONG_LEG.name} BACKTEST")
     print("="*60)
     
     # Fetch data
@@ -327,12 +327,12 @@ def main():
     long_data = fetch_price_data(LONG_TICKER, period="2y")
     
     if oil_data is None or short_data is None:
-        print(f"[ERROR] Failed to fetch required data (oil or {SHORT_LEG.name})")
+        print(f"[ERROR] Failed to fetch required data (market proxy or {SHORT_LEG.name})")
         return
     
     # Create correlation chart
     print("\n[2] Creating correlation chart...")
-    chart_path = OUTPUT_DIR / "oil_jereh_correlation.png"
+    chart_path = OUTPUT_DIR / "oil_sungrow_correlation.png"
     chart_info = create_correlation_chart(oil_data, short_data, long_data, chart_path)
     
     # Create pair trade chart
@@ -355,7 +355,7 @@ def main():
             print(f"  {key}: {value}")
     
     # Save results
-    results_path = Path("data/processed/valuation/oil_jereh_backtest.csv")
+    results_path = Path("data/processed/valuation/oil_sungrow_backtest.csv")
     results_path.parent.mkdir(parents=True, exist_ok=True)
     save_backtest_results(summary, results_path)
     

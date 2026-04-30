@@ -23,19 +23,19 @@ LONG_LEG = PairLeg(
 )
 
 SHORT_LEG = PairLeg(
-    name="Yantai Jereh",
-    ticker="002353.SZ",
-    ticker_cn="002353.SZ",
-    sector="Oilfield Services",
+    name="Sungrow",
+    ticker="300274.SZ",
+    ticker_cn="300274.SZ",
+    sector="Inverter & Storage Equipment",
     role="SHORT",
 )
 
-PAIR_NAME = "Dongfang Electric / Yantai Jereh"
-PAIR_TAGLINE = "Energy security is moving from barrels to electrons"
+PAIR_NAME = "Dongfang Electric / Sungrow"
+PAIR_TAGLINE = "From Clean-Tech Growth to Grid-Backbone Value"
 PAIR_ONE_LINER = (
-    "We recommend LONG Dongfang Electric / SHORT Yantai Jereh because "
-    "Dongfang is leveraged to China's new-type power system buildout, while "
-    "Jereh remains tied to fossil-adjacent oilfield services with weaker structural upside."
+    "We recommend LONG Dongfang Electric / SHORT Sungrow because "
+    "Dongfang offers underappreciated order visibility and infrastructure-backed earnings durability, "
+    "while Sungrow's premium multiple is vulnerable to inverter/storage demand normalization and margin compression."
 )
 
 DECK_TITLE = "Long the Grid, Short the Bottleneck"
@@ -43,13 +43,14 @@ DECK_SUBTITLE = (
     f"{PAIR_TAGLINE}  |  Long {LONG_LEG.name} ({LONG_LEG.ticker}) / "
     f"Short {SHORT_LEG.name} ({SHORT_LEG.ticker})"
 )
+TEAM_LINE = "Serkan Kumyol | Kirill Shatilov | Hong Kong University of Science and Technology"
 
 SLIDE_TITLES = {
-    "variant_view": "Variant View: The Real Energy-Security Trade Is Grid Resilience",
-    "industry": "Electricity Continuity Is Becoming Strategic Infrastructure",
+    "variant_view": "Variant View: From Clean-Tech Growth to Grid-Backbone Value",
+    "industry": "Energy Transition Shifts from Capacity to System Reliability",
     "long_case": "Dongfang Electric: Grid Tech Leader with RMB 140B Backlog",
-    "short_case": "Yantai Jereh: Fossil-Cyclical with Policy Headwinds",
-    "comparison": "Same Energy-Security Theme, Opposite Earnings Quality",
+    "short_case": "Sungrow: High-Expectation Inverter Leader Facing Demand Normalization",
+    "comparison": "Same Energy-Transition Theme, Opposite Cycle Position",
     "ai_module": "Thematic Evidence Tracker: Text-Based Signal Compilation",
 }
 
@@ -68,25 +69,25 @@ TRADER_FALLBACK = {
 CATALYSTS = [
     "State Grid RMB 4T capex over the 15th FYP period",
     "Dongfang synchronous condenser orders and grid flexibility wins",
-    "Jereh order updates and oilfield activity commentary",
+    "Sungrow inverter/storage demand normalization and margin pressure visibility",
 ]
 
 DCF_ASSUMPTIONS = {
     "dongfang": {
-        "fcf0_rmb_bn": 3.4,
-        "growth_rate": 0.18,
-        "terminal_growth": 0.04,
-        "wacc": 0.085,
+        "fcf0_rmb_bn": 2.8,  # Normalized FCF base (adjusted for working capital swings)
+        "growth_rate": 0.17,  # 17% FCF CAGR (backlog conversion + grid capex)
+        "terminal_growth": 0.04,  # 4% terminal growth
+        "wacc": 0.085,  # 8.5% WACC
         "years": 5,
         "shares_outstanding_bn": COMPANY_FACTS["dongfang"]["shares_outstanding_bn"],
     },
-    "jereh": {
-        "fcf0_rmb_bn": 2.2,
-        "growth_rate": 0.08,
-        "terminal_growth": 0.03,
-        "wacc": 0.095,
+    "sungrow": {
+        "fcf0_rmb_bn": 8.0,  # Higher historical FCF but pressured in 2026
+        "growth_rate": 0.08,  # 8% FCF CAGR (demand normalization)
+        "terminal_growth": 0.03,  # 3% terminal growth
+        "wacc": 0.095,  # 9.5% WACC (higher cyclical/competition risk)
         "years": 5,
-        "shares_outstanding_bn": COMPANY_FACTS["jereh"]["shares_outstanding_bn"],
+        "shares_outstanding_bn": COMPANY_FACTS["sungrow"]["shares_outstanding_bn"],
     },
 }
 

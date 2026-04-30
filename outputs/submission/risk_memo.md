@@ -3,7 +3,7 @@
 ## Primary Risks
 
 - Grid policy delay: pushes out order conversion for the long leg.
-- Yantai Jereh recovery: if fossil-adjacent activity rebounds, the short leg can squeeze.
+- Sungrow recovery: if margin recovery and order quality surprise positively, the short leg can squeeze.
 - China multiple compression: hurts long valuation even with stable earnings.
 
 ## Risk Limits
@@ -14,5 +14,5 @@
 
 ## Carry & Financing
 
-- Estimated net carry cost (low borrow): $5.3K over 180 days.
-- Estimated net carry cost (high borrow): $18.6K over 180 days.
+- Estimated net carry cost (low borrow): $13.3K over 180 days.
+- Estimated net carry cost (high borrow): $26.6K over 180 days.

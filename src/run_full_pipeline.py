@@ -114,7 +114,7 @@ def main(argv: Optional[list[str]] = None) -> None:
     if not args.skip_data_fetch:
         step("0", "Refresh document index and classifications")
         # Clear stale artifacts first so the rerun is guaranteed to rebuild
-        # from the active Dongfang/Jereh thesis instead of reusing old outputs.
+        # from the active Dongfang/Sungrow thesis instead of reusing old outputs.
         _clear_path(CLASSIFIED_PARAGRAPHS_PATH)
         _clear_path(TABLES_DIR / "evidence_pack.json")
         _clear_path(TABLES_DIR / "evidence_pack.md")
@@ -149,9 +149,18 @@ def main(argv: Optional[list[str]] = None) -> None:
     # Step 1: Load classifications.
     step("1", "Load classified paragraphs")
     if not CLASSIFIED_PARAGRAPHS_PATH.exists():
-        print(f"[ERROR] {CLASSIFIED_PARAGRAPHS_PATH} not found.")
-        print("Run the classifier step first or allow the pipeline to refresh data.")
-        return
+        print(f"[WARN] {CLASSIFIED_PARAGRAPHS_PATH} not found.")
+        print("Rebuilding a deterministic classified snapshot from the current paragraph dataset.")
+        try:
+            from src.generate_demo_results import classify_paragraphs_demo
+
+            rebuilt = classify_paragraphs_demo()
+            if rebuilt is None or rebuilt.empty:
+                print("Failed to rebuild classified paragraphs from paragraph dataset.")
+                return
+        except Exception as exc:
+            print(f"[ERROR] Could not rebuild classified paragraphs: {exc}")
+            return
 
     try:
         classified_df = pd.read_csv(CLASSIFIED_PARAGRAPHS_PATH)

@@ -374,7 +374,7 @@ if __name__ == "__main__":
     print("="*60)
 
     # Test with different models
-    test_prompt = "Calculate the expected return for a pair trade: Long Dongfang (expected +97%) / Short Jereh (expected -5%). What's the spread?"
+    test_prompt = "Calculate the expected return for a pair trade: Long Dongfang (expected +97%) / Short Sungrow (expected -5%). What's the spread?"
 
     # Test 1: OpenRouter with Qwen (no reasoning - qwen-2.5 doesn't support it)
     print("\n[1] Testing OpenRouter with Qwen 2.5 72B...")

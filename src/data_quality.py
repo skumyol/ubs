@@ -149,7 +149,7 @@ def build_data_quality_report() -> Dict:
             "## Submission Gate",
             "",
             f"- Date integrity gate (no impossible/future dates): {'PASS' if doc_invalid == 0 and cls_invalid == 0 else 'FAIL'}",
-            f"- Minimum date diversity gate (>= 1 valid date): {'PASS' if unique_cls_dates >= 1 else 'FAIL - needs at least 1 dated document'} (adjusted for sparse Dongfang/Jereh corpus)",
+            f"- Minimum date diversity gate (>= 1 valid date): {'PASS' if unique_cls_dates >= 1 else 'FAIL - needs at least 1 dated document'} (adjusted for sparse active-pair corpus)",
         ]
     )
 

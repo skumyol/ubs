@@ -15,6 +15,7 @@ from src.pair_config import (
     LONG_LEG,
     SHORT_LEG,
     SLIDE_TITLES,
+    TEAM_LINE,
 )
 
 # Brand colors (UBS-ish professional palette)
@@ -79,6 +80,14 @@ def add_title_slide(prs, title: str, subtitle: str):
     sp.text = subtitle
     sp.font.size = Pt(22)
     sp.font.color.rgb = _hex_to_rgb(COLOR_MUTED)
+
+    if title == DECK_TITLE:
+        mb = slide.shapes.add_textbox(Inches(0.7), Inches(4.4), Inches(12), Inches(0.8))
+        mf = mb.text_frame
+        mp = mf.paragraphs[0]
+        mp.text = TEAM_LINE
+        mp.font.size = Pt(16)
+        mp.font.color.rgb = _hex_to_rgb(COLOR_MUTED)
 
     return slide
 
@@ -298,20 +307,20 @@ def build_deck(
         f"Long Dongfang Electric @ target upside: "
         f"{valuation_summary['long_expected_return']}%" if valuation_summary else
         "Long Dongfang Electric - grid capex + 140B RMB backlog + tech breakthrough",
-        f"Short Yantai Jereh @ target downside: "
+        f"Short {SHORT_LEG.name} @ target downside: "
         f"{valuation_summary['short_expected_return']}%" if valuation_summary else
-        "Short Yantai Jereh - fossil exposure + policy headwinds + cyclical risk",
+        f"Short {SHORT_LEG.name} - premium clean-tech multiple + demand normalization risk",
         f"Pair spread expected return: "
         f"{valuation_summary['pair_spread_return']}%" if valuation_summary else
         "Pair spread captures earnings-quality differential",
-        "3 pillars: (1) Structural electricity demand (2) Grid capex visibility (3) Oilfield cost pressure",
-        "Key catalysts: State Grid 4T RMB capex, Dongfang synchronous condenser orders, Jereh margin pressure",
+        "3 pillars: (1) Structural electricity demand (2) Grid capex visibility (3) Earnings-quality divergence",
+        f"Key catalysts: State Grid 4T RMB capex, Dongfang synchronous condenser orders, {SHORT_LEG.name} margin scrutiny",
     ]
     add_content_slide(prs, "Executive Summary", one_pager_items)
 
     # -------- Slide 3: Variant View --------
     variant_items = [
-        "Consensus over-connects oil price spikes with durable oilfield-service earnings",
+        "Consensus treats energy-transition equipment winners as interchangeable",
         "Variant view: energy security is no longer just securing barrels — it is reliable electricity",
         "Data centers, EVs, industrial electrification, and cooling all stress the power system",
         "Governments treat grid hardening as national security infrastructure",
@@ -339,11 +348,11 @@ def build_deck(
 
     # -------- Slide 5: Why Now / Why History Is Misleading --------
     why_now_items = [
-        "⚠️ 2Y backtest is UNFAVORABLE: Both legs +300% (Dongfang +299.8%, Jereh +350.4%), pair P&L -25.3%",
-        "This is NOT a historically validated spread — it is a forward-looking variant view on policy regime shift",
-        "Past regime (2021-2024): Both legs benefited from unified energy capex boom (oil + green together)",
-        "New regime (2025-2030): State Grid RMB 4T 15th FYP decouples grid capex from fossil fuel investment",
-        "Fossil substitution acceleration explicitly targets Jereh's oilfield services market for contraction",
+        "⚠️ 2Y backtest can be unfavorable because broad energy-transition winners often rerated together",
+        "This is NOT a historically validated spread — it is a forward-looking variant view on regime shift",
+        "Past regime (2021-2024): Broad clean-tech beta lifted inverter and equipment winners together",
+        "New regime (2025-2030): Grid infrastructure durability beats high-growth clean-tech valuation risk",
+        "Stock-pool compliance: Dongfang is the pool anchor; Sungrow is the non-pool same-sector short",
         "We are betting on the BREAKDOWN of historical correlation, not its continuation",
     ]
     add_content_slide(prs, "Why Now: The Regime Shift", why_now_items)
@@ -365,13 +374,13 @@ def build_deck(
             evidence_pack["slide_5_long_case"]["quotes"],
         )
 
-    # -------- Slide 7: Short Case - Jereh --------
+    # -------- Slide 7: Short Case - Sungrow --------
     short_items = [
-        "Revenue tied to upstream capex cycles — North America, Middle East, offshore",
-        "Cost pressure: logistics, materials, labor compressing margins",
-        "Project delays and capex caution during geopolitical uncertainty",
-        "Rig count volatility = utilization risk outside company control",
-        "Higher oil prices ≠ higher service earnings (historical disconnect in disruption periods)",
+        "High-expectation inverter and storage leader facing demand normalization",
+        "2025 strong results (Revenue RMB 89.2bn, +14.6%; Net Profit RMB 13.5bn, +22.0%)",
+        "Q1 2026 shows clear slowdown: Revenue -18.3% YoY, Net Profit -40.1% YoY",
+        "Premium multiple vulnerable to inverter/storage price compression and margin pressure",
+        "Short thesis is valuation de-rating as growth expectations normalize, not business failure",
     ]
     add_content_slide(prs, SLIDE_TITLES["short_case"], short_items)
 
@@ -382,14 +391,14 @@ def build_deck(
             evidence_pack["slide_7_short_case"]["quotes"],
         )
 
-    # -------- Slide 8: Backtest - Oil vs Jereh Correlation --------
-    backtest_path = charts_dir / "oil_jereh_correlation.png"
+    # -------- Slide 8: Backtest - Short-Leg Correlation --------
+    backtest_path = charts_dir / "oil_sungrow_correlation.png"
     if backtest_path.exists():
         add_chart_slide(
             prs,
             f"Historical Divergence: Market vs {LONG_LEG.name} vs {SHORT_LEG.name} (2Y)",
             backtest_path,
-            "⚠️ Historical backtest is UNFAVORABLE — pair P&L -25.3% over 2Y. This is a forward-looking variant view on policy regime shift, not a historically validated spread.",
+            "Historical result is a risk check, not proof. Forward case depends on grid infrastructure durability outperforming high-growth clean-tech valuation risk.",
         )
 
     scorecard_path = Path("data/processed/valuation/predictive_scorecard.csv")
@@ -413,7 +422,7 @@ def build_deck(
             prs,
             SLIDE_TITLES["comparison"],
             matrix_path,
-            f"Long {LONG_LEG.name} captures grid capex tailwind. Short {SHORT_LEG.name} carries fossil transition risk.",
+            f"Long {LONG_LEG.name} captures grid capex tailwind. Short {SHORT_LEG.name} carries high-expectation inverter and storage de-rating risk.",
         )
 
     # -------- Slide 10: AI Signal Tracker --------
@@ -441,7 +450,7 @@ def build_deck(
             prs,
             "Valuation: Peer Comparables",
             peer_comps_df,
-            "Grid peers command premium multiples on earnings visibility; OFS trades at cyclical discount",
+            "Comps compare clean grid exposure against broader power-equipment and industrial equipment exposure",
         )
 
     # -------- Slide 12: DCF Cross-Check --------
@@ -466,9 +475,9 @@ def build_deck(
     if short_scenarios_df is not None and not short_scenarios_df.empty:
         add_table_slide(
             prs,
-            "Short Scenarios: Yantai Jereh",
+            f"Short Scenarios: {SHORT_LEG.name}",
             short_scenarios_df,
-            "Probability-weighted downside driven by margin compression and cyclical de-rate",
+            "Probability-weighted downside driven by thin margins and multiple compression",
         )
 
     # Sensitivity analysis remains available in outputs/charts and the report;
@@ -480,21 +489,21 @@ def build_deck(
         "  • Quarterly overseas order wins (Middle East, SE Asia)",
         "  • China State Grid capex announcements",
         "  • Gross margin expansion on overseas mix shift",
-        "SHORT CATALYSTS (Yantai Jereh):",
-        "  • Q2 earnings miss on logistics cost",
-        "  • Guidance cut on North American rig count",
-        "  • Project deferral announcements from majors",
+        f"SHORT CATALYSTS ({SHORT_LEG.name}):",
+        "  • Margin recovery falls short of expectations",
+        "  • Inverter/storage pricing pressure persists",
+        "  • Investors de-rate premium clean-tech expectations vs backlog-backed grid exposure",
     ]
     add_content_slide(prs, "Catalysts Over Next 6-12 Months", catalyst_items)
 
     # -------- Slide 16: Risks --------
     risk_items = [
-        "Oil price spike may lift Jereh temporarily → pair trade cushions absolute exposure",
+        f"Broad power-equipment rally may lift {SHORT_LEG.name} temporarily → position sizing limits risk",
         "Dongfang China beta/multiple compression → offset by 140B RMB backlog visibility",
         "Grid capex delays → multi-year policy demand reduces single-year risk",
         "FX risk on RMB → monitored; sensitivity table in appendix",
-        "SHORT SQUEEZE / BORROW COST: Jereh borrow cost ~2.5-7% (China A-share); position sizing limits risk",
-        "Thesis kill switch: Jereh margin expansion + Dongfang backlog decline → exit pair",
+        f"SHORT SQUEEZE / BORROW COST: {SHORT_LEG.name} borrow cost assumed ~2.5-7%; position sizing limits risk",
+        f"Thesis kill switch: {SHORT_LEG.name} margin expansion + Dongfang backlog decline → exit pair",
     ]
     add_content_slide(prs, "Risks and Mitigants", risk_items)
 
@@ -511,26 +520,26 @@ def build_deck(
     pair_vol = trader_row.get("volatilities_pair_vol", 83.2)
     rec_notional = trader_row.get("position_sizing_recommended_notional_mm", 1.2)
     long_notional = trader_row.get("position_sizing_long_dongfang_notional_mm", 0.6)
-    short_notional = trader_row.get("position_sizing_short_jereh_notional_mm", 0.6)
+    short_notional = trader_row.get("position_sizing_short_sungrow_notional_mm", 0.6)
     trader_items = [
         "POSITION SIZING (Risk-Based):",
         "  • Portfolio: $100M example | Max risk per trade: 2% ($2M)",
         f"  • Pair volatility: {pair_vol:.1f}% annual | Position size: {rec_notional:.1f}% of portfolio (${rec_notional:.1f}M notional)",
-        f"  • Allocation: ${long_notional:.1f}M long Dongfang / ${short_notional:.1f}M short Jereh (dollar-neutral)",
+        f"  • Allocation: ${long_notional:.1f}M long Dongfang / ${short_notional:.1f}M short {SHORT_LEG.name} (dollar-neutral)",
         "",
         "CARRY COST (6-month hold):",
-        "  • Jereh borrow cost: 2.5-7% annually → $5K-19K cost (China A-share)",
-        "  • Jereh dividend (short pays): 0.8% → ~$5K cost",
+        f"  • {SHORT_LEG.name} borrow cost: 2.5-7% annually",
+        f"  • {SHORT_LEG.name} dividend/carry checked before execution",
         "  • Dongfang dividend (long receives): 1.5% → ~$9K income",
         "  • Net carry: ~$18K-36K (1.5-3% of expected spread return)",
         "",
         "LIQUIDITY & EXECUTION:",
         "  • Dongfang (HK): ~$147M daily volume | Execute in <1 day | HKEX access",
-        "  • Jereh: ~$589M daily volume | Execute in <1 day | Shenzhen A-share",
+        f"  • {SHORT_LEG.name}: liquidity checked via current trader_analysis.csv",
         "  • Dongfang trades on HKEX (1072.HK) - no Stock Connect needed",
         "",
         "TECHNICAL TIMING:",
-        "  • Jereh: Near highs, elevated RSI → Monitor for short entry signals",
+        f"  • {SHORT_LEG.name}: monitor for short entry confirmation",
         "  • Dongfang: Near highs but policy tailwinds support entry",
     ]
     add_content_slide(prs, "Execution: Position Sizing, Carry & Liquidity", trader_items)
@@ -580,10 +589,10 @@ def build_deck(
 
     # -------- Slide 19: Recommendation --------
     rec_subtitle = (
-        "Long Dongfang Electric / Short Yantai Jereh"
+        f"Long {LONG_LEG.name} / Short {SHORT_LEG.name}"
         if not valuation_summary else
         f"Long Dongfang ({valuation_summary['long_expected_return']:+.0f}%) / "
-        f"Short Jereh ({valuation_summary['short_expected_return']:+.0f}%) = "
+        f"Short {SHORT_LEG.name} ({valuation_summary['short_expected_return']:+.0f}%) = "
         f"Pair spread {valuation_summary['pair_spread_return']:+.0f}%"
     )
     add_title_slide(prs, "Recommendation", rec_subtitle)

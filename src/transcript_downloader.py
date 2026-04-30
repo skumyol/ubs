@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Download investor materials for the Dongfang/Jereh pair.
+"""Download investor materials for the Dongfang/Sungrow pair.
 
 Fetches documents from:
 - Dongfang Electric: www.dongfang.com
-- Yantai Jereh: jereh.com
+- Sungrow: sungrowpower.com
 
 Saves to data/raw/pdf/ for processing by rebuild_index.
 """
@@ -35,11 +35,11 @@ COMPANIES = {
         "transcripts_url": "https://www.dongfang.com/",
         "file_pattern": r"report|announcement|annual|quarter|earnings|20(24|25|26)",
     },
-    "jereh": {
-        "name": "Yantai Jereh",
-        "ticker": "002353.SZ",
-        "ir_url": "https://www.jereh.com/cn/investor/Investor-relations",
-        "transcripts_url": "https://www.jereh.com/cn/investor/Investor-relations",
+    "sungrow": {
+        "name": "Sungrow",
+        "ticker": "300274.SZ",
+        "ir_url": "https://en.sungrowpower.com/investor",
+        "transcripts_url": "https://en.sungrowpower.com/investor",
         "file_pattern": r"report|announcement|annual|quarter|earnings|20(24|25|26)",
     },
 }

@@ -1,15 +1,19 @@
 sector,category,count
-Grid Infrastructure,Electricity Demand,190
-Grid Infrastructure,Grid Resilience,78
-Grid Infrastructure,Policy-Backed Capex,65
+Grid Infrastructure,Policy-Backed Capex,16
+Grid Infrastructure,Electricity Demand,14
+Grid Infrastructure,Grid Resilience,9
+Grid Infrastructure,Margin/Earnings Risk,5
 Grid Infrastructure,Oilfield Cost Pressure,5
-Grid Infrastructure,Margin/Earnings Risk,4
-Oilfield Services,Oilfield Cost Pressure,36
-Oilfield Services,Oil Supply Disruption,19
-Oilfield Services,Margin/Earnings Risk,13
-Other,Policy-Backed Capex,6
-Other,Electricity Demand,2
-Other,Grid Resilience,2
+Inverter & Storage Equipment,Oilfield Cost Pressure,175
+Inverter & Storage Equipment,Oil Supply Disruption,141
+Inverter & Storage Equipment,Margin/Earnings Risk,77
+Oilfield Services,Oil Supply Disruption,2
+Oilfield Services,Electricity Demand,1
+Oilfield Services,Grid Resilience,1
+Oilfield Services,Margin/Earnings Risk,1
+Oilfield Services,Policy-Backed Capex,1
 Other,Margin/Earnings Risk,2
-Other,Oil Supply Disruption,2
-Other,Oilfield Cost Pressure,2
+Other,Policy-Backed Capex,2
+Other,Grid Resilience,1
+Other,Oil Supply Disruption,1
+Other,Oilfield Cost Pressure,1

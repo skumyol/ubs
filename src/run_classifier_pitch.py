@@ -154,8 +154,8 @@ def main():
 
     # Check API key
     if not os.getenv("DEEPSEEK_API_KEY"):
-        print("\n[ERROR] DEEPSEEK_API_KEY not found in .env")
-        print("Add it to .env: DEEPSEEK_API_KEY=sk-...")
+        print("\n[WARN] DEEPSEEK_API_KEY not found in .env")
+        run_demo_fallback()
         return
 
     # Load data
@@ -183,16 +183,16 @@ def main():
         print("\n✓ All paragraphs already classified!")
         return
 
-    # Prioritize the active short-leg evidence for Jereh first, then other oilfield sources
-    oilfield_mask = df['doc_id'].str.contains('jereh|oilfield|drilling', case=False, na=False)
+    # Prioritize the active short-leg evidence for Sungrow first, then other inverter/storage sources
+    oilfield_mask = df['doc_id'].str.contains('sungrow|inverter|storage', case=False, na=False)
     oilfield_df = df[oilfield_mask]
     other_df = df[~oilfield_mask]
 
-    # Also check source_name for oilfield content
-    oilfield_source_mask = df['source_name'].str.contains('jereh|oilfield|drilling', case=False, na=False)
+    # Also check source_name for short-leg content
+    oilfield_source_mask = df['source_name'].str.contains('sungrow|inverter|storage', case=False, na=False)
     oilfield_source_df = df[oilfield_source_mask & ~oilfield_mask]
 
-    # Combine oilfield sources, then other docs
+    # Combine short-leg sources, then other docs
     sample_df = (
         pd.concat([oilfield_df, oilfield_source_df, other_df])
         .drop_duplicates(subset=["paragraph_id"])
@@ -203,8 +203,8 @@ def main():
     batch_size = len(sample_df)
 
     print(f"Processing batch: {len(sample_df)} paragraphs")
-    print(f"  - Oilfield transcripts: {len(oilfield_df)}")
-    print(f"  - Oilfield sources: {len(oilfield_source_df)}")
+    print(f"  - Short-leg transcripts: {len(oilfield_df)}")
+    print(f"  - Short-leg sources: {len(oilfield_source_df)}")
     print(f"  - Other documents: {len(other_df)}")
 
     # Get LLM
@@ -279,20 +279,21 @@ def main():
         (result_df["sector"] == "Grid Infrastructure") &
         (result_df["sentiment"] == "positive")
     ])
+    short_sector = "Inverter & Storage Equipment"
     oilfield_negative = len(result_df[
-        (result_df["sector"] == "Oilfield Services") &
+        (result_df["sector"] == short_sector) &
         (result_df["sentiment"] == "negative")
     ])
 
     grid_total = len(result_df[result_df["sector"] == "Grid Infrastructure"])
-    oilfield_total = len(result_df[result_df["sector"] == "Oilfield Services"])
+    oilfield_total = len(result_df[result_df["sector"] == short_sector])
 
     if grid_total > 0 and oilfield_total > 0:
         print(f"\n" + "=" * 60)
         print("THESIS VALIDATION")
         print("=" * 60)
         print(f"Grid Infrastructure: {grid_positive}/{grid_total} positive ({grid_positive/grid_total*100:.0f}%)")
-        print(f"Oilfield Services: {oilfield_negative}/{oilfield_total} negative ({oilfield_negative/oilfield_total*100:.0f}%)")
+        print(f"{short_sector}: {oilfield_negative}/{oilfield_total} negative ({oilfield_negative/oilfield_total*100:.0f}%)")
 
 
 if __name__ == "__main__":

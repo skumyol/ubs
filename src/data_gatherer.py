@@ -61,12 +61,12 @@ STARTER_URLS = [
         "theme": "Grid Resilience",
     },
     {
-        "source_name": "Yantai Jereh Investor Relations",
-        "url": "https://www.jereh.com/cn/investor/Investor-relations",
-        "company": "Yantai Jereh",
-        "sector": "Oilfield Services",
+        "source_name": "Sungrow Investor Relations",
+        "url": "https://en.sungrowpower.com/investor",
+        "company": "Sungrow",
+        "sector": "Inverter & Storage Equipment",
         "document_type": "Investor Page",
-        "theme": "Oilfield Services",
+        "theme": "Margin/Earnings Risk",
     },
 ]
 
@@ -84,10 +84,10 @@ STARTER_RSS = [
         "theme": "Energy Market",
     },
     {
-        "source_name": "Offshore Energy",
-        "feed_url": "https://www.offshore-energy.biz/feed/",
-        "sector": "Oilfield Services",
-        "theme": "Oil Logistics",
+        "source_name": "EnergyTrend",
+        "feed_url": "https://www.energytrend.com/rss/news.xml",
+        "sector": "Inverter & Storage Equipment",
+        "theme": "Margin/Earnings Risk",
     },
     {
         "source_name": "Power Engineering",
@@ -110,9 +110,9 @@ GDELT_QUERIES = [
         "theme": "Grid Resilience",
     },
     {
-        "query": '"Yantai Jereh" OR "Jereh" OR "oilfield services" OR "fossil substitution"',
-        "sector": "Oilfield Services",
-        "theme": "Oilfield Cost Pressure",
+        "query": '"Sungrow" OR "inverter pricing" OR "energy storage margins" OR "PV inverter competition"',
+        "sector": "Inverter & Storage Equipment",
+        "theme": "Margin/Earnings Risk",
     },
     {
         "query": '"grid investment" OR "grid resilience" OR "transmission upgrade"',
@@ -125,14 +125,14 @@ GDELT_QUERIES = [
         "theme": "Electricity Demand",
     },
     {
-        "query": '"Strait of Hormuz" oil disruption OR "Middle East" energy infrastructure attack',
-        "sector": "Oilfield Services",
-        "theme": "Oil Supply Disruption",
+        "query": '"Sungrow" OR "battery storage demand" OR "energy storage project delays"',
+        "sector": "Inverter & Storage Equipment",
+        "theme": "Margin/Earnings Risk",
     },
     {
-        "query": '"oilfield services" logistics cost OR project delays OR supply chain',
-        "sector": "Oilfield Services",
-        "theme": "Oilfield Cost Pressure",
+        "query": '"inverter oversupply" OR "storage margin pressure" OR "solar inverter price war"',
+        "sector": "Inverter & Storage Equipment",
+        "theme": "Margin/Earnings Risk",
     },
     {
         "query": '"transformer shortage" OR "substation equipment" OR "switchgear demand"',
@@ -218,17 +218,13 @@ def save_document_index(new_rows: List[Dict]) -> None:
 
 
 def ensure_seed_files() -> None:
-    if not SEED_URLS_PATH.exists():
-        RAW_TEXT_DIR.mkdir(parents=True, exist_ok=True)
-        PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
-        SEED_URLS_PATH.parent.mkdir(parents=True, exist_ok=True)
-        pd.DataFrame(STARTER_URLS).to_csv(SEED_URLS_PATH, index=False)
-        print(f"[CREATED] {SEED_URLS_PATH}")
-
-    if not RSS_FEEDS_PATH.exists():
-        RSS_FEEDS_PATH.parent.mkdir(parents=True, exist_ok=True)
-        pd.DataFrame(STARTER_RSS).to_csv(RSS_FEEDS_PATH, index=False)
-        print(f"[CREATED] {RSS_FEEDS_PATH}")
+    RAW_TEXT_DIR.mkdir(parents=True, exist_ok=True)
+    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    SEED_URLS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(STARTER_URLS).to_csv(SEED_URLS_PATH, index=False)
+    pd.DataFrame(STARTER_RSS).to_csv(RSS_FEEDS_PATH, index=False)
+    print(f"[REFRESHED] {SEED_URLS_PATH}")
+    print(f"[REFRESHED] {RSS_FEEDS_PATH}")
 
 
 # ============================================================

@@ -11,8 +11,8 @@ import pandas as pd
 from src.pair_config import LONG_LEG, SHORT_LEG
 
 PAIR_MARKERS = [
-    "dongfang", "jereh", "china", "state grid", "grid", "transmission",
-    "substation", "transformer", "switchgear", "power equipment",
+    "dongfang", "sungrow", "inverter", "storage", "china", "state grid", "grid", "transmission",
+    "substation", "transformer", "switchgear", "power equipment", "clean energy",
 ]
 
 UNRELATED_MARKERS = [
@@ -23,24 +23,20 @@ UNRELATED_MARKERS = [
 
 QNA_QUESTIONS = [
     {
-        "question": "The 2-year backtest shows pair P&L of -25.3%. Why is the backtest unfavorable?",
+        "question": "The 2-year backtest is positive, so why not just present this as a historically validated pair trade?",
         "base_answer": (
-            "The unfavorable backtest is not a flaw — it is the core of our variant view. "
-            "In 2021-2024, both legs benefited from a unified energy capex boom where oil and green capex moved together. "
-            "This produced positive correlation (+0.83) and both stocks rallied +300%. "
-            "The 15th Five-Year Plan decouples grid infrastructure (RMB 4T State Grid investment) from fossil fuel capex. "
-            "We are betting on the BREAKDOWN of this historical correlation via policy-driven divergence, not its continuation. "
-            "This is a forward-looking regime shift trade, not a historically validated statistical arbitrage."
+            "Because the historical result mostly shows that both names participated in a strong clean-tech and energy-equipment regime. "
+            "The useful lesson is not that the spread is proven; it is that correlation has been high and the short leg was a crowded winner. "
+            "Our submission should frame the trade as a forward-looking regime-shift view: grid-backbone durability versus downstream clean-tech normalization."
         ),
     },
 
     {
-        "question": "Q1. Why not long oil if energy logistics are vulnerable?",
+        "question": "Q1. Why short Sungrow if it is still a high-quality clean-tech company?",
         "base_answer": (
-            "Because higher oil prices do not automatically create durable earnings upside for "
-            "oilfield-service companies. Disruption raises logistics costs, delays projects, and "
-            "reduces operating visibility. The more durable response to energy insecurity is "
-            "investment in electricity continuity and grid resilience."
+            "Because this is a risk-reward call, not a quality-denial call. "
+            "Sungrow can remain a strong company and still be vulnerable if inverter and storage growth normalizes, "
+            "margins compress, and investors stop underwriting structural-compounder economics."
         ),
     },
     {
@@ -53,19 +49,19 @@ QNA_QUESTIONS = [
         ),
     },
     {
-        "question": "Q3. Why short Yantai Jereh instead of an oil producer?",
+        "question": "Q3. Why short Sungrow rather than another pool stock?",
         "base_answer": (
-            "Oil producers can benefit directly from oil price spikes. Oilfield-service companies "
-            "are more exposed to customer capex timing, utilization rates, logistics, and project "
-            "execution. That makes them a better short candidate for the view that the market is "
-            "over-simplifying the benefit of oil disruption."
+            "The competition brief requires one stock-pool anchor and a same-sector comparator outside the official list. "
+            "Sungrow fixes that compliance risk while keeping the trade in energy-transition equipment. "
+            "The short thesis is not that Sungrow is structurally broken; it is that its premium multiple is vulnerable to inverter/storage demand normalization "
+            "and margin pressure, while Dongfang's grid infrastructure durability offers more defensive earnings quality."
         ),
     },
     {
         "question": "Q4. What would make your thesis wrong?",
         "base_answer": (
-            "Three scenarios: (1) oilfield-service pricing power rises faster than logistics costs, "
-            "(2) upstream capex accelerates significantly with durable margin expansion, "
+            "Three scenarios: (1) Sungrow maintains high growth and margin despite inverter/storage oversupply, "
+            "(2) investors reward high-growth clean-tech more than defensive grid infrastructure, "
             "(3) grid capex is delayed by regulatory bottlenecks. We monitor this through "
             f"{LONG_LEG.name} order backlog, {SHORT_LEG.name} margin trends, and policy announcements."
         ),
@@ -74,8 +70,8 @@ QNA_QUESTIONS = [
         "question": "Q5. Is this a macro pitch or a stock pitch?",
         "base_answer": (
             "It starts with a macro dislocation but the trade is stock-specific. Dongfang has direct "
-            "exposure to grid equipment and overseas growth. Yantai Jereh has specific margin and "
-            "operating risks. The pair trade isolates the earnings-quality gap within the broader "
+            "exposure to grid equipment and overseas growth. Sungrow has high-growth inverter/storage exposure "
+            "but faces demand normalization and margin pressure. The pair trade isolates the earnings-quality gap within the broader "
             "energy-transition theme."
         ),
     },
@@ -228,7 +224,6 @@ def build_qna_doc(
                 [
                     f"- **Total AI signals analyzed**: {narrative_shift.get('total_signals', 0)}",
                     f"- **Grid signal share**: {narrative_shift.get('grid_signal_share', 0)*100:.0f}%",
-                    f"- **Oil signal share**: {narrative_shift.get('oil_signal_share', 0)*100:.0f}%",
                     f"- **Thesis support score**: {narrative_shift.get('thesis_support_score', 0)}",
                     f"- **Interpretation**: {narrative_shift.get('interpretation', 'N/A')}",
                 ]
@@ -242,10 +237,11 @@ def build_qna_doc(
         if classified_df is not None and not classified_df.empty:
             if "category" in classified_df.columns:
                 categories = []
-                if "grid" in q["question"].lower() or "dongfang" in q["question"].lower():
+                q_lower = q["question"].lower()
+                if "grid" in q_lower or "dongfang" in q_lower:
                     categories = ["Grid Resilience", "Electricity Demand", "Policy-Backed Capex"]
-                elif "jereh" in q["question"].lower() or "oil" in q["question"].lower():
-                    categories = ["Oil Supply Disruption", "Oilfield Cost Pressure", "Margin/Earnings Risk"]
+                elif "sungrow" in q_lower or "short" in q_lower or "inverter" in q_lower or "storage" in q_lower:
+                    categories = ["Margin/Earnings Risk", "Oil Supply Disruption", "Oilfield Cost Pressure"]
                 else:
                     categories = []
 

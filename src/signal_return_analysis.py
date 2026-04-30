@@ -1,7 +1,7 @@
 """Signal-return correlation analysis for Energy Transition pair.
 
 Tests whether AI-classified signals predict or align with stock returns
-for LONG Dongfang Electric (1072.HK) / SHORT Yantai Jereh (002353.SZ).
+for LONG Dongfang Electric (1072.HK) / SHORT Sungrow (300274.SZ).
 
 Methodologies (in order of data efficiency):
   1. EVENT STUDY: For each document date, test returns in [-7d, +7d, +30d, +90d] windows
@@ -25,9 +25,9 @@ from scipy import stats
 
 # Ticker mapping for Energy Transition pair
 # LONG: Dongfang Electric (HK listed - more reliable data)
-# SHORT: Yantai Jereh (Shenzhen A-share)
+# SHORT: Sungrow (Shenzhen A-share)
 LONG_TICKER = "1072.HK"
-SHORT_TICKER = "002353.SZ"
+SHORT_TICKER = "300274.SZ"
 
 
 def aggregate_monthly_signals(classified_df: pd.DataFrame) -> pd.DataFrame:
@@ -300,8 +300,8 @@ def run_historical_alignment_test(
     """Test if thesis signals align with long-term price divergence.
     
     Thesis: Grid signals (Long Dongfang) should be positive, 
-            Oilfield signals (Short Jereh) should be negative.
-    Price divergence: Dongfang return - Jereh return should be positive.
+            Inverter/Storage signals (Short Sungrow) should be negative.
+    Price divergence: Dongfang return - Sungrow return should be positive.
     
     This tests DIRECTIONAL ALIGNMENT, not predictive power.
     """
@@ -333,7 +333,7 @@ def run_historical_alignment_test(
     # So both should add positively to thesis score
     thesis_signal_score = grid_sentiment + (-oil_sentiment)  # Grid pos + |Oil neg|
     
-    # Price divergence: Dongfang - Jereh (positive = thesis validated)
+    # Price divergence: Dongfang - Sungrow (positive = thesis validated)
     price_divergence = long_cum - short_cum
     
     return {
@@ -458,7 +458,7 @@ def run_signal_return_analysis(
     
     if "error" not in historical_test:
         print(f"    Dongfang (Long) 3Y return: {historical_test['long_cumulative_return']:.1%}")
-        print(f"    Jereh (Short) 3Y return: {historical_test['short_cumulative_return']:.1%}")
+        print(f"    Sungrow (Short) 3Y return: {historical_test['short_cumulative_return']:.1%}")
         print(f"    Price divergence: {historical_test['price_divergence']:.1%}")
         print(f"    Grid sentiment: {historical_test['grid_signal_sentiment']:.2f}")
         print(f"    Oilfield sentiment: {historical_test['oilfield_signal_sentiment']:.2f}")
@@ -486,7 +486,7 @@ def run_signal_return_analysis(
             long_daily = fetch_daily_returns(LONG_TICKER, study_start, study_end)
             
             if not short_daily.empty:
-                print(f"\n    [Jereh - Short] Event study on {len(historical_dates)} dates:")
+                print(f"\n    [Sungrow - Short] Event study on {len(historical_dates)} dates:")
                 short_event = run_event_study(historical_dates, short_daily, SHORT_TICKER)
                 results["event_study"]["short"] = short_event
                 if "error" not in short_event:
@@ -662,8 +662,8 @@ def _write_md_report(results: Dict, md_path: Path):
         "## Test 1: Historical Thesis Alignment (2023-2025)",
         "",
         "Tests if narrative signals match long-term price divergence. "
-        "Grid signals should be positive; Oilfield signals should be negative. "
-        f"Dongfang Electric ({LONG_TICKER}) should outperform Yantai Jereh ({SHORT_TICKER}).",
+        "Grid signals should be positive; Inverter/Storage signals should be negative. "
+        f"Dongfang Electric ({LONG_TICKER}) should outperform Sungrow ({SHORT_TICKER}).",
         "",
     ])
     
@@ -672,7 +672,7 @@ def _write_md_report(results: Dict, md_path: Path):
     else:
         lines.append(f"- **Period**: {hist['period']}")
         lines.append(f"- **Long (Dongfang) 3Y return**: {hist['long_cumulative_return']:.1%}")
-        lines.append(f"- **Short (Jereh) 3Y return**: {hist['short_cumulative_return']:.1%}")
+        lines.append(f"- **Short (Sungrow) 3Y return**: {hist['short_cumulative_return']:.1%}")
         lines.append(f"- **Price divergence** (Long - Short): {hist['price_divergence']:.1%}")
         lines.append(f"- **Grid signal sentiment**: {hist['grid_signal_sentiment']:.2f}")
         lines.append(f"- **Oilfield signal sentiment**: {hist['oilfield_signal_sentiment']:.2f}")

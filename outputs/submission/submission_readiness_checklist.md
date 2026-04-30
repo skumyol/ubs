@@ -25,3 +25,4 @@
 - `outputs/submission/catalyst_calendar.md`
 - `outputs/submission/valuation_assumptions.md`
 - `outputs/quality/data_quality_report.md`
+- `outputs/submission/sources/`
