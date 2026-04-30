@@ -12,6 +12,15 @@ from src.data_gatherer import clean_text, split_into_paragraphs, load_existing_i
 MIN_DOC_CHARS = 500
 MIN_VALID_YEAR = 2018
 MAX_VALID_YEAR_OFFSET = 1
+STALE_SOURCE_MARKERS = [
+    "halliburton",
+    "schlumberger",
+    "slb",
+    "baker_hughes",
+    "baker hughes",
+    "nov",
+    "hal_",
+]
 
 
 def parse_filename(filename: str) -> dict:
@@ -29,39 +38,72 @@ def parse_filename(filename: str) -> dict:
 
 
 def extract_date_from_filename(filename: str) -> str:
-    """Extract date from filename patterns.
-
-    Examples:
-    - hal_Q3_2025_transcript.txt -> 2025-07-01 (Q3 = July)
-    - slb_Q4_2025_transcript.txt -> 2025-10-01 (Q4 = Oct)
-    - Sieyuan_2024_Annual_Report.txt -> 2024-12-01
-    - DOC_xxx_2025_xxx.txt -> 2025-06-01 (default mid-year)
-    """
-    import re
-
+    """Extract date from filename using various patterns."""
     fname = filename.lower()
-
-    # Quarter patterns: Q1, Q2, Q3, Q4 with year
-    quarter_match = re.search(r'q([1234])[_-]?(\d{4})', fname)
+    
+    # Pattern 1: Q1-Q4 + year (e.g., hal_Q1_2025_transcript.txt)
+    quarter_match = re.search(r'q[1-4]_(\d{4})', fname)
     if quarter_match:
-        quarter = int(quarter_match.group(1))
-        year = int(quarter_match.group(2))
-        month_map = {1: 1, 2: 4, 3: 7, 4: 10}
-        return f"{year}-{month_map[quarter]:02d}-01"
-
-    # Annual report patterns
-    annual_match = re.search(r'(\d{4}).*annual', fname)
-    if annual_match:
-        year = int(annual_match.group(1))
-        return f"{year}-12-01"
-
-    # Year patterns: only extract when preceded by clear date context
-    # (e.g., transcript_2025, report_2025, qna_2025 — but not "grow by 2027")
-    year_match = re.search(r'(?:transcript|report|annual|filing|qna|earnings|confcall|call)_?(20\d{2})', fname)
+        year = quarter_match.group(1)
+        quarter = re.search(r'q([1-4])', fname).group(1)
+        quarter_months = {'1': '01', '2': '04', '3': '07', '4': '10'}
+        return f"{year}-{quarter_months[quarter]}-01"
+    
+    # Pattern 2: Year only (e.g., Company_2024_Annual_Report.txt)
+    year_match = re.search(r'_(\d{4})_', fname)
     if year_match:
-        year = int(year_match.group(1))
-        return f"{year}-06-01"  # Default mid-year
+        return f"{year_match.group(1)}-06-01"  # Default to mid-year
+    
+    # Pattern 3: Year at start (e.g., 2025_Q1_...)
+    year_start = re.match(r'(\d{4})[\-_]', fname)
+    if year_start:
+        return f"{year_start.group(1)}-06-01"
+    
+    # Pattern 4: DOC with year in title
+    doc_year = re.search(r'doc_[a-f0-9]+_(\d{4})', fname)
+    if doc_year:
+        return f"{doc_year.group(1)}-06-01"
+    
+    return ""
 
+
+def extract_date_from_content(content: str) -> str:
+    """Extract a likely publication date from document content.
+    
+    Searches for common date patterns in the first 2000 characters.
+    Returns the most recent valid year found (2020-2027) with default month.
+    """
+    # Search first 2000 chars for year mentions
+    text_sample = content[:2000]
+
+    explicit_date = re.search(
+        r'(?:Published|Date|Last Updated|as of|As of):\s*(\d{4})[-/](\d{1,2})[-/](\d{1,2})',
+        text_sample,
+        re.IGNORECASE,
+    )
+    if explicit_date:
+        year, month, day = explicit_date.groups()
+        return f"{year}-{int(month):02d}-{int(day):02d}"
+    
+    # Look for explicit month-year patterns
+    month_year = re.search(r'(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})', text_sample, re.IGNORECASE)
+    if month_year:
+        month_map = {
+            'january': '01', 'february': '02', 'march': '03', 'april': '04',
+            'may': '05', 'june': '06', 'july': '07', 'august': '08',
+            'september': '09', 'october': '10', 'november': '11', 'december': '12'
+        }
+        month = month_map[month_year.group(1).lower()]
+        year = month_year.group(2)
+        return f"{year}-{month}-01"
+    
+    # Look for "Month DD, YYYY" or "Month YYYY"
+    date_patterns = re.findall(r'(\d{4})', text_sample)
+    valid_years = [y for y in date_patterns if 2020 <= int(y) <= 2027]
+    if valid_years:
+        # Use most recent year found, default to mid-year
+        return f"{max(valid_years)}-06-01"
+    
     return ""
 
 
@@ -72,8 +114,8 @@ def _validate_iso_date(date_str: str) -> str:
         return ""
 
     min_date = pd.Timestamp(f"{MIN_VALID_YEAR}-01-01")
-    # Reject current year and future dates to avoid data integrity issues
-    max_date = pd.Timestamp(datetime.utcnow().year - 1, 12, 31)
+    # Accept dates up to today; reject future dates only.
+    max_date = pd.Timestamp(datetime.utcnow().date())
     if parsed < min_date or parsed > max_date:
         return ""
 
@@ -85,30 +127,41 @@ def infer_metadata(title: str, text: str) -> dict:
     title_lower = title.lower()
     text_lower = text.lower()
 
-    # Oilfield Services takes priority (explicit transcript markers override generic keywords)
-    oilfield_markers = [
-        'halliburton', 'schlumberger', 'slb', 'hal ', 'baker hughes',
-        'oilfield', 'drilling', 'fpso', 'offshore rig', 'fracking', 'completion',
-        'hal_q', 'slb_q', 'drillship',
-    ]
-    if any(k in title_lower or k in text_lower for k in oilfield_markers):
-        sector = "Oilfield Services"
-    # Grid Infrastructure comes second (Sieyuan, grid equipment, power)
-    elif any(k in title_lower or k in text_lower for k in [
-        'sieyuan', 'ge vernova', 'siemens energy', 'hitachi energy', 'abb',
-        'data center', 'grid', 'transmission', 'substation', 'hydropower',
-        'power equipment', 'electricity', 'battery', 'solar', 'wind',
-        'renewable', 'transformer', 'switchgear',
-    ]):
+    if "dongfang" in title_lower or "dongfang electric" in text_lower or "dec-ltd" in text_lower:
         sector = "Grid Infrastructure"
-    # Residual oil/gas content
-    elif any(k in title_lower or k in text_lower for k in ['oil', 'gas', 'lng', 'petroleum']):
+    elif "jereh" in title_lower or "jereh oilfield" in text_lower:
         sector = "Oilfield Services"
+    # Oilfield Services takes priority (explicit transcript markers override generic keywords)
     else:
-        sector = "Other"
+        oilfield_markers = [
+            'halliburton', 'schlumberger', 'slb', 'hal ', 'baker hughes',
+            'oilfield', 'drilling', 'fpso', 'offshore rig', 'fracking', 'completion',
+            'hal_q', 'slb_q', 'drillship',
+        ]
+        if any(k in title_lower or k in text_lower for k in oilfield_markers):
+            sector = "Oilfield Services"
+    # Grid Infrastructure comes second (grid equipment, power)
+        elif any(k in title_lower or k in text_lower for k in [
+            'ge vernova', 'siemens energy', 'hitachi energy', 'abb',
+            'data center', 'grid', 'transmission', 'substation', 'hydropower',
+            'power equipment', 'electricity', 'battery', 'solar', 'wind',
+            'renewable', 'transformer', 'switchgear',
+        ]):
+            sector = "Grid Infrastructure"
+    # Residual oil/gas content
+        elif any(k in title_lower or k in text_lower for k in ['oil', 'gas', 'lng', 'petroleum']):
+            sector = "Oilfield Services"
+        else:
+            sector = "Other"
 
     # Infer theme based on keywords
-    if any(k in title_lower for k in ['data center', 'datacenter', 'ai', 'cloud']):
+    if "dongfang" in title_lower:
+        theme = "Dongfang Financials"
+    elif "jereh" in title_lower:
+        theme = "Jereh Financials"
+    elif "pair analysis" in title_lower:
+        theme = "Pair Analysis"
+    elif any(k in title_lower for k in ['data center', 'datacenter', 'ai', 'cloud']):
         theme = "AI/Data Center Demand"
     elif any(k in title_lower for k in ['transmission', 'grid', 'substation', 'cable']):
         theme = "Grid Investment"
@@ -172,6 +225,10 @@ def rebuild_index():
         if text_file.name.startswith('.'):
             continue
 
+        lowered_name = text_file.name.lower()
+        if any(marker in lowered_name for marker in STALE_SOURCE_MARKERS):
+            continue
+
         parsed = parse_filename(text_file.name)
         doc_id = parsed["doc_id"]
         title = parsed["title"]
@@ -186,7 +243,11 @@ def rebuild_index():
         except Exception:
             continue
 
-        metadata = infer_metadata(title, sample)
+        sample_lower = sample.lower()
+        if any(marker in sample_lower for marker in STALE_SOURCE_MARKERS):
+            continue
+
+        metadata = infer_metadata(title, content[:3000])
 
         # Try to get original published date from existing index
         original_published = existing_index.get(doc_id, {}).get('published', '')
@@ -207,6 +268,11 @@ def rebuild_index():
                 date_str = extract_date_from_filename(text_file.name)
         else:
             date_str = extract_date_from_filename(text_file.name)
+            # Fallback: try to extract date from content if filename has no date
+            if not date_str:
+                date_str = extract_date_from_content(content)
+                if date_str:
+                    date_source = "content_inferred"
 
         validated_date = _validate_iso_date(date_str)
         if validated_date:
@@ -218,13 +284,19 @@ def rebuild_index():
             date_quality = "low"
             date_source = "undated"
 
+        company = "Various"
+        if "dongfang" in title.lower() or "dongfang electric" in content[:1000].lower():
+            company = "Dongfang Electric"
+        elif "jereh" in title.lower() or "jereh oilfield" in content[:1000].lower():
+            company = "Yantai Jereh"
+
         rows.append({
             "doc_id": doc_id,
-            "source_name": "GDELT/RSS",
+            "source_name": title if company != "Various" else "GDELT/RSS",
             "url": original_url,
             "file_path": str(text_file),
             "title": title,
-            "company": "Various",
+            "company": company,
             "sector": metadata["sector"],
             "document_type": metadata["document_type"],
             "theme": metadata["theme"],

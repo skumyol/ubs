@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build submission-hardening artifacts for quant/trader review."""
+"""Build submission-hardening artifacts for the active pair."""
 
 from pathlib import Path
 from typing import Dict
@@ -7,6 +7,7 @@ from typing import Dict
 import pandas as pd
 
 from src.config import OUTPUTS_DIR, PROCESSED_DIR
+from src.pair_config import LONG_LEG, SHORT_LEG, VALUATION_FALLBACK
 
 
 def _safe_read(path: Path) -> pd.DataFrame:
@@ -18,11 +19,10 @@ def _safe_read(path: Path) -> pd.DataFrame:
         return pd.DataFrame()
 
 
-def _val_or_default(df: pd.DataFrame, key: str, default: str = "N/A") -> str:
+def _val_or_default(df: pd.DataFrame, key: str, default: str) -> str:
     if df.empty or key not in df.columns:
         return default
-    value = df.iloc[0][key]
-    return str(value)
+    return str(df.iloc[0][key])
 
 
 def build_submission_pack() -> Dict:
@@ -34,15 +34,14 @@ def build_submission_pack() -> Dict:
     trader = _safe_read(valuation_dir / "trader_analysis.csv")
     long_sc = _safe_read(valuation_dir / "long_scenarios.csv")
     short_sc = _safe_read(valuation_dir / "short_scenarios.csv")
-    peer = _safe_read(valuation_dir / "peer_comps.csv")
 
-    long_ret = _val_or_default(pair, "long_expected_return_pct", "0")
-    short_move = _val_or_default(pair, "short_expected_move_pct", "0")
-    pair_ret = _val_or_default(pair, "pair_spread_return_pct", "0")
+    long_ret = _val_or_default(pair, "long_expected_return_pct", str(VALUATION_FALLBACK["long_expected_return"]))
+    short_move = _val_or_default(pair, "short_expected_move_pct", str(VALUATION_FALLBACK["short_expected_return"]))
+    pair_ret = _val_or_default(pair, "pair_spread_return_pct", str(VALUATION_FALLBACK["pair_spread_return"]))
 
-    rec_notional_mm = _val_or_default(trader, "position_sizing_recommended_notional_mm", "N/A")
-    rec_position_pct = _val_or_default(trader, "position_sizing_recommended_position_pct", "N/A")
-    pair_vol = _val_or_default(trader, "volatilities_pair_vol", "N/A")
+    rec_notional_mm = _val_or_default(trader, "recommended_notional_mm", "N/A")
+    rec_position_pct = _val_or_default(trader, "recommended_position_pct", "N/A")
+    pair_vol = _val_or_default(trader, "pair_vol_annual", "N/A")
     net_carry_low = _val_or_default(trader, "carry_cost_low_borrow_net_carry_cost", "N/A")
     net_carry_high = _val_or_default(trader, "carry_cost_high_borrow_net_carry_cost", "N/A")
 
@@ -51,14 +50,14 @@ def build_submission_pack() -> Dict:
         "",
         "## Position Framework",
         "",
-        "- Structure: Long Sieyuan / Short Halliburton",
+        f"- Structure: Long {LONG_LEG.name} / Short {SHORT_LEG.name}",
         f"- Expected spread return (prob-weighted): {pair_ret}%",
         f"- Recommended notional: ${rec_notional_mm}mm ({rec_position_pct}% of portfolio)",
         f"- Pair annualized volatility estimate: {pair_vol}%",
         "",
         "## Entry & Rebalance",
         "",
-        "- Entry trigger: open when HAL near resistance and Sieyuan not overbought.",
+        f"- Entry trigger: open when {SHORT_LEG.name} shows weakness and {LONG_LEG.name} is not overbought.",
         "- Rebalance: monthly or when leg weight drifts >10% from target.",
         "- Holding window: 6-12 months unless thesis invalidation occurs.",
         "",
@@ -75,8 +74,8 @@ def build_submission_pack() -> Dict:
         "",
         "## Primary Risks",
         "",
-        "- Oil shock risk: HAL rallies despite weak operational quality.",
         "- Grid policy delay: pushes out order conversion for the long leg.",
+        f"- {SHORT_LEG.name} recovery: if fossil-adjacent activity rebounds, the short leg can squeeze.",
         "- China multiple compression: hurts long valuation even with stable earnings.",
         "",
         "## Risk Limits",
@@ -97,10 +96,10 @@ def build_submission_pack() -> Dict:
         "",
         "| Window | Catalyst | Expected Spread Impact | What Confirms Thesis |",
         "|---|---|---|---|",
-        "| Q2 earnings | HAL margin guidance / rig commentary | Positive if weak | Lower service margin outlook |",
-        "| Q2-Q3 | Sieyuan overseas order disclosures | Positive if strong | Backlog/order momentum acceleration |",
+        f"| Q2 earnings | {LONG_LEG.name} operating update | Positive if beat | Revenue growth confirmation |",
+        f"| Q2-Q3 | {LONG_LEG.name} overseas order disclosures | Positive if strong | Backlog/order momentum acceleration |",
         "| Policy cycle | Grid capex announcements | Positive if supportive | Multi-year grid budget visibility |",
-        "| Q3 updates | Oil majors capex tone | Positive if cautious | Slower OFS demand outlook |",
+        f"| Q2-Q3 | {SHORT_LEG.name} order updates / activity | Positive if weak | Fossil demand slowdown |",
     ]
     (submission_dir / "catalyst_calendar.md").write_text("\n".join(catalyst_calendar), encoding="utf-8")
 
@@ -115,7 +114,7 @@ def build_submission_pack() -> Dict:
         "",
         "## Scenario Inputs",
         "",
-        "### Long (Sieyuan)",
+        f"### Long ({LONG_LEG.name})",
     ]
     if not long_sc.empty:
         valuation_assumptions.append("| Scenario | EPS Growth | Target P/E | Target Price | Probability |")
@@ -125,7 +124,7 @@ def build_submission_pack() -> Dict:
                 f"| {row['scenario']} | {row['eps_growth']} | {row['target_pe']} | {row['target_price']} | {row['probability']} |"
             )
 
-    valuation_assumptions.extend(["", "### Short (HAL)"])
+    valuation_assumptions.extend(["", f"### Short ({SHORT_LEG.name})"])
     if not short_sc.empty:
         valuation_assumptions.append("| Scenario | EPS Growth | Target P/E | Target Price | Probability |")
         valuation_assumptions.append("|---|---:|---:|---:|---:|")
@@ -134,12 +133,14 @@ def build_submission_pack() -> Dict:
                 f"| {row['scenario']} | {row['eps_growth']} | {row['target_pe']} | {row['target_price']} | {row['probability']} |"
             )
 
-    valuation_assumptions.extend([
-        "",
-        "## Peer Basis",
-        "",
-        "Target multiples are anchored to current peer comp ranges generated in `peer_comps.csv`, then stress-tested by scenario.",
-    ])
+    valuation_assumptions.extend(
+        [
+            "",
+            "## Peer Basis",
+            "",
+            "Target multiples are anchored to current peer comp ranges generated in `peer_comps.csv`, then stress-tested by scenario.",
+        ]
+    )
     (submission_dir / "valuation_assumptions.md").write_text("\n".join(valuation_assumptions), encoding="utf-8")
 
     checklist = [

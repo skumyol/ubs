@@ -1,8 +1,8 @@
 category,Grid Infrastructure_count,Grid Infrastructure_sentiment,Oilfield Services_count,Oilfield Services_sentiment
-Electricity Demand,62,0.29,13,0.69
-Grid Resilience,23,-0.04,0,0.0
-Margin/Earnings Risk,0,0.0,58,-0.33
-Not Relevant,13,0.0,97,0.18
-Oil Supply Disruption,0,0.0,7,-0.14
-Oilfield Cost Pressure,0,0.0,27,-0.19
-Policy-Backed Capex,1,0.0,9,0.33
+Electricity Demand,168,0.27,5,0.4
+Grid Resilience,40,0.22,0,0.0
+Margin/Earnings Risk,12,-0.58,3,-0.33
+Not Relevant,86,-0.03,43,0.0
+Oil Supply Disruption,0,0.0,10,-0.7
+Oilfield Cost Pressure,1,0.0,0,0.0
+Policy-Backed Capex,35,0.37,7,0.14

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sieyuan Electric EPS Sensitivity Analysis.
+"""Dongfang Electric (1072.HK) EPS Sensitivity Analysis.
 
 Models EPS sensitivity to:
 - Overseas revenue mix (%)
@@ -21,20 +21,19 @@ import yfinance as yf
 OUTPUT_DIR = Path("outputs/charts")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Sieyuan base case assumptions (from HKEX filing analysis)
-# Market check: ¥222 price / 55x P/E = ~¥4.03 market-implied EPS
-# Our base case EPS below is conservative/trailing; the gap vs market pricing
-# reflects the growth optionality (overseas expansion + margin expansion) that
-# the market is already pricing in. The bull case in our scenarios closes this gap.
+# Dongfang Electric base case assumptions (from 2025 annual report)
+# 2025 actuals: Revenue RMB 78.61B (+12.8% YoY), Net Profit RMB 3.83B (+31.1% YoY)
+# EPS ~RMB 1.15 on roughly 3.33B shares.
+# Base case reflects normalized FCF generation from RMB 140.31B order backlog
 BASE_CASE = {
-    "revenue_cny_mm": 12000,  # ~12B CNY revenue (forward estimate, market-implied ~¥4 EPS)
-    "overseas_mix": 0.30,     # 30% overseas revenue (growing, up from 25%)
-    "gross_margin": 0.34,     # 34% gross margin (improving on overseas mix)
-    "r_and_d_pct": 0.06,      # 6% R&D
-    "sg_and_a_pct": 0.11,     # 11% SG&A (operating leverage)
-    "tax_rate": 0.15,         # 15% effective tax (China high-tech)
-    "shares_outstanding": 780,  # ~780M shares
-    "fx_cny_usd": 7.2,        # CNY/USD rate
+    "revenue_cny_mm": 78610,  # ~78.6B CNY revenue (2025 actual, +12.8% YoY)
+    "overseas_mix": 0.25,     # 25% overseas revenue (growing toward 30%)
+    "gross_margin": 0.18,     # ~18% gross margin (2025 actual, improving)
+    "r_and_d_pct": 0.05,      # ~5% R&D
+    "sg_and_a_pct": 0.09,     # ~9% SG&A
+    "tax_rate": 0.15,         # 15% effective tax (SOE + high-tech)
+    "shares_outstanding": 3330,  # ~3.33B shares
+    "fx_cny_usd": 7.2,        # CNY/USD rate (HKD leg)
 }
 
 # Overseas vs domestic margin differential
@@ -222,7 +221,7 @@ def create_tornado_chart(sensitivities: Dict[str, pd.DataFrame], output_path: Pa
     ax.set_yticks(y_pos)
     ax.set_yticklabels([var_labels.get(v, v) for v in impact_df["variable"]])
     ax.set_xlabel("EPS (CNY)")
-    ax.set_title("Sieyuan EPS Sensitivity Analysis\n(Base case marked with |)", 
+    ax.set_title("Dongfang Electric EPS Sensitivity Analysis\n(Base case marked with |)", 
                  fontsize=14, fontweight='bold')
     ax.grid(True, axis='x', alpha=0.3)
     ax.axvline(x=impact_df["base_eps"].iloc[0], color='black', linestyle='--', alpha=0.5, label='Base case')
@@ -325,7 +324,7 @@ def save_sensitivity_tables(sensitivities: Dict[str, pd.DataFrame], output_dir: 
 def main():
     """Run full sensitivity analysis."""
     print("="*60)
-    print("SIEYUAN EPS SENSITIVITY ANALYSIS")
+    print("DONGFANG ELECTRIC EPS SENSITIVITY ANALYSIS")
     print("="*60)
     
     # Base case EPS

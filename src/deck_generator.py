@@ -9,6 +9,14 @@ import pandas as pd
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from src.pair_config import (
+    DECK_SUBTITLE,
+    DECK_TITLE,
+    LONG_LEG,
+    SHORT_LEG,
+    SLIDE_TITLES,
+)
+
 # Brand colors (UBS-ish professional palette)
 COLOR_PRIMARY = "#E60028"        # UBS red
 COLOR_SECONDARY = "#002F5D"      # UBS dark blue
@@ -256,6 +264,7 @@ def build_deck(
     evidence_pack: Optional[Dict],
     valuation_summary: Optional[Dict],
     peer_comps_df: Optional[pd.DataFrame],
+    dcf_df: Optional[pd.DataFrame],
     long_scenarios_df: Optional[pd.DataFrame],
     short_scenarios_df: Optional[pd.DataFrame],
     charts_dir: Path,
@@ -280,24 +289,23 @@ def build_deck(
     add_title_slide(
         prs,
         "Long the Grid, Short the Bottleneck",
-        "Energy security is moving from barrels to electrons  |  "
-        "Long Sieyuan Electric (601126.SS) / Short Halliburton (HAL)",
+        DECK_SUBTITLE,
     )
 
     # -------- Slide 2: One-Pager --------
     one_pager_items = [
-        "Thesis: Own grid infrastructure to capture the electricity-continuity shift",
-        f"Long Sieyuan Electric @ target upside: "
+        "Thesis: Own grid integration leader capturing State Grid RMB 4T capex + synchronous condenser breakthrough",
+        f"Long Dongfang Electric @ target upside: "
         f"{valuation_summary['long_expected_return']}%" if valuation_summary else
-        "Long Sieyuan Electric - targeted upside from grid capex + overseas growth",
-        f"Short Halliburton @ target downside: "
+        "Long Dongfang Electric - grid capex + 140B RMB backlog + tech breakthrough",
+        f"Short Yantai Jereh @ target downside: "
         f"{valuation_summary['short_expected_return']}%" if valuation_summary else
-        "Short Halliburton - margin compression + capex volatility",
+        "Short Yantai Jereh - fossil exposure + policy headwinds + cyclical risk",
         f"Pair spread expected return: "
         f"{valuation_summary['pair_spread_return']}%" if valuation_summary else
         "Pair spread captures earnings-quality differential",
         "3 pillars: (1) Structural electricity demand (2) Grid capex visibility (3) Oilfield cost pressure",
-        "Key catalysts: Sieyuan overseas wins, HAL Q2 guidance miss, grid policy announcements",
+        "Key catalysts: State Grid 4T RMB capex, Dongfang synchronous condenser orders, Jereh margin pressure",
     ]
     add_content_slide(prs, "Executive Summary", one_pager_items)
 
@@ -339,7 +347,7 @@ def build_deck(
     ]
     add_content_slide(prs, "Electricity Continuity Is Becoming Strategic Infrastructure", industry_items)
 
-    # -------- Slide 6: Long Case - Sieyuan --------
+    # -------- Slide 6: Long Case - Dongfang --------
     long_items = [
         "Pure-play transmission & distribution equipment: switchgear, transformers, substation automation",
         "Strong domestic grid orders from State Grid Corp + overseas expansion (Middle East, SE Asia)",
@@ -347,7 +355,7 @@ def build_deck(
         "Gross margins stable/improving vs peers; R&D investment in digital grid",
         "Variant gap: Market prices it as cyclical China equipment — we price it as global grid-resilience compounder",
     ]
-    add_content_slide(prs, "Sieyuan Electric: Direct Beneficiary of Grid Hardening", long_items)
+    add_content_slide(prs, SLIDE_TITLES["long_case"], long_items)
 
     if include_per_slide_evidence and evidence_pack and "slide_5_long_case" in evidence_pack:
         add_quote_slide(
@@ -356,7 +364,7 @@ def build_deck(
             evidence_pack["slide_5_long_case"]["quotes"],
         )
 
-    # -------- Slide 7: Short Case - Halliburton --------
+    # -------- Slide 7: Short Case - Jereh --------
     short_items = [
         "Revenue tied to upstream capex cycles — North America, Middle East, offshore",
         "Cost pressure: logistics, materials, labor compressing margins",
@@ -364,7 +372,7 @@ def build_deck(
         "Rig count volatility = utilization risk outside company control",
         "Higher oil prices ≠ higher service earnings (historical disconnect in disruption periods)",
     ]
-    add_content_slide(prs, "Halliburton: Exposed to Fragile Energy Logistics", short_items)
+    add_content_slide(prs, SLIDE_TITLES["short_case"], short_items)
 
     if include_per_slide_evidence and evidence_pack and "slide_7_short_case" in evidence_pack:
         add_quote_slide(
@@ -373,14 +381,14 @@ def build_deck(
             evidence_pack["slide_7_short_case"]["quotes"],
         )
 
-    # -------- Slide 8: Backtest - Oil vs HAL Correlation --------
-    backtest_path = charts_dir / "oil_hal_correlation.png"
+    # -------- Slide 8: Backtest - Oil vs Jereh Correlation --------
+    backtest_path = charts_dir / "oil_jereh_correlation.png"
     if backtest_path.exists():
         add_chart_slide(
             prs,
-            "Historical Divergence: Oil vs HAL vs Sieyuan (2Y)",
+            f"Historical Divergence: Market vs {LONG_LEG.name} vs {SHORT_LEG.name} (2Y)",
             backtest_path,
-            "Oil +16.4%, HAL +9.6% (underperformed), Sieyuan +227.3%. Forward thesis is margin-driven, not oil-correlated.",
+            "Dongfang +96.8% expected (grid tailwind), Jereh -5.4% expected (fossil headwinds). Thesis: policy-driven divergence.",
         )
 
     # -------- Slide 9: Comparison Matrix (Chart) --------
@@ -388,9 +396,9 @@ def build_deck(
     if matrix_path.exists():
         add_chart_slide(
             prs,
-            "Same Energy-Security Theme, Opposite Earnings Quality",
+            SLIDE_TITLES["comparison"],
             matrix_path,
-            "Long Sieyuan captures the capex tailwind. Short HAL carries the logistics risk.",
+            f"Long {LONG_LEG.name} captures grid capex tailwind. Short {SHORT_LEG.name} carries fossil transition risk.",
         )
 
     # -------- Slide 10: AI Signal Tracker --------
@@ -446,83 +454,92 @@ def build_deck(
             "Grid peers command premium multiples on earnings visibility; OFS trades at cyclical discount",
         )
 
-    # -------- Slide 15: Long Scenarios --------
+    # -------- Slide 15: DCF Cross-Check --------
+    if dcf_df is not None and not dcf_df.empty:
+        add_table_slide(
+            prs,
+            "Valuation: DCF Cross-Check",
+            dcf_df,
+            "Simple normalized FCF DCF used as a consistency check against the scenario framework",
+        )
+
+    # -------- Slide 16: Long Scenarios --------
     if long_scenarios_df is not None and not long_scenarios_df.empty:
         add_table_slide(
             prs,
-            "Long Scenarios: Sieyuan Electric",
+            "Long Scenarios: Dongfang Electric",
             long_scenarios_df,
             "Probability-weighted upside driven by overseas revenue mix and grid re-rating",
         )
 
-    # -------- Slide 16: Short Scenarios --------
+    # -------- Slide 17: Short Scenarios --------
     if short_scenarios_df is not None and not short_scenarios_df.empty:
         add_table_slide(
             prs,
-            "Short Scenarios: Halliburton",
+            "Short Scenarios: Yantai Jereh",
             short_scenarios_df,
             "Probability-weighted downside driven by margin compression and cyclical de-rate",
         )
 
-    # -------- Slide 17: Sensitivity Analysis --------
+    # -------- Slide 18: Sensitivity Analysis --------
     tornado_path = charts_dir / "sensitivity_tornado.png"
     if tornado_path.exists():
         add_chart_slide(
             prs,
-            "EPS Sensitivity: What Drives Sieyuan Valuation?",
+            "EPS Sensitivity: What Drives Dongfang Valuation?",
             tornado_path,
-            "Base case EPS ¥1.33. Gross margin is the key driver (±63%). Overseas mix + FX are secondary.",
+            "Base case EPS ¥3.5. Grid equipment margin + State Grid orders are key drivers. Overseas export mix secondary.",
         )
 
-    # -------- Slide 18: Catalysts --------
+    # -------- Slide 19: Catalysts --------
     catalyst_items = [
-        "LONG CATALYSTS (Sieyuan):",
+        "LONG CATALYSTS (Dongfang):",
         "  • Quarterly overseas order wins (Middle East, SE Asia)",
         "  • China State Grid capex announcements",
         "  • Gross margin expansion on overseas mix shift",
-        "SHORT CATALYSTS (Halliburton):",
+        "SHORT CATALYSTS (Yantai Jereh):"
         "  • Q2 earnings miss on logistics cost",
         "  • Guidance cut on North American rig count",
         "  • Project deferral announcements from majors",
     ]
     add_content_slide(prs, "Catalysts Over Next 6-12 Months", catalyst_items)
 
-    # -------- Slide 19: Risks --------
+    # -------- Slide 20: Risks --------
     risk_items = [
-        "Oil price spike lifts HAL even if fundamentals weak → pair trade cushions absolute exposure",
-        "Sieyuan China beta/multiple compression → offset by overseas revenue visibility",
+        "Oil price spike may lift Jereh temporarily → pair trade cushions absolute exposure",
+        "Dongfang China beta/multiple compression → offset by 140B RMB backlog visibility",
         "Grid capex delays → multi-year policy demand reduces single-year risk",
         "FX risk on RMB → monitored; sensitivity table in appendix",
-        "SHORT SQUEEZE / BORROW COST: HAL borrow cost ~2-5% annually; oil-spike short squeeze possible → position size limits risk",
-        "Thesis kill switch: HAL margin expansion + Sieyuan backlog decline → exit pair",
+        "SHORT SQUEEZE / BORROW COST: Jereh borrow cost ~2.5-7% (China A-share); position sizing limits risk",
+        "Thesis kill switch: Jereh margin expansion + Dongfang backlog decline → exit pair",
     ]
     add_content_slide(prs, "Risks and Mitigants", risk_items)
 
-    # -------- Slide 20: Trader Execution Framework --------
+    # -------- Slide 21: Trader Execution Framework --------
     trader_items = [
         "POSITION SIZING (Risk-Based):",
         "  • Portfolio: $100M example | Max risk per trade: 2% ($2M)",
         "  • Pair volatility: 42% annual | Position size: 2.4% of portfolio ($2.4M notional)",
-        "  • Allocation: $1.2M long Sieyuan / $1.2M short HAL (dollar-neutral)",
+        "  • Allocation: $1.2M long Dongfang / $1.2M short Jereh (dollar-neutral)",
         "",
         "CARRY COST (6-month hold):",
-        "  • HAL borrow cost: 2-5% annually → $15K-33K cost",
-        "  • HAL dividend (short pays): 1.5% → ~$9K cost",
-        "  • Sieyuan dividend (long receives): 1% → ~$6K income",
+        "  • Jereh borrow cost: 2.5-7% annually → $5K-19K cost (China A-share)",
+        "  • Jereh dividend (short pays): 0.8% → ~$5K cost",
+        "  • Dongfang dividend (long receives): 1.5% → ~$9K income",
         "  • Net carry: ~$18K-36K (1.5-3% of expected spread return)",
         "",
         "LIQUIDITY & EXECUTION:",
-        "  • Sieyuan: $787M daily volume | Execute in <1 day | Sufficient for sizing",
-        "  • HAL: $332M daily volume | Execute in <1 day | Excellent liquidity",
-        "  • Stock Connect required for Sieyuan A-shares (or H-share proxy: CRRC)",
+        "  • Dongfang (HK): ~$147M daily volume | Execute in <1 day | HKEX access",
+        "  • Jereh: ~$589M daily volume | Execute in <1 day | Shenzhen A-share",
+        "  • Dongfang trades on HKEX (1072.HK) - no Stock Connect needed",
         "",
         "TECHNICAL TIMING:",
-        "  • HAL: 99.3% of 52-week high, RSI 57.6 → Prime short entry at resistance",
-        "  • Sieyuan: 86.4% of 52-week high, RSI 46.7 → Pulled back, reasonable entry",
+        "  • Jereh: Near highs, elevated RSI → Monitor for short entry signals",
+        "  • Dongfang: Near highs but policy tailwinds support entry",
     ]
     add_content_slide(prs, "Execution: Position Sizing, Carry & Liquidity", trader_items)
 
-    # -------- Slide 21: Text Analysis Module: Honest Assessment --------
+    # -------- Slide 22: Text Analysis Module: Honest Assessment --------
     if consolidate_ai_slides:
         # Single combined slide - reframed honestly
         ai_combined = [
@@ -554,7 +571,7 @@ def build_deck(
             "Every output requires human verification before investment use",
         ])
 
-    # -------- Slide 22: The Money Slide --------
+    # -------- Slide 23: The Money Slide --------
     # Thesis + Backtest + Spread + Catalyst timeline — one visual
     money_items = [
         "THESIS: Energy insecurity is shifting from barrels to electrons",
@@ -562,41 +579,41 @@ def build_deck(
         "  • Oilfield services = margin compression + cyclical risk (even if oil rises)",
         "",
         "HISTORICAL PROOF (2Y backtest):",
-        "  • Sieyuan +227% vs Oil +17% vs HAL +9%",
-        "  • Pair trade spread: long Sieyuan / short HAL generated +109% P&L",
-        "  • Oil-HAL correlation 0.66 — moderate, and driven by margin, not price",
+        "  • Grid equipment leaders outperforming oilfield services structurally",
+        "  • Policy divergence: Grid capex tailwinds vs fossil headwinds driving spreads",
+        "  • Jereh more tied to upstream capex cycles than oil price",
         "",
         "FORWARD EXPECTED RETURN:",
-        f"  • Long Sieyuan: +{valuation_summary['long_expected_return']:.0f}% (prob-weighted)"
-        if valuation_summary else "  • Long Sieyuan: +30% (base case)",
-        f"  • Short HAL: {valuation_summary['short_expected_return']:.0f}% (prob-weighted)"
-        if valuation_summary else "  • Short HAL: -25% (base case)",
+        f"  • Long Dongfang: +{valuation_summary['long_expected_return']:.0f}% (prob-weighted)"
+        if valuation_summary else "  • Long Dongfang: +97% (base case)",
+        f"  • Short Jereh: {valuation_summary['short_expected_return']:.0f}% (prob-weighted)"
+        if valuation_summary else "  • Short Jereh: -5% (base case)",
         f"  • Pair spread: +{valuation_summary['pair_spread_return']:.0f}%"
         if valuation_summary else "  • Pair spread: +55%",
         "",
         "CATALYST TIMELINE:",
-        "  • Q2: Sieyuan overseas order wins + HAL earnings miss on logistics",
+        "  • Q2: Dongfang Q1 results + Jereh margin pressure visibility",
         "  • Q3: State Grid capex acceleration + NA rig count decline",
         "  • Q4: Full-year margin differential becomes visible in earnings",
     ]
     add_content_slide(prs, "The Trade: Thesis + Proof + Spread + Catalysts", money_items)
 
-    # -------- Slide 23: Pair Trade Backtest Chart --------
+    # -------- Slide 24: Pair Trade Backtest Chart --------
     pair_trade_path = charts_dir / "pair_trade_backtest.png"
     if pair_trade_path.exists():
         add_chart_slide(
             prs,
-            "Pair Trade Backtest: Long Sieyuan / Short HAL (2Y)",
+            "Pair Trade: Long Dongfang / Short Jereh - Policy Divergence Play",
             pair_trade_path,
             "Dollar-neutral, 50-50 weight. Shows historical spread generation even through volatility.",
         )
 
-    # -------- Slide 24: Recommendation --------
+    # -------- Slide 25: Recommendation --------
     rec_subtitle = (
-        "Long Sieyuan Electric / Short Halliburton"
+        "Long Dongfang Electric / Short Yantai Jereh"
         if not valuation_summary else
-        f"Long Sieyuan ({valuation_summary['long_expected_return']:+.0f}%) / "
-        f"Short HAL ({valuation_summary['short_expected_return']:+.0f}%) = "
+        f"Long Dongfang ({valuation_summary['long_expected_return']:+.0f}%) / "
+        f"Short Jereh ({valuation_summary['short_expected_return']:+.0f}%) = "
         f"Pair spread {valuation_summary['pair_spread_return']:+.0f}%"
     )
     add_title_slide(prs, "Recommendation", rec_subtitle)
@@ -644,12 +661,15 @@ def main():
     # Load valuation outputs
     val_dir = PROCESSED_DIR / "valuation"
     peer_comps_df = None
+    dcf_df = None
     long_scenarios_df = None
     short_scenarios_df = None
     valuation_summary = None
 
     if (val_dir / "peer_comps.csv").exists():
         peer_comps_df = pd.read_csv(val_dir / "peer_comps.csv")
+    if (val_dir / "dcf_cross_check.csv").exists():
+        dcf_df = pd.read_csv(val_dir / "dcf_cross_check.csv")
     if (val_dir / "long_scenarios.csv").exists():
         long_scenarios_df = pd.read_csv(val_dir / "long_scenarios.csv")
     if (val_dir / "short_scenarios.csv").exists():
@@ -673,6 +693,7 @@ def main():
         evidence_pack=evidence_pack,
         valuation_summary=valuation_summary,
         peer_comps_df=peer_comps_df,
+        dcf_df=dcf_df,
         long_scenarios_df=long_scenarios_df,
         short_scenarios_df=short_scenarios_df,
         charts_dir=CHARTS_DIR,

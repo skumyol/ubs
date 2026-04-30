@@ -1,7 +1,7 @@
-"""Signal-return correlation analysis.
+"""Signal-return correlation analysis for Energy Transition pair.
 
 Tests whether AI-classified signals predict or align with stock returns
-using multiple methodologies to maximize data utilization.
+for LONG Dongfang Electric (1072.HK) / SHORT Yantai Jereh (002353.SZ).
 
 Methodologies (in order of data efficiency):
   1. EVENT STUDY: For each document date, test returns in [-7d, +7d, +30d, +90d] windows
@@ -23,9 +23,11 @@ import yfinance as yf
 from scipy import stats
 
 
-# Ticker mapping
-HAL_TICKER = "HAL"
-SIEYUAN_TICKER = "002028.SZ"
+# Ticker mapping for Energy Transition pair
+# LONG: Dongfang Electric (HK listed - more reliable data)
+# SHORT: Yantai Jereh (Shenzhen A-share)
+LONG_TICKER = "1072.HK"
+SHORT_TICKER = "002353.SZ"
 
 
 def aggregate_monthly_signals(classified_df: pd.DataFrame) -> pd.DataFrame:
@@ -297,21 +299,22 @@ def run_historical_alignment_test(
 ) -> Dict:
     """Test if thesis signals align with long-term price divergence.
     
-    Thesis: Grid signals should be positive, Oilfield signals should be negative.
-    Price divergence: Sieyuan return - HAL return should be positive.
+    Thesis: Grid signals (Long Dongfang) should be positive, 
+            Oilfield signals (Short Jereh) should be negative.
+    Price divergence: Dongfang return - Jereh return should be positive.
     
     This tests DIRECTIONAL ALIGNMENT, not predictive power.
     """
     # Fetch full historical price data
-    hal_daily = fetch_daily_returns(HAL_TICKER, start_date, end_date)
-    sieyuan_daily = fetch_daily_returns(SIEYUAN_TICKER, start_date, end_date)
+    long_daily = fetch_daily_returns(LONG_TICKER, start_date, end_date)
+    short_daily = fetch_daily_returns(SHORT_TICKER, start_date, end_date)
     
-    if hal_daily.empty or sieyuan_daily.empty:
+    if long_daily.empty or short_daily.empty:
         return {"error": "Could not fetch historical price data"}
     
     # Calculate cumulative returns over the full period
-    hal_cum = (1 + hal_daily[f'{HAL_TICKER}_return']).prod() - 1
-    sieyuan_cum = (1 + sieyuan_daily[f'{SIEYUAN_TICKER}_return']).prod() - 1
+    long_cum = (1 + long_daily[f'{LONG_TICKER}_return']).prod() - 1
+    short_cum = (1 + short_daily[f'{SHORT_TICKER}_return']).prod() - 1
     
     # Calculate thesis-consistent signals
     grid_categories = ["Grid Resilience", "Electricity Demand", "Policy-Backed Capex"]
@@ -330,13 +333,13 @@ def run_historical_alignment_test(
     # So both should add positively to thesis score
     thesis_signal_score = grid_sentiment + (-oil_sentiment)  # Grid pos + |Oil neg|
     
-    # Price divergence: Sieyuan - HAL
-    price_divergence = sieyuan_cum - hal_cum
+    # Price divergence: Dongfang - Jereh (positive = thesis validated)
+    price_divergence = long_cum - short_cum
     
     return {
         "period": f"{start_date} to {end_date}",
-        "hal_cumulative_return": round(hal_cum, 4),
-        "sieyuan_cumulative_return": round(sieyuan_cum, 4),
+        "long_cumulative_return": round(long_cum, 4),
+        "short_cumulative_return": round(short_cum, 4),
         "price_divergence": round(price_divergence, 4),
         "grid_signal_sentiment": round(grid_sentiment, 3),
         "oilfield_signal_sentiment": round(oil_sentiment, 3),
@@ -454,8 +457,8 @@ def run_signal_return_analysis(
     results["historical_alignment"] = historical_test
     
     if "error" not in historical_test:
-        print(f"    HAL 3Y return: {historical_test['hal_cumulative_return']:.1%}")
-        print(f"    Sieyuan 3Y return: {historical_test['sieyuan_cumulative_return']:.1%}")
+        print(f"    Dongfang (Long) 3Y return: {historical_test['long_cumulative_return']:.1%}")
+        print(f"    Jereh (Short) 3Y return: {historical_test['short_cumulative_return']:.1%}")
         print(f"    Price divergence: {historical_test['price_divergence']:.1%}")
         print(f"    Grid sentiment: {historical_test['grid_signal_sentiment']:.2f}")
         print(f"    Oilfield sentiment: {historical_test['oilfield_signal_sentiment']:.2f}")
@@ -479,30 +482,30 @@ def run_signal_return_analysis(
             study_start = (min(historical_dates) - pd.Timedelta(days=120)).strftime("%Y-%m-%d")
             study_end = (max(historical_dates) + pd.Timedelta(days=120)).strftime("%Y-%m-%d")
             
-            hal_daily = fetch_daily_returns(HAL_TICKER, study_start, study_end)
-            sieyuan_daily = fetch_daily_returns(SIEYUAN_TICKER, study_start, study_end)
+            short_daily = fetch_daily_returns(SHORT_TICKER, study_start, study_end)
+            long_daily = fetch_daily_returns(LONG_TICKER, study_start, study_end)
             
-            if not hal_daily.empty:
-                print(f"\n    [HAL] Event study on {len(historical_dates)} dates:")
-                hal_event = run_event_study(historical_dates, hal_daily, HAL_TICKER)
-                results["event_study"]["hal"] = hal_event
-                if "error" not in hal_event:
-                    for window, stats in hal_event.get("summary", {}).items():
+            if not short_daily.empty:
+                print(f"\n    [Jereh - Short] Event study on {len(historical_dates)} dates:")
+                short_event = run_event_study(historical_dates, short_daily, SHORT_TICKER)
+                results["event_study"]["short"] = short_event
+                if "error" not in short_event:
+                    for window, stats in short_event.get("summary", {}).items():
                         sig = "***" if stats.get("significant_05") else ""
                         print(f"      {window}: {stats['mean_return']:.2%} return (t={stats['t_statistic']}, p={stats['p_value']}){sig}")
                 else:
-                    print(f"      ERROR: {hal_event['error']}")
+                    print(f"      ERROR: {short_event['error']}")
             
-            if not sieyuan_daily.empty:
-                print(f"\n    [Sieyuan] Event study on {len(historical_dates)} dates:")
-                sie_event = run_event_study(historical_dates, sieyuan_daily, SIEYUAN_TICKER)
-                results["event_study"]["sieyuan"] = sie_event
-                if "error" not in sie_event:
-                    for window, stats in sie_event.get("summary", {}).items():
+            if not long_daily.empty:
+                print(f"\n    [Dongfang - Long] Event study on {len(historical_dates)} dates:")
+                long_event = run_event_study(historical_dates, long_daily, LONG_TICKER)
+                results["event_study"]["long"] = long_event
+                if "error" not in long_event:
+                    for window, stats in long_event.get("summary", {}).items():
                         sig = "***" if stats.get("significant_05") else ""
                         print(f"      {window}: {stats['mean_return']:.2%} return (t={stats['t_statistic']}, p={stats['p_value']}){sig}")
                 else:
-                    print(f"      ERROR: {sie_event['error']}")
+                    print(f"      ERROR: {long_event['error']}")
     else:
         print("    SKIPPED: Insufficient historical dates for event study (< 2)")
 
@@ -516,35 +519,37 @@ def run_signal_return_analysis(
         signal_start = (monthly_signals["month_start"].min() - pd.Timedelta(days=30)).strftime("%Y-%m-%d")
         signal_end = (monthly_signals["month_start"].max() + pd.Timedelta(days=60)).strftime("%Y-%m-%d")
         
-        hal_returns = fetch_monthly_returns(HAL_TICKER, signal_start, signal_end)
-        sieyuan_returns = fetch_monthly_returns(SIEYUAN_TICKER, signal_start, signal_end)
+        short_returns = fetch_monthly_returns(SHORT_TICKER, signal_start, signal_end)
+        long_returns = fetch_monthly_returns(LONG_TICKER, signal_start, signal_end)
         
         merged = monthly_signals.copy()
-        if not hal_returns.empty:
-            merged = merged.merge(hal_returns[["month_start", "HAL_return"]], on="month_start", how="inner")
-        if not sieyuan_returns.empty:
-            merged = merged.merge(sieyuan_returns[["month_start", "002028.SZ_return"]], on="month_start", how="inner")
+        if not short_returns.empty:
+            merged = merged.merge(short_returns[["month_start", f"{SHORT_TICKER}_return"]], on="month_start", how="inner")
+        if not long_returns.empty:
+            merged = merged.merge(long_returns[["month_start", f"{LONG_TICKER}_return"]], on="month_start", how="inner")
         
         if len(merged) >= 3:
             print(f"    Overlapping months: {len(merged)}")
             results["monthly_lead_lag"]["overlap_months"] = len(merged)
             
             # Run original tests (abbreviated output)
-            if "HAL_return" in merged.columns:
-                hal_grid_corr = compute_lead_lag_correlation(merged["grid_sentiment"], merged["HAL_return"], max_lag=2)
-                results["monthly_lead_lag"]["correlations"]["grid_sentiment_vs_hal"] = hal_grid_corr
-                if "error" not in hal_grid_corr:
-                    for lag, s in hal_grid_corr.items():
+            short_col = f"{SHORT_TICKER}_return"
+            if short_col in merged.columns:
+                short_grid_corr = compute_lead_lag_correlation(merged["grid_sentiment"], merged[short_col], max_lag=2)
+                results["monthly_lead_lag"]["correlations"]["grid_sentiment_vs_short"] = short_grid_corr
+                if "error" not in short_grid_corr:
+                    for lag, s in short_grid_corr.items():
                         if s.get("correlation") is not None:
-                            print(f"      Grid->HAL {lag}: r={s['correlation']}, p={s['p_value']}")
+                            print(f"      Grid->{SHORT_TICKER} {lag}: r={s['correlation']}, p={s['p_value']}")
             
-            if "002028.SZ_return" in merged.columns:
-                sie_grid_corr = compute_lead_lag_correlation(merged["grid_sentiment"], merged["002028.SZ_return"], max_lag=2)
-                results["monthly_lead_lag"]["correlations"]["grid_sentiment_vs_sieyuan"] = sie_grid_corr
-                if "error" not in sie_grid_corr:
-                    for lag, s in sie_grid_corr.items():
+            long_col = f"{LONG_TICKER}_return"
+            if long_col in merged.columns:
+                long_grid_corr = compute_lead_lag_correlation(merged["grid_sentiment"], merged[long_col], max_lag=2)
+                results["monthly_lead_lag"]["correlations"]["grid_sentiment_vs_long"] = long_grid_corr
+                if "error" not in long_grid_corr:
+                    for lag, s in long_grid_corr.items():
                         if s.get("correlation") is not None:
-                            print(f"      Grid->Sieyuan {lag}: r={s['correlation']}, p={s['p_value']}")
+                            print(f"      Grid->{LONG_TICKER} {lag}: r={s['correlation']}, p={s['p_value']}")
         else:
             print(f"    SKIPPED: Only {len(merged)} overlapping months (need >= 3)")
     else:
@@ -658,7 +663,7 @@ def _write_md_report(results: Dict, md_path: Path):
         "",
         "Tests if narrative signals match long-term price divergence. "
         "Grid signals should be positive; Oilfield signals should be negative. "
-        "Sieyuan (grid proxy) should outperform HAL (oilfield proxy).",
+        f"Dongfang Electric ({LONG_TICKER}) should outperform Yantai Jereh ({SHORT_TICKER}).",
         "",
     ])
     
@@ -666,9 +671,9 @@ def _write_md_report(results: Dict, md_path: Path):
         lines.append(f"**Error**: {hist['error']}")
     else:
         lines.append(f"- **Period**: {hist['period']}")
-        lines.append(f"- **HAL 3Y return**: {hist['hal_cumulative_return']:.1%}")
-        lines.append(f"- **Sieyuan 3Y return**: {hist['sieyuan_cumulative_return']:.1%}")
-        lines.append(f"- **Price divergence** (Sieyuan - HAL): {hist['price_divergence']:.1%}")
+        lines.append(f"- **Long (Dongfang) 3Y return**: {hist['long_cumulative_return']:.1%}")
+        lines.append(f"- **Short (Jereh) 3Y return**: {hist['short_cumulative_return']:.1%}")
+        lines.append(f"- **Price divergence** (Long - Short): {hist['price_divergence']:.1%}")
         lines.append(f"- **Grid signal sentiment**: {hist['grid_signal_sentiment']:.2f}")
         lines.append(f"- **Oilfield signal sentiment**: {hist['oilfield_signal_sentiment']:.2f}")
         lines.append(f"- **Thesis signal score**: {hist['thesis_signal_score']:.2f}")

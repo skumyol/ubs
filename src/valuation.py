@@ -13,16 +13,21 @@ import numpy as np
 from pathlib import Path
 from typing import Dict, List, Optional
 
-# Long leg: Sieyuan Electric (Shenzhen listed)
-LONG_TICKER = "002028.SZ"
-LONG_NAME = "Sieyuan Electric"
+from src.pair_config import DCF_ASSUMPTIONS
+from src.company_facts import COMPANY_FACTS
 
-# Short candidates (Oilfield Services)
+# Long leg: Dongfang Electric (HK listed - more reliable in yfinance)
+LONG_TICKER = "1072.HK"  # HK ticker is more reliable
+LONG_NAME = "Dongfang Electric"
+LONG_TICKER_CN = "600875.SH"  # China equivalent
+
+# Short leg: Yantai Jereh (Shenzhen listed)
+SHORT_TICKER = "002353.SZ"
+SHORT_NAME = "Yantai Jereh"
+
+# Short candidates (for peer comparison)
 SHORT_TICKERS = {
-    "HAL": "Halliburton",
-    "SLB": "Schlumberger",
-    "BKR": "Baker Hughes",
-    "NOV": "NOV Inc",
+    "002353.SZ": "Yantai Jereh",
 }
 
 # Long peer group (Grid/Power Equipment)
@@ -34,45 +39,78 @@ LONG_PEERS = {
     "SU.PA": "Schneider Electric",
 }
 
-# Scenario assumptions for Sieyuan Electric
-# Current: ~55x P/E, ¥222 price. Grid-equipment peers trade 30-90x P/E.
-SIEYUAN_SCENARIOS = {
+# Scenario assumptions for Dongfang Electric
+# 2025 actuals: Revenue ~RMB 78.6B (+12.8% YoY), Net Profit ~RMB 3.83B (+31% YoY)
+# Key catalyst: 35kV synchronous condenser breakthrough, State Grid ¥4T capex
+DONGFANG_SCENARIOS = {
     "bear": {
-        "eps_growth": 0.10,      # Domestic grid capex slows
-        "target_pe": 35.0,        # De-rate toward global grid average
+        "eps_growth": 0.15,      # Grid capex slows but earnings still grow
+        "target_pe": 32.0,       # Below current P/E, assumes partial de-rating
         "probability": 0.20,
     },
     "base": {
-        "eps_growth": 0.20,      # Stable grid capex + modest overseas
-        "target_pe": 55.0,        # Hold current multiple
+        "eps_growth": 0.25,      # Steady State Grid orders + storage growth
+        "target_pe": 38.0,       # Holds a premium for policy-backed backlog
         "probability": 0.55,
     },
     "bull": {
-        "eps_growth": 0.35,      # Overseas breakout + margin expansion
-        "target_pe": 65.0,        # Re-rate toward PWR (92x) territory
+        "eps_growth": 0.40,      # Overseas export breakout + synchronous condenser orders
+        "target_pe": 45.0,       # Premium for grid tech leadership
         "probability": 0.25,
     },
 }
 
-# Scenario assumptions for Halliburton
-# Current: ~22x P/E, $28 price. OFS peers 8-25x P/E.
-HAL_SCENARIOS = {
+# Scenario assumptions for Yantai Jereh (SHORT position)
+# 2025 actuals: Revenue RMB 16.22B (+21.5% YoY), Net Profit RMB 2.68B (+2.0% YoY)
+# Exposure to fossil oilfield services, cyclical, policy headwinds
+# For SHORT: negative expected return = stock goes down = we profit
+JEREH_SCENARIOS = {
     "bear": {
-        "eps_growth": -0.20,     # Margin compression + project delays
-        "target_pe": 12.0,        # Cyclical de-rate toward trough
+        "eps_growth": -0.05,     # Revenue grows but margin pressure persists
+        "target_pe": 34.0,       # De-rate from high current multiple
         "probability": 0.35,
     },
     "base": {
-        "eps_growth": -0.08,     # Logistics pressure holds
-        "target_pe": 18.0,        # Mild multiple compression
+        "eps_growth": 0.05,      # Q1 growth fades into full-year normalization
+        "target_pe": 40.0,       # Still high, but below current TTM P/E
         "probability": 0.45,
     },
     "bull": {
-        "eps_growth": 0.10,      # Rig count recovery + pricing
-        "target_pe": 22.0,        # Hold current multiple
+        "eps_growth": 0.20,      # Oilfield and data-center power orders surprise
+        "target_pe": 46.0,       # Current multiple roughly sustained
         "probability": 0.20,
     },
 }
+
+
+def dcf_valuation(fcf0: float, growth_rate: float, terminal_growth: float, wacc: float, years: int = 5) -> Dict:
+    """Compute a simple DCF on normalized free cash flow.
+
+    All values are in RMB billions. The result is intentionally simple and
+    conservative for pitch-deck use: it treats FCF as the equity bridge proxy
+    and does not attempt to model net debt adjustments unless the caller adds
+    them separately.
+    """
+    cash_flows = []
+    pv_cash_flows = []
+    for year in range(1, years + 1):
+        fcf = fcf0 * ((1 + growth_rate) ** year)
+        pv = fcf / ((1 + wacc) ** year)
+        cash_flows.append(round(fcf, 3))
+        pv_cash_flows.append(round(pv, 3))
+
+    terminal_fcf = fcf0 * ((1 + growth_rate) ** years)
+    terminal_value = terminal_fcf * (1 + terminal_growth) / (wacc - terminal_growth)
+    pv_terminal = terminal_value / ((1 + wacc) ** years)
+    enterprise_value = sum(pv_cash_flows) + pv_terminal
+
+    return {
+        "yearly_fcf_rmb_bn": cash_flows,
+        "pv_yearly_fcf_rmb_bn": pv_cash_flows,
+        "terminal_value_rmb_bn": round(terminal_value, 3),
+        "pv_terminal_value_rmb_bn": round(pv_terminal, 3),
+        "enterprise_value_rmb_bn": round(enterprise_value, 3),
+    }
 
 
 def calculate_roic(stock) -> Optional[float]:
@@ -329,34 +367,33 @@ def save_valuation_outputs(output_dir: Path) -> Dict:
     peer_table.to_csv(peer_path, index=False)
     print(f"[SAVED] {peer_path}")
 
-    # Get Sieyuan current price/EPS for scenario analysis
-    sieyuan_row = long_df[long_df["ticker"] == LONG_TICKER]
-    if not sieyuan_row.empty and pd.notna(sieyuan_row.iloc[0]["price"]) and pd.notna(sieyuan_row.iloc[0]["pe"]):
-        sieyuan_price = float(sieyuan_row.iloc[0]["price"])
-        sieyuan_pe = float(sieyuan_row.iloc[0]["pe"])
-        sieyuan_eps = sieyuan_price / sieyuan_pe if sieyuan_pe else 3.0
-    else:
-        # Fallback estimates
-        sieyuan_price = 75.0
-        sieyuan_eps = 3.0
+    facts_long = COMPANY_FACTS["dongfang"]
+    facts_short = COMPANY_FACTS["jereh"]
 
-    # Get HAL current price/EPS
-    hal_row = short_df[short_df["ticker"] == "HAL"]
-    if not hal_row.empty and pd.notna(hal_row.iloc[0]["price"]) and pd.notna(hal_row.iloc[0]["pe"]):
-        hal_price = float(hal_row.iloc[0]["price"])
-        hal_pe = float(hal_row.iloc[0]["pe"])
-        hal_eps = hal_price / hal_pe if hal_pe else 3.0
+    # Get Dongfang current price/EPS for scenario analysis.
+    # Use collected 2025 EPS and P/E when live market data is unavailable.
+    dongfang_row = long_df[long_df["ticker"] == LONG_TICKER]
+    if not dongfang_row.empty and pd.notna(dongfang_row.iloc[0]["price"]):
+        dongfang_price = float(dongfang_row.iloc[0]["price"])
     else:
-        hal_price = 28.0
-        hal_eps = 3.0
+        dongfang_price = round(facts_long["eps_2025"] * facts_long["pe_ttm"], 2)
+    dongfang_eps = facts_long["eps_2025"]
+
+    # Get Yantai Jereh current price/EPS
+    jereh_row = short_df[short_df["ticker"] == SHORT_TICKER]
+    if not jereh_row.empty and pd.notna(jereh_row.iloc[0]["price"]):
+        jereh_price = float(jereh_row.iloc[0]["price"])
+    else:
+        jereh_price = facts_short["latest_price"]
+    jereh_eps = facts_short["eps_2025"]
 
     # Scenario analysis
-    long_scenarios, long_er = scenario_valuation(sieyuan_eps, sieyuan_price, SIEYUAN_SCENARIOS)
+    long_scenarios, long_er = scenario_valuation(dongfang_eps, dongfang_price, DONGFANG_SCENARIOS)
     long_path = output_dir / "long_scenarios.csv"
     long_scenarios.drop(columns=["_upside_raw", "_prob_raw"]).to_csv(long_path, index=False)
     print(f"[SAVED] {long_path}")
 
-    short_scenarios, short_er = scenario_valuation(hal_eps, hal_price, HAL_SCENARIOS)
+    short_scenarios, short_er = scenario_valuation(jereh_eps, jereh_price, JEREH_SCENARIOS)
     short_path = output_dir / "short_scenarios.csv"
     short_scenarios.drop(columns=["_upside_raw", "_prob_raw"]).to_csv(short_path, index=False)
     print(f"[SAVED] {short_path}")
@@ -368,14 +405,44 @@ def save_valuation_outputs(output_dir: Path) -> Dict:
     pair_df.to_csv(pair_path, index=False)
     print(f"[SAVED] {pair_path}")
 
+    # DCF cross-check
+    dcf_rows = []
+    dongfang_dcf = DCF_ASSUMPTIONS["dongfang"]
+    jereh_dcf = DCF_ASSUMPTIONS["jereh"]
+    for company, cfg in [("Dongfang Electric", dongfang_dcf), ("Yantai Jereh", jereh_dcf)]:
+        dcf = dcf_valuation(
+            fcf0=cfg["fcf0_rmb_bn"],
+            growth_rate=cfg["growth_rate"],
+            terminal_growth=cfg["terminal_growth"],
+            wacc=cfg["wacc"],
+            years=cfg["years"],
+        )
+        implied_per_share = dcf["enterprise_value_rmb_bn"] / cfg["shares_outstanding_bn"]
+        dcf_rows.append({
+            "company": company,
+            "fcf0_rmb_bn": cfg["fcf0_rmb_bn"],
+            "growth_rate_pct": round(cfg["growth_rate"] * 100, 1),
+            "terminal_growth_pct": round(cfg["terminal_growth"] * 100, 1),
+            "wacc_pct": round(cfg["wacc"] * 100, 1),
+            "years": cfg["years"],
+            "enterprise_value_rmb_bn": dcf["enterprise_value_rmb_bn"],
+            "implied_value_per_share_rmb": round(implied_per_share, 2),
+        })
+
+    dcf_df = pd.DataFrame(dcf_rows)
+    dcf_path = output_dir / "dcf_cross_check.csv"
+    dcf_df.to_csv(dcf_path, index=False)
+    print(f"[SAVED] {dcf_path}")
+
     return {
-        "long_price": sieyuan_price,
-        "long_eps": sieyuan_eps,
+        "long_price": dongfang_price,
+        "long_eps": dongfang_eps,
         "long_expected_return": round(long_er, 1),
-        "short_price": hal_price,
-        "short_eps": hal_eps,
+        "short_price": jereh_price,
+        "short_eps": jereh_eps,
         "short_expected_return": round(short_er, 1),
         "pair_spread_return": pair["pair_spread_return_pct"],
+        "dcf_path": str(dcf_path),
     }
 
 

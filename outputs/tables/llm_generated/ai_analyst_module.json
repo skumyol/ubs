@@ -1,0 +1,41 @@
+{
+  "non_consensus_insight": "The market may be underestimating the long-term growth potential of Dongfang Electric's order backlog and the impact of State Grid's significant capex plan on the company's future earnings, while overestimating the cyclical risks and margin pressures faced by Yantai Jereh in the oilfield services sector.",
+  "theme_clusters": {
+    "grid": [
+      "Dongfang Electric's strong order backlog and new orders",
+      "Breakthrough in 35kV synchronous condenser technology",
+      "State Grid's ¥4T capex plan over 15th FYP (2026-2030)",
+      "Focus on new-type power system development"
+    ],
+    "oilfield": [
+      "Yantai Jereh's exposure to oilfield services",
+      "Cyclical risks and margin pressures in the oil and gas industry",
+      "Revenue growth but limited profit growth in 2025",
+      "Q1 2026 showing improvement but ongoing cyclical risks"
+    ]
+  },
+  "sentiment_analysis": {
+    "grid_sentiment": "bullish",
+    "oilfield_sentiment": "bearish"
+  },
+  "scenarios": {
+    "base": {
+      "return": 10.0,
+      "prob": 0.5
+    },
+    "bull": {
+      "return": 25.0,
+      "prob": 0.3
+    },
+    "bear": {
+      "return": -15.0,
+      "prob": 0.2
+    }
+  },
+  "limitations": [
+    "Limited recent data on the exact impact of State Grid's capex plan on Dongfang Electric's earnings",
+    "Potential recency bias in the market's perception of Yantai Jereh's cyclical risks",
+    "Uncertainty in government policies and regulatory changes affecting both companies",
+    "Data gaps in detailed financial projections and market share analysis for both companies"
+  ]
+}

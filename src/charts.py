@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from typing import Optional, Dict
 
+from src.pair_config import LONG_LEG, SHORT_LEG
+
 
 def create_category_bar_chart(
     df: pd.DataFrame,
@@ -131,7 +133,7 @@ def create_long_short_matrix_table(
             "Valuation risk",
             "Catalyst",
         ],
-        "Long Sieyuan": [
+        f"Long {LONG_LEG.name}": [
             "Builds resilient power infrastructure",
             "Multi-year grid capex",
             "High",
@@ -140,7 +142,7 @@ def create_long_short_matrix_table(
             "Re-rating potential",
             "Grid orders, overseas growth",
         ],
-        "Short Oilfield-Service": [
+        f"Short {SHORT_LEG.name}": [
             "Exposed to disrupted fuel infrastructure",
             "Cyclical upstream capex",
             "Medium / indirect",
@@ -178,7 +180,7 @@ def create_long_short_matrix_table(
             table[(i, j)].set_facecolor(color)
 
     ax.set_title(
-        "Same Energy-Security Theme, Opposite Earnings Quality",
+        f"Same Energy-Security Theme, Opposite Earnings Quality",
         fontsize=14,
         fontweight="bold",
         pad=20,

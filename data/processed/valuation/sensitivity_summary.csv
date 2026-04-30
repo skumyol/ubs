@@ -1,6 +1,6 @@
 variable,change_pct,value,eps_cny,eps_change_pct
-overseas_mix,0.0,0.3,2.42,0.0
-gross_margin,0.0,0.34,2.42,0.0
-r_and_d_pct,0.0,0.06,2.42,0.0
-sg_and_a_pct,0.0,0.11,2.42,0.0
-fx_cny_usd,0.0,7.2,2.42,0.0
+overseas_mix,0.0,0.25,1.05,0.0
+gross_margin,0.0,0.18,1.05,0.0
+r_and_d_pct,0.0,0.05,1.05,0.0
+sg_and_a_pct,0.0,0.09,1.05,0.0
+fx_cny_usd,0.0,7.2,1.05,0.0

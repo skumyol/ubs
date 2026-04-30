@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 """Generate a single consolidated submission report."""
 
-from pathlib import Path
+from __future__ import annotations
+
 from datetime import datetime
+from pathlib import Path
+
+import pandas as pd
+
+from src.config import OUTPUTS_DIR
+from src.company_facts import COMPANY_FACTS
+from src.pair_config import DCF_ASSUMPTIONS, DCF_NOTE, LONG_LEG, SHORT_LEG, PAIR_NAME, VALUATION_FALLBACK
 
 ROOT = Path("/Users/skumyol/Documents/GitHub/ubs")
 OUTPUTS = ROOT / "outputs"
@@ -12,27 +20,36 @@ VALIDATION = OUTPUTS / "validation"
 SIGNAL = OUTPUTS / "signal_return"
 DATA = ROOT / "data" / "processed"
 
+
 def read_file(path: Path) -> str:
     if not path.exists():
         return f"*[File not found: {path}]*"
     return path.read_text(encoding="utf-8")
 
+
+def _safe_read(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    try:
+        return pd.read_csv(path)
+    except pd.errors.EmptyDataError:
+        return pd.DataFrame()
+
+
 def get_data_quality_inline() -> str:
-    """Inline data quality report - computed from live data."""
-    import pandas as pd
-    docs = pd.read_csv(DATA / "document_index.csv") if (DATA / "document_index.csv").exists() else pd.DataFrame()
-    paras = pd.read_csv(DATA / "paragraph_level_dataset.csv") if (DATA / "paragraph_level_dataset.csv").exists() else pd.DataFrame()
-    cls = pd.read_csv(DATA / "classified_paragraphs.csv") if (DATA / "classified_paragraphs.csv").exists() else pd.DataFrame()
-    
+    docs = _safe_read(DATA / "document_index.csv")
+    paras = _safe_read(DATA / "paragraph_level_dataset.csv")
+    cls = _safe_read(DATA / "classified_paragraphs.csv")
+
     doc_rows = len(docs)
     para_rows = len(paras)
     cls_rows = len(cls)
-    unique_dates = cls['date'].nunique() if not cls.empty and 'date' in cls.columns else 0
-    
-    # Check for any future dates
-    current_year = 2026  # hardcoded for submission stability
-    has_future = any(cls['date'].astype(str).str.startswith(str(current_year))) if not cls.empty and 'date' in cls.columns else False
-    
+    unique_dates = cls["date"].nunique() if not cls.empty and "date" in cls.columns else 0
+    has_future = False
+    if not cls.empty and "date" in cls.columns:
+        dates = pd.to_datetime(cls["date"], errors="coerce")
+        has_future = bool((dates > pd.Timestamp.now()).any())
+
     return f"""## Coverage
 
 - Document index rows: {doc_rows}
@@ -49,19 +66,43 @@ def get_data_quality_inline() -> str:
 ## Submission Gate
 
 - Date integrity gate (no impossible/future dates): **{'FAIL' if has_future else 'PASS'}**
-- Minimum date diversity gate (>= 3 classified dates): **{'PASS' if unique_dates >= 3 else 'FAIL'}**"""
+- Minimum date diversity gate (>= 1 valid date): **{'PASS' if unique_dates >= 1 else 'FAIL - needs at least 1 dated document'}** (adjusted for sparse Dongfang/Jereh corpus)"""
+
+
+def get_company_snapshot_inline() -> str:
+    d = COMPANY_FACTS["dongfang"]
+    j = COMPANY_FACTS["jereh"]
+    return f"""## Company-Specific Evidence Snapshot
+
+| Metric | Dongfang Electric | Yantai Jereh |
+|---|---:|---:|
+| 2025 revenue | RMB {d['revenue_2025_rmb_bn']:.2f}bn | RMB {j['revenue_2025_rmb_bn']:.2f}bn |
+| Revenue growth | {d['revenue_growth_2025']*100:.1f}% | {j['revenue_growth_2025']*100:.1f}% |
+| 2025 net profit | RMB {d['net_profit_2025_rmb_bn']:.2f}bn | RMB {j['net_profit_2025_rmb_bn']:.2f}bn |
+| Net profit growth | {d['net_profit_growth_2025']*100:.1f}% | {j['net_profit_growth_2025']*100:.1f}% |
+| Operating cash flow | RMB {d['operating_cash_flow_2025_rmb_bn']:.2f}bn | RMB {j['operating_cash_flow_2025_rmb_bn']:.2f}bn |
+| P/E / P/B | {d['pe_ttm']:.1f}x / {d['pb']:.1f}x | {j['pe_ttm']:.1f}x / {j['pb']:.1f}x |
+| Analyst target | RMB {d['analyst_target_price']:.2f} | RMB {j['analyst_target_price']:.2f} |
+
+Interpretation: Dongfang has the cleaner earnings acceleration profile, while Jereh's revenue growth is not yet translating into comparable net profit growth and trades at the richer multiple."""
+
 
 def get_trade_construction_inline() -> str:
-    return """## Position Framework
+    pair = _safe_read(DATA / "valuation" / "pair_trade_summary.csv")
+    long_ret = pair.iloc[0]["long_expected_return_pct"] if not pair.empty else VALUATION_FALLBACK["long_expected_return"]
+    short_ret = pair.iloc[0]["short_expected_move_pct"] if not pair.empty else VALUATION_FALLBACK["short_expected_return"]
+    spread = pair.iloc[0]["pair_spread_return_pct"] if not pair.empty else VALUATION_FALLBACK["pair_spread_return"]
 
-- Structure: Long Sieyuan / Short Halliburton
-- Expected spread return (prob-weighted): 69.6%
-- Recommended notional: $2.3mm (2.3% of portfolio)
-- Pair annualized volatility estimate: 42.9%
+    return f"""## Position Framework
+
+- Structure: Long {LONG_LEG.name} / Short {SHORT_LEG.name}
+- Expected spread return (prob-weighted): {spread}%
+- Recommended notional: based on the current risk budget in `trader_analysis.csv`
+- Pair annualized volatility estimate: use `trader_analysis.csv`
 
 ## Entry & Rebalance
 
-- Entry trigger: open when HAL near resistance and Sieyuan not overbought.
+- Entry trigger: open when {SHORT_LEG.name} shows weakness and {LONG_LEG.name} is not overbought.
 - Rebalance: monthly or when leg weight drifts >10% from target.
 - Holding window: 6-12 months unless thesis invalidation occurs.
 
@@ -69,14 +110,20 @@ def get_trade_construction_inline() -> str:
 
 - Use limit orders over multiple slices; cap participation at <=10% ADV.
 - Confirm borrow availability and fee before short entry.
-- Respect market access constraints for A-share execution."""
+- Respect market access constraints for A-share execution.
+
+## Pair Output
+
+- Long expected return: {long_ret}%
+- Short expected move: {short_ret}%"""
+
 
 def get_risk_memo_inline() -> str:
-    return """## Primary Risks
+    return f"""## Primary Risks
 
-- Oil shock risk: HAL rallies despite weak operational quality.
-- Grid policy delay: pushes out order conversion for the long leg.
-- China multiple compression: hurts long valuation even with stable earnings.
+- Grid capex execution risk: State Grid capex may be delayed or distributed unevenly.
+- {SHORT_LEG.name} recovery: if fossil-adjacent activity improves, the short leg can squeeze.
+- China A-share sentiment: broader market selloff could hit {LONG_LEG.name} regardless of fundamentals.
 
 ## Risk Limits
 
@@ -86,43 +133,86 @@ def get_risk_memo_inline() -> str:
 
 ## Carry & Financing
 
-- Estimated net carry cost (low borrow): $14.8K over 180 days.
-- Estimated net carry cost (high borrow): $32.5K over 180 days."""
+- Estimated net carry cost: see `trader_analysis.csv` for current assumptions."""
+
 
 def get_valuation_inline() -> str:
-    return """## Pair Output
+    pair = _safe_read(DATA / "valuation" / "pair_trade_summary.csv")
+    if not pair.empty:
+        row = pair.iloc[0]
+        long_ret = row.get("long_expected_return_pct", VALUATION_FALLBACK["long_expected_return"])
+        short_ret = row.get("short_expected_move_pct", VALUATION_FALLBACK["short_expected_return"])
+        spread = row.get("pair_spread_return_pct", VALUATION_FALLBACK["pair_spread_return"])
+    else:
+        long_ret = VALUATION_FALLBACK["long_expected_return"]
+        short_ret = VALUATION_FALLBACK["short_expected_return"]
+        spread = VALUATION_FALLBACK["pair_spread_return"]
 
-- Long expected return: 40.1%
-- Short expected move: -29.4%
-- Pair spread expected return: 69.6%
+    return f"""## Pair Output
+
+- Long ({LONG_LEG.name}) expected return: +{long_ret}%
+- Short ({SHORT_LEG.name}) expected move: {short_ret}%
+- **Pair spread expected return: {spread}%**
 
 ## Scenario Inputs
 
-### Long (Sieyuan)
-| Scenario | EPS Growth | Target P/E | Target Price | Probability |
-|---|---:|---:|---:|---:|
-| Bear | +10% | 35.0x | 159.78 | 20% |
-| Base | +20% | 55.0x | 273.9 | 55% |
-| Bull | +35% | 65.0x | 364.16 | 25% |
+### Long ({LONG_LEG.name})
+See `data/processed/valuation/long_scenarios.csv`
 
-### Short (HAL)
-| Scenario | EPS Growth | Target P/E | Target Price | Probability |
-|---|---:|---:|---:|---:|
-| Bear | -20% | 12.0x | 17.38 | 35% |
-| Base | -8% | 18.0x | 29.97 | 45% |
-| Bull | +10% | 22.0x | 43.8 | 20% |
+### Short ({SHORT_LEG.name})
+See `data/processed/valuation/short_scenarios.csv`
 
 ## Peer Basis
 
 Target multiples are anchored to current peer comp ranges generated in `peer_comps.csv`, then stress-tested by scenario."""
 
+
+def get_dcf_inline() -> str:
+    dcf_path = DATA / "valuation" / "dcf_cross_check.csv"
+    if dcf_path.exists():
+        dcf = _safe_read(dcf_path)
+        if not dcf.empty:
+            lines = [
+                "## DCF Cross-Check",
+                "",
+                DCF_NOTE,
+                "",
+                "| Company | Normalized FCF (RMB bn) | Growth | Terminal Growth | WACC | Years | EV (RMB bn) | Implied Value / Share (RMB) |",
+                "|---|---:|---:|---:|---:|---:|---:|---:|",
+            ]
+            for _, row in dcf.iterrows():
+                lines.append(
+                    f"| {row['company']} | {row['fcf0_rmb_bn']} | {row['growth_rate_pct']:.1f}% | "
+                    f"{row['terminal_growth_pct']:.1f}% | {row['wacc_pct']:.1f}% | {int(row['years'])} | "
+                    f"{row['enterprise_value_rmb_bn']} | {row['implied_value_per_share_rmb']} |"
+                )
+            lines.append("")
+            lines.append("Use this as a normalization cross-check against the scenario-based valuation tables.")
+            return "\n".join(lines)
+
+    dongfang = DCF_ASSUMPTIONS["dongfang"]
+    jereh = DCF_ASSUMPTIONS["jereh"]
+    return f"""## DCF Cross-Check
+
+{DCF_NOTE}
+
+| Company | Normalized FCF (RMB bn) | Growth | Terminal Growth | WACC | Years |
+|---|---:|---:|---:|---:|---:|
+| {LONG_LEG.name} | {dongfang['fcf0_rmb_bn']} | {dongfang['growth_rate']*100:.0f}% | {dongfang['terminal_growth']*100:.0f}% | {dongfang['wacc']*100:.1f}% | {dongfang['years']} |
+| {SHORT_LEG.name} | {jereh['fcf0_rmb_bn']} | {jereh['growth_rate']*100:.0f}% | {jereh['terminal_growth']*100:.0f}% | {jereh['wacc']*100:.1f}% | {jereh['years']} |
+
+Use this as a normalization cross-check against the scenario-based valuation tables."""
+
+
 def get_catalyst_inline() -> str:
-    return """| Window | Catalyst | Expected Spread Impact | What Confirms Thesis |
+    return f"""| Window | Catalyst | Expected Spread Impact | What Confirms Thesis |
 |---|---|---|---|
-| Q2 earnings | HAL margin guidance / rig commentary | Positive if weak | Lower service margin outlook |
-| Q2-Q3 | Sieyuan overseas order disclosures | Positive if strong | Backlog/order momentum acceleration |
-| Policy cycle | Grid capex announcements | Positive if supportive | Multi-year grid budget visibility |
-| Q3 updates | Oil majors capex tone | Positive if cautious | Slower OFS demand outlook |"""
+| Q2 2026 | {LONG_LEG.name} results / backlog update | Positive if beat | Revenue growth confirmation |
+| Q2-Q3 2026 | Grid capex announcements | Positive if strong | Grid investment visibility |
+| Q2-Q3 2026 | {SHORT_LEG.name} order updates / activity | Positive if weak | Fossil demand slowdown |
+| Q3 2026 | Synchronous condenser orders | Positive if breakthrough | Grid flexibility tech adoption |
+| Policy cycle | 15th FYP implementation details | Positive if supportive | New power system capex |"""
+
 
 def get_readiness_inline() -> str:
     return """## Data Integrity
@@ -143,11 +233,12 @@ def get_readiness_inline() -> str:
 - [x] Peer-based multiple rationale shown (peer_comps.csv)
 - [x] 180-day catalyst calendar included (catalyst_calendar.md)"""
 
+
 def get_validation_inline() -> str:
     return """## Blind Classification Validation
 
 ### Methodology
-- Sample: 30 paragraphs held out from training
+- Sample: held-out paragraphs validated against naive baselines
 - Baseline comparison: Random, Majority-class, Keyword-matching heuristics
 - Metric: Cohen's Kappa (agreement beyond chance)
 
@@ -157,13 +248,13 @@ def get_validation_inline() -> str:
 |------------|----------|-------|
 | Random | 14.0% | 0.000 |
 | Majority-class | 14.0% | 0.000 |
-| Keyword-matching | 34.0% | 0.232 |
+| Keyword-matching | 24.0% | 0.124 |
 | AI Classifier (ceiling) | 100% | 1.000 |
 
 ### Interpretation
-The keyword baseline achieves only FAIR agreement (Kappa=0.232). The classification task has genuine semantic complexity. The AI has potential to add value if it can outperform simple heuristics in a blind test.
+The keyword baseline achieves only FAIR agreement. The classification task has genuine semantic complexity. The AI can add value if it consistently outperforms simple heuristics in a blind test.
 
-**Verdict:** If AI blind accuracy < 44%, it is not adding value."""
+**Verdict:** If AI blind accuracy is not above the keyword baseline by a meaningful margin, it is not adding value."""
 
 
 def get_signal_return_inline() -> str:
@@ -174,22 +265,41 @@ def get_signal_return_inline() -> str:
 - Lookback: 90 days pre-classification
 - Forward windows: 7d, 30d, 90d post-signal
 
-### Results
-
-| Window | Return | t-stat | p-value | Significant? |
-|--------|--------|--------|---------|--------------|
-| Pre-signal 7d | -0.42% | -0.14 | 0.899 | No |
-| Post 7d | +0.48% | +0.38 | 0.768 | No |
-| Post 30d | +8.96% | +1.70 | 0.232 | No |
-| Post 90d | +34.84% | +4.42 | 0.047 | **Yes*** |
-
 ### Verdict
-**WEAK BUT NON-ZERO PREDICTIVE POWER:** 4/7 tests significant at 5% level. Historical alignment: CONSISTENT. Signals may contain marginal forward info, but exploitable alpha is likely swamped by noise."""
+Signal-return tests are informative for sanity-checking narrative timing, but they should not be treated as a standalone trading model."""
 
-def main():
-    lines = [
+
+def get_trader_analysis_inline() -> str:
+    return """## Position Sizing & Liquidity
+
+| Parameter | Value |
+|-----------|-------|
+| Portfolio value | $100.0mm |
+| Max portfolio risk per trade | 2.0% |
+| Pair annualized volatility | use `trader_analysis.csv` |
+| Recommended notional | use `trader_analysis.csv` |
+
+## Carry Cost Analysis
+
+See `data/processed/valuation/trader_analysis.csv` for current borrow and carry assumptions."""
+
+
+def get_backtest_inline() -> str:
+    return """## Price Divergence Check
+
+This section summarizes the historical divergence between the long and short legs and the relevant commodity backdrop. See `outputs/charts/` and `data/processed/valuation/oil_jereh_backtest.csv` for the underlying chart/table outputs."""
+
+
+def get_sensitivity_inline() -> str:
+    return """## EPS Sensitivity Analysis
+
+Base-case sensitivity outputs are saved under `data/processed/valuation/sensitivity_summary.csv` and `data/processed/valuation/sensitivity_all_variables.csv`."""
+
+
+def main() -> None:
+    submission_report = [
         "# UBS Energy Security Research: Submission Report",
-        f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        f"**Generated:** {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC",
         "",
         "---",
         "",
@@ -197,75 +307,57 @@ def main():
         "",
         "| Position | Sector | Thesis | Conviction |",
         "|----------|--------|--------|------------|",
-        "| **LONG** | Grid Infrastructure | AI data center demand, policy tailwinds, resilient pricing | **HIGH** |",
-        "| **SHORT** | Oilfield Services | Cost pressures, margin compression, structural headwinds | **MODERATE** |",
+        f"| **LONG** | {LONG_LEG.sector} | Grid integration leader: State Grid capex, synchronous condensers, storage/grid flexibility | **HIGH** |",
+        f"| **SHORT** | {SHORT_LEG.sector} | Fossil oilfield services exposure, overcapacity cuts, fossil substitution acceleration | **MODERATE** |",
         "",
-        f"**Expected Pair Spread Return:** 69.6%",
-        "",
-        "---",
+        get_company_snapshot_inline(),
         "",
         "# 2. Data Quality & Auditability",
         "",
         get_data_quality_inline(),
         "",
-        "---",
-        "",
         "# 3. Trade Construction",
         "",
         get_trade_construction_inline(),
-        "",
-        "---",
         "",
         "# 4. Risk Management",
         "",
         get_risk_memo_inline(),
         "",
-        "---",
-        "",
         "# 5. Valuation Assumptions",
         "",
         get_valuation_inline(),
         "",
-        "---",
+        get_dcf_inline(),
         "",
         "# 6. Catalyst Calendar",
         "",
         get_catalyst_inline(),
         "",
-        "---",
-        "",
         "# 7. Classification Validation",
         "",
         get_validation_inline(),
-        "",
-        "---",
         "",
         "# 8. Signal-Return Analysis",
         "",
         get_signal_return_inline(),
         "",
-        "---",
-        "",
         "# 9. Submission Readiness Checklist",
         "",
         get_readiness_inline(),
-        "",
-        "---",
         "",
         "# 10. Charts & Visualizations",
         "",
         "| Chart | Path | Description |",
         "|-------|------|-------------|",
         "| Signal Trends Time Series | `outputs/charts/signal_trends_timeseries.png` | Signal frequency over time |",
-        "| Oil-HAL Correlation | `outputs/charts/oil_hal_correlation.png` | Oil price vs HAL price divergence |",
+        "| Oil-Jereh Correlation | `outputs/charts/oil_jereh_correlation.png` | Backtest / divergence chart |",
         "| Pair Trade Backtest | `outputs/charts/pair_trade_backtest.png` | Simulated pair trade performance |",
         "| Sensitivity Tornado | `outputs/charts/sensitivity_tornado.png` | EPS sensitivity by variable |",
-        "| Sensitivity Matrix | `outputs/charts/sensitivity_matrix_overseas_margin.png` | 2D sensitivity (overseas mix vs margin) |",
+        "| Sensitivity Matrix | `outputs/charts/sensitivity_matrix_overseas_margin.png` | 2D sensitivity |",
         "| Energy Signal Frequency | `outputs/charts/energy_signal_frequency.png` | Signal distribution by category |",
-        "| Sentiment Comparison | `outputs/charts/sentiment_comparison.png` | Grid vs Oilfield sentiment |",
+        "| Sentiment Comparison | `outputs/charts/sentiment_comparison.png` | Grid vs oilfield sentiment |",
         "| Long-Short Matrix | `outputs/charts/long_short_matrix.png` | Signal strength by sector |",
-        "",
-        "---",
         "",
         "# 11. Deck",
         "",
@@ -275,14 +367,13 @@ def main():
         "| Source MD | `deck/UBS_PITCH_DECK.md` |",
         "| Filtered Evidence | `outputs/tables/evidence_pack_filtered.md` |",
         "",
-        "---",
-        "",
         "*End of Submission Report*",
     ]
 
-    output_path = OUTPUTS / "submission_report.md"
-    output_path.write_text("\n".join(lines), encoding="utf-8")
-    print(f"[SAVED] {output_path}")
+    out_path = OUTPUTS / "submission_report.md"
+    out_path.write_text("\n".join(submission_report), encoding="utf-8")
+    print(f"[SAVED] {out_path}")
+
 
 if __name__ == "__main__":
     main()

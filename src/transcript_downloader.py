@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Download earnings call transcripts from Halliburton and SLB investor relations.
+"""Download investor materials for the Dongfang/Jereh pair.
 
-Fetches transcript PDFs from:
-- Halliburton: ir.halliburton.com
-- SLB: investorcenter.slb.com
+Fetches documents from:
+- Dongfang Electric: www.dongfang.com
+- Yantai Jereh: jereh.com
 
 Saves to data/raw/pdf/ for processing by rebuild_index.
 """
@@ -28,19 +28,19 @@ except ImportError:
 
 # Company configurations
 COMPANIES = {
-    "halliburton": {
-        "name": "Halliburton",
-        "ticker": "HAL",
-        "ir_url": "https://ir.halliburton.com/",
-        "transcripts_url": "https://ir.halliburton.com/news-events/news-releases",
-        "file_pattern": r"transcript|earnings.*call|q[1-4].*20(24|25|26)",
+    "dongfang": {
+        "name": "Dongfang Electric",
+        "ticker": "1072.HK",
+        "ir_url": "https://www.dongfang.com/",
+        "transcripts_url": "https://www.dongfang.com/",
+        "file_pattern": r"report|announcement|annual|quarter|earnings|20(24|25|26)",
     },
-    "slb": {
-        "name": "SLB",
-        "ticker": "SLB",
-        "ir_url": "https://investorcenter.slb.com/",
-        "transcripts_url": "https://investorcenter.slb.com/news-events/news-releases",
-        "file_pattern": r"transcript|earnings.*call|q[1-4].*20(24|25|26)",
+    "jereh": {
+        "name": "Yantai Jereh",
+        "ticker": "002353.SZ",
+        "ir_url": "https://www.jereh.com/cn/investor/Investor-relations",
+        "transcripts_url": "https://www.jereh.com/cn/investor/Investor-relations",
+        "file_pattern": r"report|announcement|annual|quarter|earnings|20(24|25|26)",
     },
 }
 
@@ -316,26 +316,17 @@ def print_manual_download_guide():
     print("MANUAL DOWNLOAD GUIDE (When Sites Block Automated Requests)")
     print("=" * 60)
 
-    print("\n[HALLIBURTON]")
-    print("  1. Visit: https://ir.halliburton.com/financial-information/quarterly-results")
-    print("  2. Look for 'Earnings Call Transcript' PDFs for Q1-Q4 2024-2025")
-    print("  3. Download PDFs and save to: data/raw/pdf/")
-    print("  4. Rename with prefix: HAL_ (e.g., HAL_Q1_2025_Transcript.pdf)")
+    print("\n[DONGFANG ELECTRIC]")
+    print("  1. Visit: https://www.dongfang.com/")
+    print("  2. Look for annual reports, announcements, and investor updates")
+    print("  3. Download documents and save to: data/raw/pdf/")
+    print("  4. Rename with prefix: DONGFANG_")
 
-    print("\n[SLB (SCHLUMBERGER)]")
-    print("  1. Visit: https://investorcenter.slb.com/financials/quarterly-results")
-    print("  2. Look for 'Earnings Call Transcript' or 'Webcast Transcript' PDFs")
-    print("  3. Download PDFs and save to: data/raw/pdf/")
-    print("  4. Rename with prefix: SLB_ (e.g., SLB_Q4_2024_Transcript.pdf)")
-
-    print("\n[SIEYUAN ELECTRIC - HARDEST TO FIND]")
-    print("  1. Chinese sources (need translation):")
-    print("     - http://www.cninfo.com.cn/new/disclosure/stock?orgId=9900002594&stockCode=002028")
-    print("     - Search for '思源电气 投资者关系活动记录表' (Investor Relations Records)")
-    print("  2. English alternatives:")
-    print("     - Check www.sieyuan.com/en/investor/ for annual reports")
-    print("     - Use audit reports (like the 2024 one already in your folder)")
-    print("  3. Bloomberg/Wind/Choice terminals if available")
+    print("\n[YANTAI JEREH]")
+    print("  1. Visit: https://www.jereh.com/cn/investor/Investor-relations")
+    print("  2. Look for annual reports, announcements, and investor updates")
+    print("  3. Download documents and save to: data/raw/pdf/")
+    print("  4. Rename with prefix: JEREH_")
 
     print("\n[FREE EIA/IEA REPORTS]")
     print("  1. EIA Annual Energy Outlook: https://www.eia.gov/outlooks/aeo/")

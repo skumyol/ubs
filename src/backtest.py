@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Oil price vs HAL/Sieyuan correlation backtest.
+"""Oil price vs Dongfang/Jereh correlation backtest.
 
 Shows historical divergence between oil prices and oilfield services stocks
 vs grid infrastructure stocks — proving the "higher oil != higher service earnings" thesis.
@@ -14,14 +14,16 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 
+from src.pair_config import LONG_LEG, SHORT_LEG
+
 # Config
 OUTPUT_DIR = Path("outputs/charts")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Ticker mapping
 OIL_TICKER = "CL=F"  # Crude Oil Futures
-HAL_TICKER = "HAL"   # Halliburton (short leg)
-SIEYUAN_TICKER = "002028.SZ"  # Sieyuan Electric (long leg)
+SHORT_TICKER = SHORT_LEG.ticker
+LONG_TICKER = LONG_LEG.ticker
 
 
 def fetch_price_data(ticker: str, period: str = "2y") -> Optional[pd.DataFrame]:
@@ -62,7 +64,7 @@ def calculate_pair_trade_pnl(
     long_weight: float = 0.5,
     short_weight: float = 0.5
 ) -> pd.Series:
-    """Calculate pair trade P&L: long Sieyuan, short HAL.
+    """Calculate pair trade P&L: long Dongfang, short Jereh.
     
     Args:
         long_data: Long leg price data
@@ -106,8 +108,8 @@ def create_pair_trade_chart(
     """Create pair trade P&L chart.
     
     Args:
-        long_data: Long leg (Sieyuan)
-        short_data: Short leg (HAL)
+        long_data: Long leg (Dongfang)
+        short_data: Short leg (Jereh)
         output_path: Where to save chart
         long_weight: Capital weight
         short_weight: Capital weight
@@ -122,12 +124,12 @@ def create_pair_trade_chart(
     
     if long_data is not None and not long_data.empty:
         long_norm = (long_data['Close'] / long_data['Close'].iloc[0]) * 100
-        ax1.plot(long_norm.index, long_norm.values, label='Long: Sieyuan (002028.SZ)', 
+        ax1.plot(long_norm.index, long_norm.values, label=f'Long: {LONG_LEG.name} ({LONG_LEG.ticker})', 
                 color='green', linewidth=2)
     
     if short_data is not None and not short_data.empty:
         short_norm = (short_data['Close'] / short_data['Close'].iloc[0]) * 100
-        ax1.plot(short_norm.index, short_norm.values, label='Short: HAL', 
+        ax1.plot(short_norm.index, short_norm.values, label=f'Short: {SHORT_LEG.name}', 
                 color='red', linewidth=2)
     
     ax1.axhline(y=100, color='gray', linestyle='--', alpha=0.5)
@@ -158,7 +160,7 @@ def create_pair_trade_chart(
                     bbox=dict(boxstyle='round,pad=0.3', facecolor='lightgreen' if final_pnl > 0 else 'lightcoral',
                              alpha=0.8))
     
-    ax2.set_title(f'Pair Trade Spread: Long Sieyuan / Short HAL ({long_weight*100:.0f}%-{short_weight*100:.0f}% weight)', 
+    ax2.set_title(f'Pair Trade Spread: Long {LONG_LEG.name} / Short {SHORT_LEG.name} ({long_weight*100:.0f}%-{short_weight*100:.0f}% weight)', 
                  fontsize=12, fontweight='bold')
     ax2.set_ylabel('Cumulative P&L (%)')
     ax2.set_xlabel('Date')
@@ -190,8 +192,8 @@ def create_pair_trade_chart(
 
 def create_correlation_chart(
     oil_data: pd.DataFrame,
-    hal_data: pd.DataFrame,
-    sieyuan_data: Optional[pd.DataFrame],
+    short_data: pd.DataFrame,
+    long_data: Optional[pd.DataFrame],
     output_path: Path
 ) -> Dict:
     """Create correlation divergence chart."""
@@ -199,18 +201,18 @@ def create_correlation_chart(
     
     # Calculate normalized prices (base 100)
     oil_norm = calculate_normalized_returns(oil_data)
-    hal_norm = calculate_normalized_returns(hal_data)
+    short_norm = calculate_normalized_returns(short_data)
     
     # Top chart: Price comparison
     ax1 = axes[0]
     ax1.plot(oil_norm.index, oil_norm.values, label='Oil (CL=F)', color='black', linewidth=2)
-    ax1.plot(hal_norm.index, hal_norm.values, label='Halliburton (HAL)', color='red', linewidth=2)
+    ax1.plot(short_norm.index, short_norm.values, label=f'{SHORT_LEG.name} ({SHORT_LEG.ticker})', color='red', linewidth=2)
     
-    if sieyuan_data is not None and not sieyuan_data.empty:
-        sieyuan_norm = calculate_normalized_returns(sieyuan_data)
-        ax1.plot(sieyuan_norm.index, sieyuan_norm.values, label='Sieyuan (002028.SZ)', color='green', linewidth=2)
+    if long_data is not None and not long_data.empty:
+        long_norm = calculate_normalized_returns(long_data)
+        ax1.plot(long_norm.index, long_norm.values, label=f'{LONG_LEG.name} ({LONG_LEG.ticker})', color='green', linewidth=2)
     
-    ax1.set_title('Price Performance: Oil vs HAL vs Sieyuan (Base 100)', fontsize=14, fontweight='bold')
+    ax1.set_title(f'Price Performance: Oil vs {SHORT_LEG.name} vs {LONG_LEG.name} (Base 100)', fontsize=14, fontweight='bold')
     ax1.set_ylabel('Normalized Price (Base 100)')
     ax1.legend(loc='upper left')
     ax1.grid(True, alpha=0.3)
@@ -219,23 +221,23 @@ def create_correlation_chart(
     ax2 = axes[1]
     
     # Calculate rolling correlation
-    if len(oil_norm) > 0 and len(hal_norm) > 0:
+    if len(oil_norm) > 0 and len(short_norm) > 0:
         # Align and calculate rolling correlation
         aligned = pd.DataFrame({
-            'oil': oil_norm.reindex(hal_norm.index, method='ffill'),
-            'hal': hal_norm
+            'oil': oil_norm.reindex(short_norm.index, method='ffill'),
+            'short': short_norm
         }).dropna()
         
         if len(aligned) > 60:
-            rolling_corr = aligned['oil'].rolling(window=60).corr(aligned['hal'])
-            ax2.plot(rolling_corr.index, rolling_corr.values, label='Oil-HAL Correlation', color='red', linewidth=2)
+            rolling_corr = aligned['oil'].rolling(window=60).corr(aligned['short'])
+            ax2.plot(rolling_corr.index, rolling_corr.values, label=f'Oil-{SHORT_LEG.name} Correlation', color='red', linewidth=2)
             ax2.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
             ax2.fill_between(rolling_corr.index, rolling_corr.values, 0, 
                             where=(rolling_corr.values > 0), alpha=0.3, color='green')
             ax2.fill_between(rolling_corr.index, rolling_corr.values, 0, 
                             where=(rolling_corr.values < 0), alpha=0.3, color='red')
     
-    ax2.set_title('6-Month Rolling Correlation: Oil vs Halliburton', fontsize=12)
+    ax2.set_title(f'6-Month Rolling Correlation: Oil vs {SHORT_LEG.name}', fontsize=12)
     ax2.set_ylabel('Correlation')
     ax2.set_xlabel('Date')
     ax2.legend()
@@ -251,14 +253,14 @@ def create_correlation_chart(
     return {
         'chart_path': str(output_path),
         'oil_data_points': len(oil_data) if oil_data is not None else 0,
-        'hal_data_points': len(hal_data) if hal_data is not None else 0,
+        'short_data_points': len(short_data) if short_data is not None else 0,
     }
 
 
 def create_divergence_summary(
     oil_data: pd.DataFrame,
-    hal_data: pd.DataFrame,
-    sieyuan_data: Optional[pd.DataFrame]
+    short_data: pd.DataFrame,
+    long_data: Optional[pd.DataFrame]
 ) -> Dict:
     """Create summary statistics for the divergence analysis."""
     results = {}
@@ -269,33 +271,33 @@ def create_divergence_summary(
     else:
         results['oil_2y_return'] = None
     
-    if hal_data is not None and not hal_data.empty:
-        hal_return = (hal_data['Close'].iloc[-1] / hal_data['Close'].iloc[0] - 1) * 100
-        results['hal_2y_return'] = round(hal_return, 1)
+    if short_data is not None and not short_data.empty:
+        short_return = (short_data['Close'].iloc[-1] / short_data['Close'].iloc[0] - 1) * 100
+        results['short_2y_return'] = round(short_return, 1)
     else:
-        results['hal_2y_return'] = None
+        results['short_2y_return'] = None
     
-    if sieyuan_data is not None and not sieyuan_data.empty:
-        sieyuan_return = (sieyuan_data['Close'].iloc[-1] / sieyuan_data['Close'].iloc[0] - 1) * 100
-        results['sieyuan_2y_return'] = round(sieyuan_return, 1)
+    if long_data is not None and not long_data.empty:
+        long_return = (long_data['Close'].iloc[-1] / long_data['Close'].iloc[0] - 1) * 100
+        results['long_2y_return'] = round(long_return, 1)
     else:
-        results['sieyuan_2y_return'] = None
+        results['long_2y_return'] = None
     
     # Calculate correlation
-    if oil_data is not None and hal_data is not None:
+    if oil_data is not None and short_data is not None:
         oil_norm = calculate_normalized_returns(oil_data)
-        hal_norm = calculate_normalized_returns(hal_data)
-        corr = calculate_correlation(oil_norm, hal_norm)
-        results['oil_hal_correlation'] = round(corr, 3)
+        short_norm = calculate_normalized_returns(short_data)
+        corr = calculate_correlation(oil_norm, short_norm)
+        results['oil_short_correlation'] = round(corr, 3)
     else:
-        results['oil_hal_correlation'] = None
+        results['oil_short_correlation'] = None
     
     # Thesis insight
-    if results.get('oil_2y_return') and results.get('hal_2y_return'):
-        if results['oil_2y_return'] > 0 and results['hal_2y_return'] < 0:
-            results['thesis_validation'] = "✓ VALIDATED: Oil up, HAL down — supports short thesis"
-        elif results['oil_2y_return'] > 0 and results['hal_2y_return'] > 0:
-            results['thesis_validation'] = "⚠ Oil up, HAL up — correlation still positive"
+    if results.get('oil_2y_return') and results.get('short_2y_return'):
+        if results['oil_2y_return'] > 0 and results['short_2y_return'] < 0:
+            results['thesis_validation'] = f"✓ VALIDATED: Oil up, {SHORT_LEG.name} down — supports short thesis"
+        elif results['oil_2y_return'] > 0 and results['short_2y_return'] > 0:
+            results['thesis_validation'] = f"⚠ Oil up, {SHORT_LEG.name} up — correlation still positive"
         else:
             results['thesis_validation'] = "⚠ Oil down — cycle not captured in period"
     
@@ -312,32 +314,32 @@ def save_backtest_results(results: Dict, output_path: Path):
 def main():
     """Run the full backtest analysis."""
     print("="*60)
-    print("OIL PRICE vs HAL/SIEYUAN BACKTEST")
+    print(f"OIL PRICE vs {SHORT_LEG.name}/{LONG_LEG.name} BACKTEST")
     print("="*60)
     
     # Fetch data
     print("\n[1] Fetching price data...")
     oil_data = fetch_price_data(OIL_TICKER, period="2y")
-    hal_data = fetch_price_data(HAL_TICKER, period="2y")
-    sieyuan_data = fetch_price_data(SIEYUAN_TICKER, period="2y")
+    short_data = fetch_price_data(SHORT_TICKER, period="2y")
+    long_data = fetch_price_data(LONG_TICKER, period="2y")
     
-    if oil_data is None or hal_data is None:
-        print("[ERROR] Failed to fetch required data (oil or HAL)")
+    if oil_data is None or short_data is None:
+        print(f"[ERROR] Failed to fetch required data (oil or {SHORT_LEG.name})")
         return
     
     # Create correlation chart
     print("\n[2] Creating correlation chart...")
-    chart_path = OUTPUT_DIR / "oil_hal_correlation.png"
-    chart_info = create_correlation_chart(oil_data, hal_data, sieyuan_data, chart_path)
+    chart_path = OUTPUT_DIR / "oil_jereh_correlation.png"
+    chart_info = create_correlation_chart(oil_data, short_data, long_data, chart_path)
     
     # Create pair trade chart
     print("\n[3] Creating pair trade backtest chart...")
     pair_chart_path = OUTPUT_DIR / "pair_trade_backtest.png"
-    pair_stats = create_pair_trade_chart(sieyuan_data, hal_data, pair_chart_path)
+    pair_stats = create_pair_trade_chart(long_data, short_data, pair_chart_path)
     
     # Generate summary
     print("\n[4] Generating summary statistics...")
-    summary = create_divergence_summary(oil_data, hal_data, sieyuan_data)
+    summary = create_divergence_summary(oil_data, short_data, long_data)
     summary.update(chart_info)
     summary.update(pair_stats)
     
@@ -350,7 +352,7 @@ def main():
             print(f"  {key}: {value}")
     
     # Save results
-    results_path = Path("data/processed/valuation/oil_hal_backtest.csv")
+    results_path = Path("data/processed/valuation/oil_jereh_backtest.csv")
     results_path.parent.mkdir(parents=True, exist_ok=True)
     save_backtest_results(summary, results_path)
     

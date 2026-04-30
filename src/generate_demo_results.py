@@ -63,12 +63,35 @@ def classify_paragraphs_demo():
 
     for _, row in df.iterrows():
         text = str(row.get("text", "")).lower()
+        title = str(row.get("title", "")).lower()
         sector = row.get("sector", "Other")
+        combined = f"{title} {text}"
 
         # Determine classification based on content keywords and sector
-        if sector == "Grid Infrastructure":
+        if "jereh" in combined and any(
+            k in combined
+            for k in [
+                "oilfield", "oil & gas", "oil and gas", "margin compression",
+                "margin pressure", "net profit growth (2", "p/e 46", "jereh risks",
+                "revenue/profit growth divergence", "cyclical oil",
+            ]
+        ):
+            if any(k in combined for k in ["margin", "profit", "p/e", "valuation", "growth divergence"]):
+                category = "Margin/Earnings Risk"
+                confidence = np.random.uniform(0.84, 0.96)
+            else:
+                category = "Oilfield Cost Pressure"
+                confidence = np.random.uniform(0.80, 0.94)
+
+        elif sector == "Grid Infrastructure":
             # Favor positive grid categories
-            if "data center" in text or "demand" in text:
+            if any(k in combined for k in ["state grid", "capex", "policy", "source-grid-load-storage", "new-type power system"]):
+                category = "Policy-Backed Capex"
+                confidence = np.random.uniform(0.82, 0.95)
+            elif any(k in combined for k in ["margin expansion", "net profit", "profit growing", "synchronous condenser", "grid infrastructure"]):
+                category = "Grid Resilience"
+                confidence = np.random.uniform(0.82, 0.95)
+            elif "data center" in text or "demand" in text:
                 category = "Electricity Demand"
                 confidence = np.random.uniform(0.75, 0.95)
             elif "transmission" in text or "grid" in text or "transformer" in text:
@@ -85,7 +108,13 @@ def classify_paragraphs_demo():
 
         elif sector == "Oilfield Services":
             # Favor negative oilfield categories
-            if "cost" in text or "pressure" in text or "expense" in text:
+            if any(k in combined for k in ["margin pressure", "profit growing 2", "net profit growth", "revenue/profit growth divergence"]):
+                category = "Margin/Earnings Risk"
+                confidence = np.random.uniform(0.82, 0.95)
+            elif any(k in combined for k in ["oilfield", "oil and gas", "shale", "fracturing", "cementing"]):
+                category = "Oilfield Cost Pressure"
+                confidence = np.random.uniform(0.78, 0.92)
+            elif "cost" in text or "pressure" in text or "expense" in text:
                 category = "Oilfield Cost Pressure"
                 confidence = np.random.uniform(0.70, 0.90)
             elif "supply" in text or "disruption" in text:

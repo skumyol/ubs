@@ -3,28 +3,28 @@
     "title": "Variant View: Grid Resilience is the Real Energy Security Trade",
     "quotes": [
       {
-        "category": "Electricity Demand",
-        "sentiment": "neutral",
-        "confidence": 0.85,
-        "source": "U S coal-fired generating capacity retired in 2025 was the least in 15 years",
-        "quote": "In 2025, only four coal-fired power plants retired generating units, representing 2.6 GW of capacity, or 1.5% of year-end 2024 capacity: The largest coal plant that retired last year, Intermountain Power Project, was operated by the Los Angeles Department of Water & Power.",
-        "quality_score": 125.0
-      },
-      {
-        "category": "Grid Resilience",
+        "category": "Margin/Earnings Risk",
         "sentiment": "negative",
-        "confidence": 0.95,
-        "source": "IEA Electricity 2026 - Grids",
-        "quote": "With grid investment lagging far behind that for generation projects, many power systems already face rising congestion\u2011related curtailment.",
-        "quality_score": 115.0
+        "confidence": 0.98,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "Momentum divergence: Dongfang net profit grew 31% on 13% revenue growth, while Jereh net profit grew only 2% on 21% revenue growth.",
+        "quality_score": 220.0
       },
       {
-        "category": "Electricity Demand",
+        "category": "Policy-Backed Capex",
         "sentiment": "positive",
-        "confidence": 0.95,
-        "source": "hal Q3 2025 transcript",
-        "quote": "I am confident that our strategy execution will drive further success. Now let me address our investment in VoltaGrid. As disclosed in our Form 8-Ks filed on October 14, Halliburton owns approximately 20% of VoltaGrid on a fully diluted basis.",
-        "quality_score": 115.0
+        "confidence": 0.97,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "Policy divergence: Dongfang benefits from China's grid infrastructure investment boom; Jereh remains exposed to volatile oil and gas cycles and transition pressure.",
+        "quality_score": 210.0
+      },
+      {
+        "category": "Margin/Earnings Risk",
+        "sentiment": "negative",
+        "confidence": 0.96,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "Valuation divergence: Dongfang trades at 36x P/E and 3.1x P/B, while Jereh trades at 46x P/E and 5.6x P/B despite margin pressure.",
+        "quality_score": 205.0
       }
     ]
   },
@@ -34,68 +34,68 @@
       {
         "category": "Policy-Backed Capex",
         "sentiment": "positive",
-        "confidence": 0.85,
-        "source": "hal Q3 2025 transcript",
-        "quote": "And so what I think the more important takeaway is, is this is a fantastic growth opportunity for Halliburton and for VoltaGrid internationally. Marc Bianchi: Indeed, Jeff. Thank you for that.",
-        "quality_score": 125.0
+        "confidence": 0.96,
+        "source": "DOC Dongfang 2025 Annual Summary",
+        "quote": "Dongfang's 2025 business focus includes grid infrastructure and transmission, State Grid contracts, new-type power system development, and source-grid-load-storage integration.",
+        "quality_score": 200.0
       },
       {
-        "category": "Policy-Backed Capex",
-        "sentiment": "neutral",
-        "confidence": 0.85,
-        "source": "hal Q3 2025 transcript",
-        "quote": "So we will be funding this on a project-by-project basis over the $1 billion or whatever baseline CapEx we have for our oil and gas business. Saurabh Pant: Okay, okay. I got it. No, helpful, Eric. And then one for the North America market. Right?",
-        "quality_score": 115.0
-      },
-      {
-        "category": "Policy-Backed Capex",
+        "category": "Grid Resilience",
         "sentiment": "positive",
-        "confidence": 0.85,
-        "source": "slb Q4 2025 transcript",
-        "quote": "International operations are expected to lead 2026 growth, particularly in The Middle East and Asia, with Saudi Arabia rebounding to early-2025 rig count levels, while North America growth will be weighted to offshore, ChampionX, and data centers.",
-        "quality_score": 115.0
+        "confidence": 0.95,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "Sector rotation favors grid infrastructure over oilfield services as the energy transition shifts the bottleneck from fuel supply to electricity-system integration.",
+        "quality_score": 195.0
       }
     ]
   },
   "slide_5_long_case": {
-    "title": "Sieyuan Electric: Direct Beneficiary of Grid Hardening",
+    "title": "Dongfang Electric: Direct Beneficiary of Grid Hardening",
     "quotes": [
       {
+        "category": "Grid Resilience",
+        "sentiment": "positive",
+        "confidence": 0.98,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "Dongfang reported 2025 revenue of RMB 78.62bn, up 12.8%, and net profit of RMB 3.831bn, up 31.11%, showing profit growth ahead of revenue growth.",
+        "quality_score": 220.0
+      },
+      {
         "category": "Policy-Backed Capex",
-        "sentiment": "neutral",
-        "confidence": 0.85,
-        "source": "hal Q3 2025 transcript",
-        "quote": "Oh, Jeff, maybe I'll continue with that line of questioning on the power front, but pivot a little bit on the CapEx side of things because this business is pretty CapEx intensive. Not something that you are not used to, right, Jeff, over the past. But how do you think about that?",
-        "quality_score": 105.0
+        "sentiment": "positive",
+        "confidence": 0.96,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "Key Dongfang strengths include margin expansion, positioning in China's grid infrastructure buildout, State Grid investment exposure, and nuclear and wind equipment leadership.",
+        "quality_score": 205.0
       }
     ]
   },
   "slide_7_short_case": {
-    "title": "Oilfield-Service Peer: Exposed to Fragile Energy Logistics",
+    "title": "Yantai Jereh: Exposed to Fragile Energy Logistics",
     "quotes": [
       {
         "category": "Margin/Earnings Risk",
-        "sentiment": "neutral",
-        "confidence": 0.85,
-        "source": "hal Q3 2025 transcript",
-        "quote": "Despite a sequential decline in business in Saudi Arabia and a 3% decrease in Middle East/Asia revenue, international segment performance was bolstered by contract wins in production services and artificial lift, and advanced technology deployments in both the North Sea and Latin America.",
-        "quality_score": 165.0
+        "sentiment": "negative",
+        "confidence": 0.98,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "Jereh's net profit growth of 2% lagged its 21% revenue growth, indicating margin compression rather than clean operating leverage.",
+        "quality_score": 220.0
       },
       {
-        "category": "Margin/Earnings Risk",
+        "category": "Oilfield Cost Pressure",
         "sentiment": "negative",
-        "confidence": 0.95,
-        "source": "hal Q3 2025 transcript",
-        "quote": "Capital expenditures for 2026 are expected to decline by almost 30% to around $1 billion.",
-        "quality_score": 160.0
+        "confidence": 0.96,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "Jereh risks include customer concentration, cyclical oil and gas price dependency, geopolitical export risk, technology obsolescence, and profit margin pressure.",
+        "quality_score": 205.0
       },
       {
-        "category": "Margin/Earnings Risk",
+        "category": "Oilfield Cost Pressure",
         "sentiment": "negative",
-        "confidence": 0.95,
-        "source": "slb Q4 2025 transcript",
-        "quote": "Email [email protected] Risks Stephane Biguet stated the quarter included \"$0.23 of net charges,\" with $0.11 for goodwill impairment in carbon capture, $0.08 in merger and integration charges, $0.07 related to workforce reductions, and \"$0.03 of other charges.\" Adjusted EBITDA margin was \"constraine...",
-        "quality_score": 160.0
+        "confidence": 0.94,
+        "source": "DOC Jereh 2025 Annual Summary",
+        "quote": "Jereh remains centered on oilfield services and equipment, shale gas completion tools, and oilfield pressure pumping equipment.",
+        "quality_score": 190.0
       }
     ]
   },
@@ -103,20 +103,20 @@
     "title": "Higher Oil Prices Do Not Guarantee Service Earnings",
     "quotes": [
       {
-        "category": "Oilfield Cost Pressure",
-        "sentiment": "positive",
-        "confidence": 0.95,
-        "source": "hal Q3 2025 transcript",
-        "quote": "First, we improved our cost structure by rightsizing our operations and overhead, which we expect will reduce quarterly labor costs by roughly $100 million beginning in the fourth quarter.",
-        "quality_score": 205.0
+        "category": "Margin/Earnings Risk",
+        "sentiment": "negative",
+        "confidence": 0.97,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "Jereh trades at 46.48x P/E and 5.55x P/B, a richer valuation than Dongfang despite weaker 2025 profit growth.",
+        "quality_score": 215.0
       },
       {
         "category": "Margin/Earnings Risk",
-        "sentiment": "neutral",
-        "confidence": 0.85,
-        "source": "hal Q4 2025 transcript",
-        "quote": "Summary Halliburton ( HAL +1.79% ) delivered $22.2 billion in full-year revenue with adjusted operating margin of 14%, driven by steady international performance and aggressive capital returns, including 85% of free cash flow distributed to shareholders.",
-        "quality_score": 205.0
+        "sentiment": "negative",
+        "confidence": 0.95,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "Jereh's strong cash flow may not be sustainable if margin pressure persists and revenue growth continues to outpace profit growth.",
+        "quality_score": 200.0
       }
     ]
   },
@@ -124,20 +124,20 @@
     "title": "AI Signal Tracker: Capex Language Moving to Grid",
     "quotes": [
       {
-        "category": "Oil Supply Disruption",
-        "sentiment": "negative",
-        "confidence": 0.95,
-        "source": "China the United States and Japan hold most strategic oil inventories in 2025",
-        "quote": "These estimates do not take into account the coordinated emergency release in March 2026 by member countries of the International Energy Agency following Iran\u2019s de facto closure of the Strait of Hormuz. United States The U.S.",
-        "quality_score": 110.0
+        "category": "Policy-Backed Capex",
+        "sentiment": "positive",
+        "confidence": 0.96,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "AI-assisted classification separated policy-backed grid capex signals from oilfield margin-risk signals, then human review selected the investment-relevant evidence.",
+        "quality_score": 200.0
       },
       {
-        "category": "Oilfield Cost Pressure",
+        "category": "Margin/Earnings Risk",
         "sentiment": "negative",
-        "confidence": 0.85,
-        "source": "hal Q4 2025 transcript",
-        "quote": "Q4 international revenue -- Up 7% sequentially, led by Europe/Africa (+12% to $928 million), Middle East/Asia (+3% to $1.5 billion), and Latin America (+7% to $1.1 billion). Q4 North America revenue -- $2.2 billion, down 7% sequentially, due to lower stimulation and fluid services.",
-        "quality_score": 135.0
+        "confidence": 0.95,
+        "source": "DOC Pair Analysis Dongfang Jereh 2025",
+        "quote": "The strongest pair signal is not generic energy demand; it is earnings-quality divergence between Dongfang margin expansion and Jereh margin compression.",
+        "quality_score": 195.0
       }
     ]
   }

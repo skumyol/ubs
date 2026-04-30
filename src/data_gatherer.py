@@ -50,50 +50,20 @@ from src.text_cleaner import clean_text, split_into_paragraphs
 # ============================================================
 
 STARTER_URLS = [
+    # IEA docs removed - using cached local copies in data/raw/text/
+    # See: DOC_IEA_Electricity_2026.txt
     {
-        "source_name": "IEA Electricity 2026",
-        "url": "https://www.iea.org/reports/electricity-2026",
-        "company": "IEA",
+        "source_name": "Dongfang Electric Group",
+        "url": "https://www.dongfang.com/",
+        "company": "Dongfang Electric",
         "sector": "Grid Infrastructure",
-        "document_type": "Industry Report",
-        "theme": "Electricity Demand",
-    },
-    {
-        "source_name": "IEA Electricity 2026 - Grids",
-        "url": "https://www.iea.org/reports/electricity-2026/grids",
-        "company": "IEA",
-        "sector": "Grid Infrastructure",
-        "document_type": "Industry Report",
+        "document_type": "Investor Page",
         "theme": "Grid Resilience",
     },
     {
-        "source_name": "Halliburton Investor Relations",
-        "url": "https://ir.halliburton.com/",
-        "company": "Halliburton",
-        "sector": "Oilfield Services",
-        "document_type": "Investor Page",
-        "theme": "Oilfield Services",
-    },
-    {
-        "source_name": "SLB Investor Relations",
-        "url": "https://investorcenter.slb.com/",
-        "company": "SLB",
-        "sector": "Oilfield Services",
-        "document_type": "Investor Page",
-        "theme": "Oilfield Services",
-    },
-    {
-        "source_name": "Baker Hughes Investor Relations",
-        "url": "https://investors.bakerhughes.com/",
-        "company": "Baker Hughes",
-        "sector": "Oilfield Services",
-        "document_type": "Investor Page",
-        "theme": "Oilfield Services",
-    },
-    {
-        "source_name": "NOV Investor Relations",
-        "url": "https://investors.nov.com/",
-        "company": "NOV",
+        "source_name": "Yantai Jereh Investor Relations",
+        "url": "https://www.jereh.com/cn/investor/Investor-relations",
+        "company": "Yantai Jereh",
         "sector": "Oilfield Services",
         "document_type": "Investor Page",
         "theme": "Oilfield Services",
@@ -134,6 +104,16 @@ STARTER_RSS = [
 ]
 
 GDELT_QUERIES = [
+    {
+        "query": '"Dongfang Electric" OR "new-type power system" OR "grid flexibility" OR "synchronous condenser"',
+        "sector": "Grid Infrastructure",
+        "theme": "Grid Resilience",
+    },
+    {
+        "query": '"Yantai Jereh" OR "Jereh" OR "oilfield services" OR "fossil substitution"',
+        "sector": "Oilfield Services",
+        "theme": "Oilfield Cost Pressure",
+    },
     {
         "query": '"grid investment" OR "grid resilience" OR "transmission upgrade"',
         "sector": "Grid Infrastructure",

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Automated transcript downloader for Halliburton & SLB investor relations pages.
-Saves transcripts to data/raw/pdf/ with standardized naming.
+Automated document downloader for Dongfang Electric & Yantai Jereh investor relations pages.
+Saves documents to data/raw/pdf/ with standardized naming.
 """
 import os
 import re
@@ -40,40 +40,21 @@ def download_file(url: str, filename: str) -> bool:
         logger.error(f"✗ Failed {filename}: {e}")
         return False
 
-def get_hal_transcripts():
-    """Scrape Halliburton quarterly results page for transcript links."""
-    quarters = ["Q1", "Q2", "Q3", "Q4"]
-    year = "2025"
-    results = []
-    
-    for q in quarters:
-        fool_url = f"https://www.fool.com/earnings/call-transcripts/{int(year)+1 if q=='Q4' else year}/{('01' if q=='Q4' else '04' if q=='Q1' else '07' if q=='Q2' else '10')}/21/halliburton-hal-{q.lower()}-{year}-earnings-call-transcript/"
-        results.append((fool_url, f"hal_{q}_{year}_transcript.html"))
-    
-    return results
+def get_dongfang_docs():
+    """Scrape Dongfang investor/news pages for document links."""
+    return [("https://www.dongfang.com/", "dongfang_ir_home.html")]
 
-def get_slb_transcripts():
-    """Scrape SLB quarterly results page for transcript links."""
-    quarters = [
-        ("Q4", "2025"),
-        ("Q3", "2025"),
-        ("Q2", "2025"),
-        ("Q1", "2025"),
-    ]
-    results = []
-    
-    for q, year in quarters:
-        fool_url = f"https://www.fool.com/earnings/call-transcripts/{int(year)+1 if q=='Q4' else year}/{('01' if q=='Q4' else '04' if q=='Q1' else '07' if q=='Q2' else '10')}/23/slb-slb-{q.lower()}-{year}-earnings-call-transcript/"
-        results.append((fool_url, f"slb_{q}_{year}_transcript.html"))
-    
-    return results
+
+def get_jereh_docs():
+    """Scrape Jereh investor relations page for document links."""
+    return [("https://www.jereh.com/cn/investor/Investor-relations", "jereh_ir_home.html")]
 
 def main():
     logger.info("🚀 Starting transcript download...")
     
     all_jobs = []
-    all_jobs.extend(get_hal_transcripts())
-    all_jobs.extend(get_slb_transcripts())
+    all_jobs.extend(get_dongfang_docs())
+    all_jobs.extend(get_jereh_docs())
     
     success = 0
     for url, filename in all_jobs:
