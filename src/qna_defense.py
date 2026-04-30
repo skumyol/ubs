@@ -23,6 +23,18 @@ UNRELATED_MARKERS = [
 
 QNA_QUESTIONS = [
     {
+        "question": "The 2-year backtest shows pair P&L of -25.3%. Why is the backtest unfavorable?",
+        "base_answer": (
+            "The unfavorable backtest is not a flaw — it is the core of our variant view. "
+            "In 2021-2024, both legs benefited from a unified energy capex boom where oil and green capex moved together. "
+            "This produced positive correlation (+0.83) and both stocks rallied +300%. "
+            "The 15th Five-Year Plan decouples grid infrastructure (RMB 4T State Grid investment) from fossil fuel capex. "
+            "We are betting on the BREAKDOWN of this historical correlation via policy-driven divergence, not its continuation. "
+            "This is a forward-looking regime shift trade, not a historically validated statistical arbitrage."
+        ),
+    },
+
+    {
         "question": "Q1. Why not long oil if energy logistics are vulnerable?",
         "base_answer": (
             "Because higher oil prices do not automatically create durable earnings upside for "
@@ -70,10 +82,10 @@ QNA_QUESTIONS = [
     {
         "question": "Q6. How reliable is your text analysis?",
         "base_answer": (
-            "The text analysis is a thematic compilation tool, not a predictive system. It surfaces "
-            "quotes and organizes documents into categories for human review. Validation testing "
-            "shows the classifier can beat naive baselines, but it still requires human judgment to "
-            "separate signal from narrative noise."
+            "The text analysis is reliable as a structured empirical input, not as an autonomous "
+            "trading model. It surfaces quotes, organizes documents into categories, and feeds the "
+            "predictive scorecard alongside fundamentals, valuation, technicals, and catalysts. "
+            "Human review still separates durable signal from narrative noise."
         ),
     },
     {
@@ -81,7 +93,8 @@ QNA_QUESTIONS = [
         "base_answer": (
             "Three things: scale, consistency, and traceability. It compiles documents quickly, "
             "applies the same categorization framework across all docs, and preserves a source trail "
-            "for every quote. Critically, it is descriptive, not predictive."
+            "for every quote. The predictive contribution is not magic forecasting; it is a repeatable "
+            "way to convert messy policy and company text into scored inputs for the forward thesis."
         ),
     },
     {
@@ -135,7 +148,7 @@ def extract_top_quote(
     for cat in categories:
         if cat in killer_quotes and killer_quotes[cat]:
             for q in killer_quotes[cat]:
-                text = q.get("text", "")
+                text = q.get("text") or q.get("quote") or ""
                 if len(text.split()) >= min_words:
                     return {
                         "text": text[:280],

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Oil price vs Dongfang/Jereh correlation backtest.
 
-Shows historical divergence between oil prices and oilfield services stocks
-vs grid infrastructure stocks — proving the "higher oil != higher service earnings" thesis.
+This module tests whether history validates or contradicts the pair setup.
+Adverse results are still useful: they become risk evidence and help frame the
+trade as a forward-looking prediction rather than a proven historical spread.
 """
 
 import os
@@ -292,14 +293,16 @@ def create_divergence_summary(
     else:
         results['oil_short_correlation'] = None
     
-    # Thesis insight
+    # Historical setup insight. This is not proof of future alpha.
     if results.get('oil_2y_return') and results.get('short_2y_return'):
         if results['oil_2y_return'] > 0 and results['short_2y_return'] < 0:
-            results['thesis_validation'] = f"✓ VALIDATED: Oil up, {SHORT_LEG.name} down — supports short thesis"
+            results['thesis_validation'] = f"Historical support: Oil up, {SHORT_LEG.name} down"
         elif results['oil_2y_return'] > 0 and results['short_2y_return'] > 0:
-            results['thesis_validation'] = f"⚠ Oil up, {SHORT_LEG.name} up — correlation still positive"
+            results['thesis_validation'] = (
+                f"Historical contradiction: Oil up, {SHORT_LEG.name} up; use as crowded-winner risk/setup evidence"
+            )
         else:
-            results['thesis_validation'] = "⚠ Oil down — cycle not captured in period"
+            results['thesis_validation'] = "Historical context incomplete: oil cycle not captured in period"
     
     return results
 

@@ -242,6 +242,13 @@ def main(argv: Optional[list[str]] = None) -> None:
     except Exception as exc:
         print(f"[WARN] Sensitivity analysis failed: {exc}")
 
+    try:
+        from src.predictive_scorecard import build_predictive_scorecard
+
+        build_predictive_scorecard(val_dir, TABLES_DIR)
+    except Exception as exc:
+        print(f"[WARN] Predictive scorecard failed: {exc}")
+
     # Step 5: Data quality.
     step("5", "Run data quality audit")
     quality_summary = build_data_quality_report()

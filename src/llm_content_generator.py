@@ -270,6 +270,11 @@ def save_llm_outputs(
             "bullets": 5,
         },
         {
+            "title": "Why Now / Why History Is Misleading",
+            "context": "2Y backtest shows both legs +300%, pair P&L -25%. Explain: past regime = both benefited from energy capex. Now State Grid ¥4T 15th FYP vs fossil substitution creates regime shift. This is a forward-looking variant view, not a historically validated spread.",
+            "bullets": 5,
+        },
+        {
             "title": "Long Case: Dongfang Electric",
             "context": "Power equipment, grid integration, synchronous condensers, RMB 140B backlog",
             "bullets": 6,

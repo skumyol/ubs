@@ -7,14 +7,24 @@
 
 ## Key Numbers to Memorize
 
-- **Long Dongfang Electric expected return**: 47.6%
-- **Short Yantai Jereh expected move**: -12.2%
-- **Pair spread return**: 59.8%
+- **Long Dongfang Electric expected return**: 44.9%
+- **Short Yantai Jereh expected move**: -20.5%
+- **Pair spread return**: 65.4%
 - **Total AI signals analyzed**: 426
 - **Grid signal share**: 60%
 - **Oil signal share**: 6%
-- **Thesis support score**: 0.2
+- **Thesis support score**: 0.202
 - **Interpretation**: Moderate support for variant thesis
+
+---
+
+## The 2-year backtest shows pair P&L of -25.3%. Why is the backtest unfavorable?
+
+**Answer:** The unfavorable backtest is not a flaw — it is the core of our variant view. In 2021-2024, both legs benefited from a unified energy capex boom where oil and green capex moved together. This produced positive correlation (+0.83) and both stocks rallied +300%. The 15th Five-Year Plan decouples grid infrastructure (RMB 4T State Grid investment) from fossil fuel capex. We are betting on the BREAKDOWN of this historical correlation via policy-driven divergence, not its continuation. This is a forward-looking regime shift trade, not a historically validated statistical arbitrage.
+
+**Supporting Evidence:**
+
+_No specific quote selected for this question._
 
 ---
 
@@ -24,14 +34,9 @@
 
 **Supporting Evidence:**
 
-> "KEY RISKS:
-- Heavy reliance on state-owned utility customers
-- Sharp 80% decline in operating cash flow despite profit growth
-- Energy policy dependency vulnerable to fiscal pressures
-- Large project execution risks
-- Supply chain vulnerabilities for critical materials"
+> "Jereh risks include customer concentration, cyclical oil and gas price dependency, geopolitical export risk, technology obsolescence, and profit margin pressure."
 
-— Source: *DOC Pair Analysis Dongfang Jereh 2025* | Category: `Margin/Earnings Risk` | Confidence: 0.95
+— Source: *DOC Pair Analysis Dongfang Jereh 2025* | Category: `Oilfield Cost Pressure` | Confidence: 0.96
 
 ---
 
@@ -41,9 +46,9 @@
 
 **Supporting Evidence:**
 
-> "With grid investment lagging far behind that for generation projects, many power systems already face rising congestion‑related curtailment. Meeting electricity demand through 2030 will require annual grid investment to increase by approximately 50% by 2030 from today’s USD 400 b"
+> "Dongfang reported 2025 revenue of RMB 78.62bn, up 12.8%, and net profit of RMB 3.831bn, up 31.11%, showing profit growth ahead of revenue growth."
 
-— Source: *IEA Electricity 2026 - Grids* | Category: `Grid Resilience` | Confidence: 0.95
+— Source: *DOC Pair Analysis Dongfang Jereh 2025* | Category: `Grid Resilience` | Confidence: 0.98
 
 ---
 
@@ -53,14 +58,9 @@
 
 **Supporting Evidence:**
 
-> "KEY RISKS:
-- Heavy reliance on state-owned utility customers
-- Sharp 80% decline in operating cash flow despite profit growth
-- Energy policy dependency vulnerable to fiscal pressures
-- Large project execution risks
-- Supply chain vulnerabilities for critical materials"
+> "Jereh risks include customer concentration, cyclical oil and gas price dependency, geopolitical export risk, technology obsolescence, and profit margin pressure."
 
-— Source: *DOC Pair Analysis Dongfang Jereh 2025* | Category: `Margin/Earnings Risk` | Confidence: 0.95
+— Source: *DOC Pair Analysis Dongfang Jereh 2025* | Category: `Oilfield Cost Pressure` | Confidence: 0.96
 
 ---
 
@@ -86,7 +86,7 @@ _No specific quote selected for this question._
 
 ## Q6. How reliable is your text analysis?
 
-**Answer:** The text analysis is a thematic compilation tool, not a predictive system. It surfaces quotes and organizes documents into categories for human review. Validation testing shows the classifier can beat naive baselines, but it still requires human judgment to separate signal from narrative noise.
+**Answer:** The text analysis is reliable as a structured empirical input, not as an autonomous trading model. It surfaces quotes, organizes documents into categories, and feeds the predictive scorecard alongside fundamentals, valuation, technicals, and catalysts. Human review still separates durable signal from narrative noise.
 
 **Supporting Evidence:**
 
@@ -96,7 +96,7 @@ _No specific quote selected for this question._
 
 ## Q7. What does the text analysis add that a traditional analyst could not do?
 
-**Answer:** Three things: scale, consistency, and traceability. It compiles documents quickly, applies the same categorization framework across all docs, and preserves a source trail for every quote. Critically, it is descriptive, not predictive.
+**Answer:** Three things: scale, consistency, and traceability. It compiles documents quickly, applies the same categorization framework across all docs, and preserves a source trail for every quote. The predictive contribution is not magic forecasting; it is a repeatable way to convert messy policy and company text into scored inputs for the forward thesis.
 
 **Supporting Evidence:**
 

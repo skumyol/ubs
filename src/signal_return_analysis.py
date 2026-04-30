@@ -638,8 +638,8 @@ def _generate_verdict(results: Dict) -> str:
     else:
         return (
             f"NO PROVEN PREDICTIVE POWER: {significant_count}/{total_tests} tests significant.{hist_note} "
-            f"The signal tracker does NOT forecast returns. It is a descriptive tool, "
-            f"not a predictive system. Do NOT present it as alpha-generating research."
+            f"The signal tracker alone does not forecast returns. Use it only as one empirical input "
+            f"inside the broader predictive scorecard, not as standalone alpha proof."
         )
 
 

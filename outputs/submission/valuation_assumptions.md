@@ -2,9 +2,9 @@
 
 ## Pair Output
 
-- Long expected return: 47.6%
-- Short expected move: -12.2%
-- Pair spread expected return: 59.8%
+- Long expected return: 44.9%
+- Short expected move: -20.5%
+- Pair spread expected return: 65.4%
 
 ## Scenario Inputs
 

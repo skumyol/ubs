@@ -289,7 +289,7 @@ def build_deck(
     add_title_slide(
         prs,
         "Long the Grid, Short the Bottleneck",
-        DECK_SUBTITLE,
+        f"Hong Kong Track | Energy Transition | {DECK_SUBTITLE}",
     )
 
     # -------- Slide 2: One-Pager --------
@@ -309,21 +309,11 @@ def build_deck(
     ]
     add_content_slide(prs, "Executive Summary", one_pager_items)
 
-    # -------- Slide 3: Consensus View --------
-    consensus_items = [
-        "Market reads geopolitical risk as bullish for oil and oilfield services",
-        "Strait of Hormuz, Middle East tensions, shipping route vulnerability drive headlines",
-        "Assumption chain: oil disruption → higher crude → higher upstream capex → better OFS earnings",
-        "This view has been the dominant energy-security trade since 2022",
-        "But consensus over-connects oil price spikes with durable service earnings",
-    ]
-    add_content_slide(prs, "Consensus: Energy Insecurity Means Owning Oil Exposure", consensus_items)
-
-    # -------- Slide 4: Variant View --------
+    # -------- Slide 3: Variant View --------
     variant_items = [
-        "Energy insecurity is not just about securing barrels — it is about securing reliable electricity",
-        "Data centers, EVs, industrial electrification, and cooling all stress the grid",
-        "Transformers, switchgear, transmission, substations — all in multi-year shortage",
+        "Consensus over-connects oil price spikes with durable oilfield-service earnings",
+        "Variant view: energy security is no longer just securing barrels — it is reliable electricity",
+        "Data centers, EVs, industrial electrification, and cooling all stress the power system",
         "Governments treat grid hardening as national security infrastructure",
         "→ Oil disruption is the symptom. Grid investment is the solution.",
     ]
@@ -337,7 +327,7 @@ def build_deck(
             evidence_pack["slide_3_variant_view"]["quotes"],
         )
 
-    # -------- Slide 5: Industry Outlook --------
+    # -------- Slide 4: Industry Outlook --------
     industry_items = [
         "Global electricity demand expected to grow ~4% annually through 2030 (IEA)",
         "US data center power demand projected to 2-3x by 2030 — driving grid equipment orders",
@@ -347,9 +337,20 @@ def build_deck(
     ]
     add_content_slide(prs, "Electricity Continuity Is Becoming Strategic Infrastructure", industry_items)
 
+    # -------- Slide 5: Why Now / Why History Is Misleading --------
+    why_now_items = [
+        "⚠️ 2Y backtest is UNFAVORABLE: Both legs +300% (Dongfang +299.8%, Jereh +350.4%), pair P&L -25.3%",
+        "This is NOT a historically validated spread — it is a forward-looking variant view on policy regime shift",
+        "Past regime (2021-2024): Both legs benefited from unified energy capex boom (oil + green together)",
+        "New regime (2025-2030): State Grid RMB 4T 15th FYP decouples grid capex from fossil fuel investment",
+        "Fossil substitution acceleration explicitly targets Jereh's oilfield services market for contraction",
+        "We are betting on the BREAKDOWN of historical correlation, not its continuation",
+    ]
+    add_content_slide(prs, "Why Now: The Regime Shift", why_now_items)
+
     # -------- Slide 6: Long Case - Dongfang --------
     long_items = [
-        "Pure-play transmission & distribution equipment: switchgear, transformers, substation automation",
+        "Integrated power equipment and grid-integration leader with clean-energy equipment exposure",
         "Strong domestic grid orders from State Grid Corp + overseas expansion (Middle East, SE Asia)",
         "Revenue growth trajectory supported by multi-year order backlog",
         "Gross margins stable/improving vs peers; R&D investment in digital grid",
@@ -388,8 +389,22 @@ def build_deck(
             prs,
             f"Historical Divergence: Market vs {LONG_LEG.name} vs {SHORT_LEG.name} (2Y)",
             backtest_path,
-            "Dongfang +96.8% expected (grid tailwind), Jereh -5.4% expected (fossil headwinds). Thesis: policy-driven divergence.",
+            "⚠️ Historical backtest is UNFAVORABLE — pair P&L -25.3% over 2Y. This is a forward-looking variant view on policy regime shift, not a historically validated spread.",
         )
+
+    scorecard_path = Path("data/processed/valuation/predictive_scorecard.csv")
+    if scorecard_path.exists():
+        try:
+            scorecard_df = pd.read_csv(scorecard_path)
+            if not scorecard_df.empty:
+                add_table_slide(
+                    prs,
+                    "Empirical Setup: Forward Predictive Scorecard",
+                    scorecard_df[["pillar", "evidence", "signal"]],
+                    "Separates adverse historical backtest from current empirical setup and forward catalysts.",
+                )
+        except Exception:
+            pass
 
     # -------- Slide 9: Comparison Matrix (Chart) --------
     matrix_path = charts_dir / "long_short_matrix.png"
@@ -417,35 +432,10 @@ def build_deck(
             caption,
         )
 
-    # -------- Slide 11: Text Evidence --------
-    if evidence_pack and "slide_10_ai_module" in evidence_pack:
-        add_quote_slide(
-            prs,
-            "Supporting Evidence: Text Classification Results",
-            evidence_pack["slide_10_ai_module"]["quotes"],
-        )
+    # Detailed text evidence and signal-frequency charts are kept in the
+    # generated evidence pack, not the <=20-page submission deck.
 
-    # -------- Slide 12: Signal Trends Timeseries --------
-    trends_path = charts_dir / "signal_trends_timeseries.png"
-    if trends_path.exists():
-        add_chart_slide(
-            prs,
-            "Evidence Trends: Monthly Text Signal Volume",
-            trends_path,
-            "Monthly evolution of classified text signals. Descriptive, not predictive. See validation report for predictive power analysis.",
-        )
-
-    # -------- Slide 13: Signal Frequency Chart --------
-    freq_path = charts_dir / "energy_signal_frequency.png"
-    if freq_path.exists():
-        add_chart_slide(
-            prs,
-            "Evidence Frequency: Category Distribution",
-            freq_path,
-            "Text-classified paragraphs from public sources. Distribution reflects document sampling, not necessarily market reality.",
-        )
-
-    # -------- Slide 14: Peer Comparables --------
+    # -------- Slide 11: Peer Comparables --------
     if peer_comps_df is not None and not peer_comps_df.empty:
         add_table_slide(
             prs,
@@ -454,7 +444,7 @@ def build_deck(
             "Grid peers command premium multiples on earnings visibility; OFS trades at cyclical discount",
         )
 
-    # -------- Slide 15: DCF Cross-Check --------
+    # -------- Slide 12: DCF Cross-Check --------
     if dcf_df is not None and not dcf_df.empty:
         add_table_slide(
             prs,
@@ -463,7 +453,7 @@ def build_deck(
             "Simple normalized FCF DCF used as a consistency check against the scenario framework",
         )
 
-    # -------- Slide 16: Long Scenarios --------
+    # -------- Slide 13: Long Scenarios --------
     if long_scenarios_df is not None and not long_scenarios_df.empty:
         add_table_slide(
             prs,
@@ -472,7 +462,7 @@ def build_deck(
             "Probability-weighted upside driven by overseas revenue mix and grid re-rating",
         )
 
-    # -------- Slide 17: Short Scenarios --------
+    # -------- Slide 14: Short Scenarios --------
     if short_scenarios_df is not None and not short_scenarios_df.empty:
         add_table_slide(
             prs,
@@ -481,30 +471,23 @@ def build_deck(
             "Probability-weighted downside driven by margin compression and cyclical de-rate",
         )
 
-    # -------- Slide 18: Sensitivity Analysis --------
-    tornado_path = charts_dir / "sensitivity_tornado.png"
-    if tornado_path.exists():
-        add_chart_slide(
-            prs,
-            "EPS Sensitivity: What Drives Dongfang Valuation?",
-            tornado_path,
-            "Base case EPS ¥3.5. Grid equipment margin + State Grid orders are key drivers. Overseas export mix secondary.",
-        )
+    # Sensitivity analysis remains available in outputs/charts and the report;
+    # omit it from the main deck to stay within the 20-page limit.
 
-    # -------- Slide 19: Catalysts --------
+    # -------- Slide 15: Catalysts --------
     catalyst_items = [
         "LONG CATALYSTS (Dongfang):",
         "  • Quarterly overseas order wins (Middle East, SE Asia)",
         "  • China State Grid capex announcements",
         "  • Gross margin expansion on overseas mix shift",
-        "SHORT CATALYSTS (Yantai Jereh):"
+        "SHORT CATALYSTS (Yantai Jereh):",
         "  • Q2 earnings miss on logistics cost",
         "  • Guidance cut on North American rig count",
         "  • Project deferral announcements from majors",
     ]
     add_content_slide(prs, "Catalysts Over Next 6-12 Months", catalyst_items)
 
-    # -------- Slide 20: Risks --------
+    # -------- Slide 16: Risks --------
     risk_items = [
         "Oil price spike may lift Jereh temporarily → pair trade cushions absolute exposure",
         "Dongfang China beta/multiple compression → offset by 140B RMB backlog visibility",
@@ -515,12 +498,25 @@ def build_deck(
     ]
     add_content_slide(prs, "Risks and Mitigants", risk_items)
 
-    # -------- Slide 21: Trader Execution Framework --------
+    # -------- Slide 17: Trader Execution Framework --------
+    trader_path = Path("data/processed/valuation/trader_analysis.csv")
+    trader_row = {}
+    if trader_path.exists():
+        try:
+            trader_df = pd.read_csv(trader_path)
+            if not trader_df.empty:
+                trader_row = trader_df.iloc[0].to_dict()
+        except Exception:
+            trader_row = {}
+    pair_vol = trader_row.get("volatilities_pair_vol", 83.2)
+    rec_notional = trader_row.get("position_sizing_recommended_notional_mm", 1.2)
+    long_notional = trader_row.get("position_sizing_long_dongfang_notional_mm", 0.6)
+    short_notional = trader_row.get("position_sizing_short_jereh_notional_mm", 0.6)
     trader_items = [
         "POSITION SIZING (Risk-Based):",
         "  • Portfolio: $100M example | Max risk per trade: 2% ($2M)",
-        "  • Pair volatility: 42% annual | Position size: 2.4% of portfolio ($2.4M notional)",
-        "  • Allocation: $1.2M long Dongfang / $1.2M short Jereh (dollar-neutral)",
+        f"  • Pair volatility: {pair_vol:.1f}% annual | Position size: {rec_notional:.1f}% of portfolio (${rec_notional:.1f}M notional)",
+        f"  • Allocation: ${long_notional:.1f}M long Dongfang / ${short_notional:.1f}M short Jereh (dollar-neutral)",
         "",
         "CARRY COST (6-month hold):",
         "  • Jereh borrow cost: 2.5-7% annually → $5K-19K cost (China A-share)",
@@ -539,17 +535,25 @@ def build_deck(
     ]
     add_content_slide(prs, "Execution: Position Sizing, Carry & Liquidity", trader_items)
 
-    # -------- Slide 22: Text Analysis Module: Honest Assessment --------
+    # -------- Slide 18: Text Analysis Module: Honest Assessment --------
+    doc_count = 47
+    paragraph_count = len(classified_df) if classified_df is not None else 426
+    doc_index_path = Path("data/processed/document_index.csv")
+    if doc_index_path.exists():
+        try:
+            doc_count = len(pd.read_csv(doc_index_path))
+        except Exception:
+            pass
     if consolidate_ai_slides:
         # Single combined slide - reframed honestly
         ai_combined = [
             "WHAT THIS MODULE DOES:",
-            "  • Compiles text evidence from 55 documents into structured categories",
+            f"  • Compiles text evidence from {doc_count} documents / {paragraph_count} paragraphs into structured categories",
             "  • Surfaces specific quotes and management language for manual review",
-            "  • Provides repeatable framework for future thematic research",
-            "HONEST LIMITATIONS:",
-            "  • Descriptive, not predictive — signals do NOT forecast returns (see validation)",
-            "  • 330 paragraphs = small sample; limited statistical power",
+            "  • Feeds a predictive scorecard with fundamentals, valuation, technicals, and catalysts",
+            "CLAIM BOUNDARY:",
+            "  • Predictive input, not autonomous forecast — text signals do not trade themselves",
+            "  • Corpus is useful for thesis discovery, but still too small for standalone statistical alpha claims",
             "  • Classification relies on keyword patterns, not deep semantic understanding",
             "  • Source bias: RSS feeds overweight news vs. operational 8-K filings",
             "  • Every output requires human verification before investment decisions",
@@ -558,57 +562,23 @@ def build_deck(
     else:
         # Two separate slides - reframed
         add_content_slide(prs, "Text Analysis: What It Provides", [
-            "Compiles text evidence from 55 documents into structured categories",
+            f"Compiles text evidence from {doc_count} documents / {paragraph_count} paragraphs into structured categories",
             "Surfaces specific quotes and management language for manual review",
-            "Provides repeatable framework for future thematic research",
+            "Feeds a predictive scorecard with fundamentals, valuation, technicals, and catalysts",
             "Full source traceability — every quote links to original document",
         ])
         add_content_slide(prs, "Text Analysis: Honest Limitations", [
-            "Descriptive, not predictive — signals do NOT forecast returns",
-            "330 paragraphs = small sample; limited statistical power",
+            "Predictive input, not autonomous forecast — text signals do not trade themselves",
+            f"{paragraph_count} paragraphs = limited sample for statistical return forecasting",
             "Classification relies on keyword patterns, not deep semantic analysis",
             "Source bias: RSS feeds overweight news vs. operational filings",
             "Every output requires human verification before investment use",
         ])
 
-    # -------- Slide 23: The Money Slide --------
-    # Thesis + Backtest + Spread + Catalyst timeline — one visual
-    money_items = [
-        "THESIS: Energy insecurity is shifting from barrels to electrons",
-        "  • Grid equipment = multi-year capex visibility (policy + demand)",
-        "  • Oilfield services = margin compression + cyclical risk (even if oil rises)",
-        "",
-        "HISTORICAL PROOF (2Y backtest):",
-        "  • Grid equipment leaders outperforming oilfield services structurally",
-        "  • Policy divergence: Grid capex tailwinds vs fossil headwinds driving spreads",
-        "  • Jereh more tied to upstream capex cycles than oil price",
-        "",
-        "FORWARD EXPECTED RETURN:",
-        f"  • Long Dongfang: +{valuation_summary['long_expected_return']:.0f}% (prob-weighted)"
-        if valuation_summary else "  • Long Dongfang: +97% (base case)",
-        f"  • Short Jereh: {valuation_summary['short_expected_return']:.0f}% (prob-weighted)"
-        if valuation_summary else "  • Short Jereh: -5% (base case)",
-        f"  • Pair spread: +{valuation_summary['pair_spread_return']:.0f}%"
-        if valuation_summary else "  • Pair spread: +55%",
-        "",
-        "CATALYST TIMELINE:",
-        "  • Q2: Dongfang Q1 results + Jereh margin pressure visibility",
-        "  • Q3: State Grid capex acceleration + NA rig count decline",
-        "  • Q4: Full-year margin differential becomes visible in earnings",
-    ]
-    add_content_slide(prs, "The Trade: Thesis + Proof + Spread + Catalysts", money_items)
+    # Duplicate money/backtest slides are omitted from the main deck; their
+    # content is already covered in the executive summary, scorecard, and risk slides.
 
-    # -------- Slide 24: Pair Trade Backtest Chart --------
-    pair_trade_path = charts_dir / "pair_trade_backtest.png"
-    if pair_trade_path.exists():
-        add_chart_slide(
-            prs,
-            "Pair Trade: Long Dongfang / Short Jereh - Policy Divergence Play",
-            pair_trade_path,
-            "Dollar-neutral, 50-50 weight. Shows historical spread generation even through volatility.",
-        )
-
-    # -------- Slide 25: Recommendation --------
+    # -------- Slide 19: Recommendation --------
     rec_subtitle = (
         "Long Dongfang Electric / Short Yantai Jereh"
         if not valuation_summary else

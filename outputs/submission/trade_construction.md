@@ -3,7 +3,7 @@
 ## Position Framework
 
 - Structure: Long Dongfang Electric / Short Yantai Jereh
-- Expected spread return (prob-weighted): 59.8%
+- Expected spread return (prob-weighted): 65.4%
 - Recommended notional: $N/Amm (N/A% of portfolio)
 - Pair annualized volatility estimate: N/A%
 
